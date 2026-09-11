@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/lib/context/AuthContext';
 import { RoleName } from '@/types/database';
 import {
@@ -16,6 +17,8 @@ import {
   Menu,
   Sparkles,
   Command,
+  LogOut,
+  ChevronDown,
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
@@ -32,8 +35,9 @@ export function Header({
   onToggleSidebar,
   onOpenNotifications,
 }: HeaderProps) {
-  const { user, activeRole, setActiveRole, unreadNotificationCount } = useAuth();
+  const { user, activeRole, setActiveRole, unreadNotificationCount, logout } = useAuth();
   const [isRoleMenuOpen, setIsRoleMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const roleOptions: { role: RoleName; label: string; icon: React.ReactNode; color: string }[] = [
     { role: 'super_admin', label: 'Super Admin', icon: <ShieldCheck className="w-3.5 h-3.5" />, color: 'bg-[#00D06C] text-black' },
@@ -58,15 +62,22 @@ export function Header({
         </button>
 
         <Link href="/dashboard" className="flex items-center gap-2.5 group">
-          <div className="w-9 h-9 bg-[#00D06C] border-2 border-black flex items-center justify-center font-mono font-black text-black text-lg shadow-neo-sm group-hover:rotate-6 transition-transform">
-            Q
+          {/* Exact QEVN black logo on clean neutral/transparent background */}
+          <div className="flex items-center py-1 px-1.5 border-2 border-black bg-[#FAF7EE] shadow-neo-sm group-hover:translate-x-0.5 transition-transform">
+            <Image
+              src="/qevn-logo-black.png"
+              alt="Qevn"
+              width={95}
+              height={27}
+              priority
+              className="h-6 w-auto object-contain"
+            />
           </div>
           <div className="hidden sm:block leading-none">
-            <span className="font-mono font-black text-black tracking-wider text-base flex items-center gap-1.5">
-              QEVN <span className="bg-[#FF6B9D] text-black px-1 border border-black text-xs">// HRMS</span>
-            </span>
-            <span className="text-[9px] font-mono font-bold text-zinc-600 tracking-widest block uppercase mt-0.5">
-              MAXIMALIST PEOPLE OS
+            <span className="font-mono font-black text-black tracking-wider text-xs flex items-center gap-1.5">
+              <span className="bg-[#FF6B9D] text-black px-1.5 py-0.5 border border-black text-[10px] uppercase font-black">
+                HRMS // ENTERPRISE OS
+              </span>
             </span>
           </div>
         </Link>
@@ -76,27 +87,27 @@ export function Header({
       <div className="flex-1 max-w-xl hidden md:block">
         <button
           onClick={onOpenCommandBar}
-          className="w-full bg-[#FCFAF5] border-2 border-black hover:bg-white hover:border-black px-3.5 py-1.5 flex items-center justify-between text-zinc-600 text-xs font-mono transition-all group shadow-neo-sm cursor-pointer"
+          className="w-full bg-[#FAF7EE] border-2 border-black hover:bg-white hover:border-black px-3.5 py-1.5 flex items-center justify-between text-neutral-700 text-xs font-mono transition-all group shadow-neo-sm cursor-pointer"
         >
           <div className="flex items-center gap-2">
             <Search className="w-4 h-4 text-black group-hover:text-[#00D06C] transition-colors" />
-            <span className="font-bold text-zinc-700">Search people, leave, documents, reports...</span>
+            <span className="font-bold text-neutral-800">Search team, attendance, leave, documents...</span>
           </div>
-          <div className="flex items-center gap-1 px-1.5 py-0.5 bg-black text-white text-[10px] font-black border border-black">
+          <div className="flex items-center gap-1 px-1.5 py-0.5 bg-black text-white text-[10px] font-black border border-black shadow-neo-sm">
             <Command className="w-3 h-3" />
             <span>K</span>
           </div>
         </button>
       </div>
 
-      {/* Right: Quick Action, Notifications, Role Switcher */}
+      {/* Right: Quick Action, Notifications, Role Switcher, Account Menu */}
       <div className="flex items-center gap-2 sm:gap-3">
         {/* Quick Action Button */}
         <Button
           variant="pink"
           size="sm"
           onClick={onOpenQuickAction}
-          className="hidden sm:inline-flex"
+          className="hidden sm:inline-flex text-xs"
         >
           <Plus className="w-4 h-4 mr-1" /> Action
         </Button>
@@ -109,7 +120,7 @@ export function Header({
         >
           <Bell className="w-4 h-4 text-black" />
           {unreadNotificationCount > 0 && (
-            <span className="absolute -top-2 -right-2 px-1.5 py-0.2 bg-[#FF4365] text-white font-mono text-[9px] font-black border-2 border-black animate-bounce">
+            <span className="absolute -top-2 -right-2 px-1.5 py-0.2 bg-[#FF6B9D] text-black font-mono text-[9px] font-black border-2 border-black animate-bounce shadow-neo-sm">
               {unreadNotificationCount}
             </span>
           )}
@@ -118,7 +129,10 @@ export function Header({
         {/* Live Role Switcher */}
         <div className="relative">
           <button
-            onClick={() => setIsRoleMenuOpen(!isRoleMenuOpen)}
+            onClick={() => {
+              setIsRoleMenuOpen(!isRoleMenuOpen);
+              setIsUserMenuOpen(false);
+            }}
             className="flex items-center gap-2 bg-white border-2 border-black hover:bg-[#FAF7EE] p-1.5 pr-2.5 transition-all shadow-neo-sm cursor-pointer"
             title="Switch Simulated Role"
           >
@@ -126,7 +140,7 @@ export function Header({
               {currentRoleConfig.icon}
             </div>
             <div className="text-left hidden xl:block">
-              <span className="text-[9px] text-zinc-500 font-mono font-bold block leading-none">ACTIVE ROLE</span>
+              <span className="text-[9px] text-neutral-500 font-mono font-bold block leading-none">ROLE</span>
               <span className="text-xs font-mono font-black text-black tracking-wide leading-tight">
                 {currentRoleConfig.label}
               </span>
@@ -137,7 +151,7 @@ export function Header({
           {isRoleMenuOpen && (
             <div className="absolute right-0 mt-2 w-60 bg-white border-3 border-black shadow-neo-lg z-50 p-2 text-black">
               <div className="px-2.5 py-1.5 bg-[#FAF7EE] border-2 border-black text-[10px] font-mono font-black text-black uppercase tracking-wider flex items-center justify-between mb-1.5">
-                <span>SIMULATE ROLE</span>
+                <span>SWITCH ROLE VIEW</span>
                 <Sparkles className="w-3.5 h-3.5 text-[#8B5CF6]" />
               </div>
               <div className="space-y-1">
@@ -151,7 +165,7 @@ export function Header({
                     className={`w-full flex items-center gap-2 px-2.5 py-2 font-mono text-xs font-black text-left transition-colors cursor-pointer border-2 ${
                       activeRole === opt.role
                         ? 'bg-[#00D06C] text-black border-black shadow-neo-sm'
-                        : 'bg-white text-zinc-800 border-transparent hover:border-black hover:bg-[#FAF7EE]'
+                        : 'bg-white text-neutral-800 border-transparent hover:border-black hover:bg-[#FAF7EE]'
                     }`}
                   >
                     <span className={`p-1 border border-black ${opt.color}`}>{opt.icon}</span>
@@ -159,6 +173,51 @@ export function Header({
                   </button>
                 ))}
               </div>
+            </div>
+          )}
+        </div>
+
+        {/* User Account Menu with Clear Logout */}
+        <div className="relative">
+          <button
+            onClick={() => {
+              setIsUserMenuOpen(!isUserMenuOpen);
+              setIsRoleMenuOpen(false);
+            }}
+            className="flex items-center gap-2 bg-[#FAF7EE] border-2 border-black hover:bg-white p-1.5 transition-all shadow-neo-sm cursor-pointer"
+            title="Account & Session"
+          >
+            <div className="w-6 h-6 rounded-full bg-[#38BDF8] border-2 border-black flex items-center justify-center font-mono font-black text-xs text-black">
+              {user.display_name?.charAt(0) || 'U'}
+            </div>
+            <div className="text-left hidden lg:block">
+              <span className="text-xs font-mono font-black text-black block leading-none max-w-[100px] truncate">
+                {user.display_name || user.email}
+              </span>
+            </div>
+            <ChevronDown className="w-3.5 h-3.5 text-black" />
+          </button>
+
+          {isUserMenuOpen && (
+            <div className="absolute right-0 mt-2 w-64 bg-white border-3 border-black shadow-neo-xl z-50 p-3 text-black font-mono">
+              <div className="p-2.5 bg-[#FAF7EE] border-2 border-black mb-3">
+                <div className="text-xs font-black text-black truncate">{user.display_name}</div>
+                <div className="text-[11px] text-neutral-600 truncate">{user.email}</div>
+                <div className="mt-1 inline-block bg-[#00D06C] text-black border border-black px-1.5 py-0.2 text-[9px] font-black uppercase">
+                  {user.role}
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  setIsUserMenuOpen(false);
+                  logout();
+                }}
+                className="w-full flex items-center justify-center gap-2 p-2.5 bg-[#FF6B9D] text-black font-black text-xs border-2 border-black hover:bg-[#ff4d88] transition-all shadow-neo-sm cursor-pointer"
+              >
+                <LogOut className="w-4 h-4 text-black" />
+                <span>LOGOUT FROM HRMS</span>
+              </button>
             </div>
           )}
         </div>

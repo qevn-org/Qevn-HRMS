@@ -43,7 +43,7 @@ import {
   initialUserProfiles,
 } from '@/lib/data/initialSeedData';
 
-const STORAGE_KEY_PREFIX = 'qevn_hrms_v1_';
+const STORAGE_KEY_PREFIX = 'qevn_hrms_v2_real_';
 
 interface DataStoreState {
   persons: Person[];

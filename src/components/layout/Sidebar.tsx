@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/context/AuthContext';
@@ -17,6 +18,8 @@ import {
   History,
   Settings,
   Layers,
+  LogOut,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -26,7 +29,7 @@ interface SidebarProps {
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
-  const { canViewAuditLogs, canManageSettings, isEmployeeViewOnly } = useAuth();
+  const { canViewAuditLogs, canManageSettings, isEmployeeViewOnly, user, logout } = useAuth();
 
   const primaryNavItems = [
     { href: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" />, color: 'hover:bg-[#00D06C]' },
@@ -68,11 +71,15 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="space-y-5">
           {/* Mobile brand header inside sidebar */}
           <div className="lg:hidden flex items-center justify-between pb-3 border-b-2 border-black">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-[#00D06C] border-2 border-black flex items-center justify-center font-mono font-black text-black text-xs shadow-neo-sm">
-                Q
-              </div>
-              <span className="font-mono font-black text-black text-xs">QEVN // HRMS</span>
+            <div className="flex items-center gap-2 p-1 bg-white border border-black shadow-neo-sm">
+              <Image
+                src="/qevn-logo-black.png"
+                alt="Qevn"
+                width={85}
+                height={24}
+                priority
+                className="h-5 w-auto object-contain"
+              />
             </div>
             <button onClick={onClose} className="text-black bg-white border border-black p-1 text-xs font-mono font-bold">
               [CLOSE]
@@ -82,8 +89,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           {/* Section: Operational Modules */}
           <div>
             <div className="px-2 pb-1.5 flex items-center justify-between">
-              <span className="text-[10px] font-mono font-black uppercase text-black tracking-wider bg-[#FFDE59] px-1.5 py-0.5 border border-black">
-                PHASE 1 // OPS
+              <span className="text-[10px] font-mono font-black uppercase text-black tracking-wider bg-[#FFDE59] px-1.5 py-0.5 border border-black shadow-neo-sm">
+                CORE OPS // PHASE 1
               </span>
             </div>
             <nav className="space-y-1.5 mt-2">
@@ -102,7 +109,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                         : `bg-white text-black border-black/30 hover:border-black ${item.color}`
                     )}
                   >
-                    <span className={cn(isActive ? 'text-black' : 'text-zinc-700 group-hover:text-black')}>
+                    <span className={cn(isActive ? 'text-black' : 'text-neutral-700 group-hover:text-black')}>
                       {item.icon}
                     </span>
                     <span>{item.label}</span>
@@ -116,7 +123,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           {(!isEmployeeViewOnly || canViewAuditLogs) && (
             <div>
               <div className="px-2 pb-1.5 flex items-center justify-between">
-                <span className="text-[10px] font-mono font-black uppercase text-white bg-[#8B5CF6] px-1.5 py-0.5 border border-black tracking-wider">
+                <span className="text-[10px] font-mono font-black uppercase text-white bg-[#8B5CF6] px-1.5 py-0.5 border border-black tracking-wider shadow-neo-sm">
                   GOVERNANCE & AUDIT
                 </span>
               </div>
@@ -135,7 +142,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                           : `bg-white text-black border-black/30 hover:border-black ${item.color}`
                       )}
                     >
-                      <span className={cn(isActive ? 'text-white' : 'text-zinc-700 group-hover:text-black')}>
+                      <span className={cn(isActive ? 'text-white' : 'text-neutral-700 group-hover:text-black')}>
                         {item.icon}
                       </span>
                       <span>{item.label}</span>
@@ -149,8 +156,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           {/* Section: Future Roadmap */}
           <div>
             <div className="px-2 pb-1.5 flex items-center justify-between">
-              <span className="text-[10px] font-mono font-black uppercase text-black bg-[#38BDF8] px-1.5 py-0.5 border border-black tracking-wider">
-                ROADMAP PREVIEWS
+              <span className="text-[10px] font-mono font-black uppercase text-black bg-[#38BDF8] px-1.5 py-0.5 border border-black tracking-wider shadow-neo-sm">
+                ROADMAP BLUEPRINT
               </span>
             </div>
             <nav className="space-y-1.5 mt-2">
@@ -169,7 +176,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     )}
                   >
                     <div className="flex items-center gap-2.5">
-                      <span className="text-zinc-700 group-hover:text-black">
+                      <span className="text-neutral-700 group-hover:text-black">
                         {item.icon}
                       </span>
                       <span>{item.label}</span>
@@ -186,20 +193,27 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
         </div>
 
-        {/* Retro Live Engine Sticker Card */}
+        {/* Bottom User Session & Logout Panel */}
         <div className="mt-4 pt-3 border-t-2 border-black space-y-2">
-          <div className="p-3 bg-white border-2 border-black shadow-neo-sm space-y-1.5">
+          <div className="p-3 bg-white border-2 border-black shadow-neo-sm space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono font-bold text-black uppercase">DATA ENGINE</span>
-              <span className="inline-flex items-center gap-1 text-[10px] font-mono font-black text-black bg-[#00D06C] px-1.5 py-0.2 border border-black">
+              <span className="text-[10px] font-mono font-black text-black uppercase">LOGGED IN AS</span>
+              <span className="inline-flex items-center gap-1 text-[9px] font-mono font-black text-black bg-[#00D06C] px-1.5 py-0.2 border border-black">
                 <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
                 ONLINE
               </span>
             </div>
-            <div className="flex items-center justify-between text-[10px] font-mono font-bold text-zinc-700">
-              <span>RLS & AUDIT</span>
-              <span className="text-[#8B5CF6] font-black">ACTIVE</span>
+            <div className="space-y-0.5">
+              <div className="font-mono text-xs font-black text-black truncate">{user.display_name}</div>
+              <div className="font-mono text-[10px] text-neutral-600 truncate">{user.email}</div>
             </div>
+            <button
+              onClick={logout}
+              className="w-full flex items-center justify-center gap-1.5 py-1.5 px-2 bg-[#FF6B9D] hover:bg-[#ff4d88] text-black font-mono font-black text-xs border-2 border-black transition-all shadow-neo-sm cursor-pointer"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>LOGOUT</span>
+            </button>
           </div>
         </div>
       </aside>

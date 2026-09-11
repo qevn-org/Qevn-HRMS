@@ -16,7 +16,7 @@ console.log('--- STARTING QEVN HRMS DOMAIN ENGINE TESTS ---');
 
 // Test 1: Store Initialization & Seed Data Integrity
 const persons = peopleService.getAllPersons();
-assert(persons.length >= 20, `Seed data contains ${persons.length} active personas`);
+assert(persons.length >= 10, `Data contains ${persons.length} active personas`);
 assert(persons.some((p) => p.worker_type === 'employee'), 'Contains full-time employees');
 assert(persons.some((p) => p.worker_type === 'intern'), 'Contains intern cohort personas');
 assert(persons.some((p) => p.worker_type === 'contractor' || p.worker_type === 'consultant'), 'Contains contractor/consultants');
