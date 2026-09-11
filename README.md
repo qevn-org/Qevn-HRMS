@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QEVN HRMS — People Operations Operating System
 
-## Getting Started
+> Production-ready Human Resource Management System for QEVN built with Next.js (App Router), TypeScript, Supabase PostgreSQL, and the QEVN Maximalist Design System.
 
-First, run the development server:
+---
 
+## ⚡ Features & Modules
+
+- **Command Center Dashboard**: Actionable clickable KPI cards linked directly to filtered views, Attention Required queue, Lifecycle Radar, and Department Headcount charts.
+- **People Directory**: Comprehensive master records for Employees, Interns, Contractors, and Consultants with multi-facet filtering, Add Person modal, and soft deactivation/archival.
+- **Master Person Profile**: 8 tabbed views covering Overview, Historical Assignment Changes, Attendance Matrix, Leave Balances, Document Vault & Checklist, Onboarding Tasks, HR Timeline & Actions, and Performance Snapshots.
+- **Time & Attendance**: Real-time daily tracking, bulk marking, monthly employee-by-day calendar matrix, and audited attendance correction with mandatory reasons.
+- **Leave & Holidays**: Automatic working days duration calculation (excluding weekends and company holidays), multi-state approval flow (Approve, Reject, Clarify), and **automatic attendance synchronization on approval**.
+- **Document Vault**: Private categorized storage (Joining, Employment, Internship, Performance, Exit), Required Document Compliance Matrix (% complete), and Expiring Documents Radar (&le; 45 days).
+- **Onboarding & Lifecycle Radar**: Joiner task checklists with assignees/due dates, Probation Radar with confirmation/extension workflows, Internship Milestones with certificate tracking, and Offboarding history.
+- **Enterprise Reports & Exports**: 6 Core Reports with live generation of CSV, styled Excel (`.xlsx`), and PDF reports.
+- **Spreadsheet Import Wizard**: 4-step migration wizard for CSV/XLSX legacy spreadsheets with smart column mapping, row validation engine, and batch commit.
+- **Compliance Audit Trail**: Immutable event logger with Before vs After JSON state diff viewer.
+- **Settings & Business Policies**: Configurable departments, designations, leave types, holidays, and document rules.
+- **Phases 2–4 Scalability Hub**: Pre-architected schema and feature flag matrix for ATS Recruitment, Asset Management, Performance KPIs, Payroll Handoff, and AI HR Assistant.
+
+---
+
+## 🛠 Tech Stack
+
+- **Frontend / Framework**: Next.js 16 (App Router, Turbopack) + React 19 + TypeScript
+- **Styling**: Tailwind CSS + Custom QEVN Maximalist Neo-Brutalist Theme
+- **Backend / Database**: Supabase PostgreSQL + Row Level Security (RLS)
+- **Auth & Storage**: Supabase Auth + Supabase Storage Private Buckets
+- **Data Export**: `xlsx` (SheetJS) + `jspdf` + `jspdf-autotable`
+- **Data Import / Parser**: `papaparse` + `xlsx`
+- **Charts & Visuals**: `recharts` + `lucide-react`
+- **Validation**: `zod` + `react-hook-form`
+- **Notifications**: `sonner`
+
+---
+
+## 🚀 Quick Start
+
+### 1. Clone & Install
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/qevn-org/Qevn-HRMS.git
+cd Qevn-HRMS
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment Variables
+Copy `.env.example` to `.env.local`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+DEFAULT_TIMEZONE=Asia/Kolkata
+STORAGE_MAX_FILE_SIZE_MB=10
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Run Migrations (Supabase)
+Apply SQL migrations located in `supabase/migrations/`:
+- `001_core_tables.sql`
+- `002_roles_permissions_rls.sql`
+- `003_functions_triggers.sql`
+- `006_future_phases_schema.sql`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Run Locally
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧪 Testing & Verification
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run automated domain test suite:
+```bash
+npx tsx src/lib/__tests__/hrms.test.ts
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run production build:
+```bash
+npm run build
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔒 Security & Privacy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- All confidential employee documents are stored in private Supabase Storage buckets.
+- Row Level Security (RLS) protects sensitive employee notes and audit records.
+- Soft deactivation preserves complete historical records without destructive loss.
+- Every state mutation generates an immutable audit record with actor, reason, and before/after diffs.

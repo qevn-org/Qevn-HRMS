@@ -1,26 +1,115 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #09090D;
+    --foreground: #F4F4F5;
+    --card: #121218;
+    --card-foreground: #FFFFFF;
+    --border: #22222E;
+    --qevn-lime: #CCFF00;
+    --qevn-violet: #8B5CF6;
+    --qevn-cyan: #06B6D4;
+    --qevn-rose: #F43F5E;
+    --qevn-amber: #F59E0B;
+  }
+
+  body {
+    background-color: #09090D;
+    color: #F4F4F5;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    overflow-x: hidden;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* --- QEVN MAXIMALIST UTILITIES --- */
+
+.shadow-neo {
+  box-shadow: 4px 4px 0px 0px #000000;
+}
+
+.shadow-neo-sm {
+  box-shadow: 2px 2px 0px 0px #000000;
+}
+
+.shadow-neo-lg {
+  box-shadow: 6px 6px 0px 0px #000000;
+}
+
+.shadow-neo-lime {
+  box-shadow: 4px 4px 0px 0px #CCFF00;
+}
+
+.shadow-neo-violet {
+  box-shadow: 4px 4px 0px 0px #8B5CF6;
+}
+
+.shadow-neo-cyan {
+  box-shadow: 4px 4px 0px 0px #06B6D4;
+}
+
+.shadow-neo-white {
+  box-shadow: 4px 4px 0px 0px #FFFFFF;
+}
+
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.bg-dots-pattern {
+  background-image: radial-gradient(rgba(204, 255, 0, 0.12) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.sticker-tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.6875rem;
+  padding: 0.15rem 0.5rem;
+  border: 1.5px solid currentColor;
+  box-shadow: 2px 2px 0px 0px currentColor;
+}
+
+.maximalist-card {
+  background-color: #121218;
+  border: 2px solid #272736;
+  box-shadow: 4px 4px 0px 0px #000000;
+  transition: all 0.15s ease-in-out;
+}
+
+.maximalist-card:hover {
+  border-color: #3B3B4F;
+  transform: translateY(-1px);
+}
+
+.maximalist-card-active {
+  border-color: #CCFF00;
+  box-shadow: 4px 4px 0px 0px #CCFF00;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #272736;
+  border-radius: 0px;
+  border: 1px solid #000;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #CCFF00;
 }
