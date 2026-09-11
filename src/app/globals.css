@@ -2,114 +2,191 @@
 
 @layer base {
   :root {
-    --background: #09090D;
-    --foreground: #F4F4F5;
-    --card: #121218;
-    --card-foreground: #FFFFFF;
-    --border: #22222E;
-    --qevn-lime: #CCFF00;
-    --qevn-violet: #8B5CF6;
-    --qevn-cyan: #06B6D4;
-    --qevn-rose: #F43F5E;
-    --qevn-amber: #F59E0B;
+    --canvas-bg: #FAF7EE;
+    --canvas-grid: #E5DECE;
+    --foreground: #000000;
+    --card: #FFFFFF;
+    --card-foreground: #000000;
+    --border: #000000;
+    --qevn-green: #00D06C;
+    --qevn-purple: #8B5CF6;
+    --qevn-pink: #FF6B9D;
+    --qevn-yellow: #FFDE59;
+    --qevn-cyan: #38BDF8;
+    --qevn-dark: #121218;
   }
 
   body {
-    background-color: #09090D;
-    color: #F4F4F5;
+    background-color: #FAF7EE;
+    color: #000000;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     overflow-x: hidden;
   }
 }
 
-/* --- QEVN MAXIMALIST UTILITIES --- */
+/* --- QEVN MAXIMALIST EDITORIAL UTILITIES --- */
 
+/* Graph paper background */
+.bg-notebook-grid {
+  background-color: #FAF7EE;
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+}
+
+.bg-dots-paper {
+  background-color: #FAF7EE;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+
+.bg-diagonal-stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #00D06C,
+    #00D06C 12px,
+    #000000 12px,
+    #000000 24px
+  );
+}
+
+.bg-diagonal-pink {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    #FF6B9D,
+    #FF6B9D 10px,
+    #FAF7EE 10px,
+    #FAF7EE 20px
+  );
+}
+
+/* Neo-Brutalist Hard Drop Shadows */
 .shadow-neo {
   box-shadow: 4px 4px 0px 0px #000000;
 }
 
 .shadow-neo-sm {
-  box-shadow: 2px 2px 0px 0px #000000;
+  box-shadow: 2.5px 2.5px 0px 0px #000000;
 }
 
 .shadow-neo-lg {
-  box-shadow: 6px 6px 0px 0px #000000;
+  box-shadow: 7px 7px 0px 0px #000000;
 }
 
-.shadow-neo-lime {
-  box-shadow: 4px 4px 0px 0px #CCFF00;
+.shadow-neo-xl {
+  box-shadow: 10px 10px 0px 0px #000000;
 }
 
-.shadow-neo-violet {
-  box-shadow: 4px 4px 0px 0px #8B5CF6;
+.shadow-neo-green {
+  box-shadow: 5px 5px 0px 0px #00D06C;
 }
 
-.shadow-neo-cyan {
-  box-shadow: 4px 4px 0px 0px #06B6D4;
+.shadow-neo-purple {
+  box-shadow: 5px 5px 0px 0px #8B5CF6;
 }
 
-.shadow-neo-white {
-  box-shadow: 4px 4px 0px 0px #FFFFFF;
+.shadow-neo-pink {
+  box-shadow: 5px 5px 0px 0px #FF6B9D;
 }
 
-.bg-grid-pattern {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+.shadow-neo-yellow {
+  box-shadow: 5px 5px 0px 0px #FFDE59;
 }
 
-.bg-dots-pattern {
-  background-image: radial-gradient(rgba(204, 255, 0, 0.12) 1px, transparent 1px);
-  background-size: 20px 20px;
+/* Retro Window Card Styles */
+.retro-window {
+  background-color: #FFFFFF;
+  border: 3px solid #000000;
+  box-shadow: 5px 5px 0px 0px #000000;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.retro-window:hover {
+  box-shadow: 7px 7px 0px 0px #000000;
+  transform: translate(-1px, -1px);
+}
+
+.retro-window-header {
+  border-bottom: 2px solid #000000;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Retro Window Buttons (_ O X) */
+.retro-window-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.retro-window-btn {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 900;
+  background-color: #FFFFFF;
+  color: #000000;
+  line-height: 1;
+  user-select: none;
+}
+
+/* Sticker Tags & Starbursts */
 .sticker-tag {
   display: inline-flex;
   align-items: center;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-weight: 800;
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.6875rem;
-  padding: 0.15rem 0.5rem;
-  border: 1.5px solid currentColor;
-  box-shadow: 2px 2px 0px 0px currentColor;
+  padding: 0.2rem 0.6rem;
+  border: 2px solid #000000;
+  box-shadow: 2.5px 2.5px 0px 0px #000000;
+  background-color: #FFDE59;
+  color: #000000;
 }
 
-.maximalist-card {
-  background-color: #121218;
-  border: 2px solid #272736;
-  box-shadow: 4px 4px 0px 0px #000000;
-  transition: all 0.15s ease-in-out;
-}
-
-.maximalist-card:hover {
-  border-color: #3B3B4F;
-  transform: translateY(-1px);
-}
-
-.maximalist-card-active {
-  border-color: #CCFF00;
-  box-shadow: 4px 4px 0px 0px #CCFF00;
+.sticker-burst {
+  clip-path: polygon(
+    50% 0%, 63% 15%, 82% 10%, 85% 30%, 100% 38%, 92% 56%, 100% 70%, 85% 78%, 80% 98%, 62% 90%, 50% 100%, 38% 90%, 20% 98%, 15% 78%, 0% 70%, 8% 56%, 0% 38%, 15% 30%, 18% 10%, 37% 15%
+  );
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090D;
+  background: #F2EBDC;
+  border-left: 2px solid #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #272736;
+  background: #000000;
   border-radius: 0px;
-  border: 1px solid #000;
+  border: 1px solid #FAF7EE;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #CCFF00;
+  background: #00D06C;
 }

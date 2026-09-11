@@ -7,9 +7,9 @@ export interface MetricCardProps {
   value: string | number;
   subValue?: string;
   badgeText?: string;
-  badgeVariant?: 'lime' | 'violet' | 'cyan' | 'rose' | 'amber' | 'neutral';
+  badgeVariant?: 'lime' | 'green' | 'violet' | 'purple' | 'cyan' | 'rose' | 'pink' | 'amber' | 'yellow' | 'neutral' | 'black' | 'white';
   icon?: React.ReactNode;
-  accentColor?: 'lime' | 'violet' | 'cyan' | 'rose' | 'amber';
+  accentColor?: 'lime' | 'green' | 'violet' | 'purple' | 'cyan' | 'rose' | 'pink' | 'amber' | 'yellow';
   onClick?: () => void;
   className?: string;
 }
@@ -21,66 +21,84 @@ export function MetricCard({
   badgeText,
   badgeVariant = 'lime',
   icon,
-  accentColor = 'lime',
+  accentColor = 'green',
   onClick,
   className,
 }: MetricCardProps) {
-  const accentBorders = {
-    lime: 'hover:border-[#CCFF00] hover:shadow-neo-lime',
-    violet: 'hover:border-[#8B5CF6] hover:shadow-neo-violet',
-    cyan: 'hover:border-[#06B6D4] hover:shadow-neo-cyan',
-    rose: 'hover:border-[#F43F5E] hover:shadow-neo-rose',
-    amber: 'hover:border-[#F59E0B] hover:shadow-neo-amber',
+  const headerColors = {
+    lime: 'bg-[#00D06C] text-black',
+    green: 'bg-[#00D06C] text-black',
+    violet: 'bg-[#8B5CF6] text-white',
+    purple: 'bg-[#8B5CF6] text-white',
+    cyan: 'bg-[#38BDF8] text-black',
+    rose: 'bg-[#FF4365] text-white',
+    pink: 'bg-[#FF6B9D] text-black',
+    amber: 'bg-[#FFDE59] text-black',
+    yellow: 'bg-[#FFDE59] text-black',
   };
 
   const badgeColors = {
-    lime: 'bg-[#CCFF00] text-black border-black',
+    lime: 'bg-[#00D06C] text-black border-black',
+    green: 'bg-[#00D06C] text-black border-black',
     violet: 'bg-[#8B5CF6] text-white border-black',
-    cyan: 'bg-[#06B6D4] text-black border-black',
-    rose: 'bg-[#F43F5E] text-white border-black',
-    amber: 'bg-[#F59E0B] text-black border-black',
-    neutral: 'bg-zinc-800 text-zinc-300 border-zinc-700',
+    purple: 'bg-[#8B5CF6] text-white border-black',
+    cyan: 'bg-[#38BDF8] text-black border-black',
+    rose: 'bg-[#FF4365] text-white border-black',
+    pink: 'bg-[#FF6B9D] text-black border-black',
+    amber: 'bg-[#FFDE59] text-black border-black',
+    yellow: 'bg-[#FFDE59] text-black border-black',
+    neutral: 'bg-[#F2EBDC] text-black border-black',
+    black: 'bg-black text-white border-black',
+    white: 'bg-white text-black border-black',
   };
 
   return (
     <div
       onClick={onClick}
       className={cn(
-        'group relative bg-[#121218] border-2 border-[#262636] p-4 transition-all duration-150 shadow-neo flex flex-col justify-between select-none',
-        onClick && 'cursor-pointer active:translate-x-0.5 active:translate-y-0.5 active:shadow-none',
-        accentBorders[accentColor],
+        'group relative bg-white border-3 border-black shadow-neo transition-all duration-150 flex flex-col justify-between select-none overflow-hidden',
+        onClick && 'cursor-pointer hover:shadow-neo-lg hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none',
         className
       )}
     >
-      {/* Top row: Label + Icon / Link */}
-      <div className="flex items-start justify-between gap-2">
-        <span className="font-mono text-xs font-bold uppercase tracking-wider text-zinc-400 group-hover:text-white transition-colors">
-          {label}
-        </span>
-        <div className="flex items-center gap-1.5">
-          {badgeText && (
-            <span className={cn('text-[10px] font-mono font-black uppercase px-1.5 py-0.5 border', badgeColors[badgeVariant])}>
-              {badgeText}
-            </span>
-          )}
-          {icon && <div className="text-zinc-400 group-hover:text-white transition-colors">{icon}</div>}
-          {onClick && <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500 group-hover:text-[#CCFF00] transition-colors" />}
+      {/* Retro Window Titlebar */}
+      <div className={cn('px-2.5 py-1.5 border-b-2 border-black flex items-center justify-between font-mono text-[11px] font-black uppercase tracking-wider', headerColors[accentColor])}>
+        <div className="flex items-center gap-1.5 truncate">
+          {icon && <span className="shrink-0">{icon}</span>}
+          <span className="truncate">{label}</span>
+        </div>
+        <div className="flex items-center gap-1 shrink-0 ml-1">
+          <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">_</span>
+          <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">□</span>
+          <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">✕</span>
         </div>
       </div>
 
-      {/* Big Value */}
-      <div className="mt-3 flex items-baseline gap-2">
-        <span className="font-mono text-3xl sm:text-4xl font-black tracking-tighter text-white group-hover:text-[#CCFF00] transition-colors">
-          {value}
-        </span>
-      </div>
+      {/* Main Metric Body */}
+      <div className="p-3.5 flex-1 flex flex-col justify-between bg-[#FCFAF5]">
+        <div className="flex items-start justify-between gap-2">
+          {/* Big Punchy Number */}
+          <div className="font-mono text-3xl sm:text-4xl font-black tracking-tight text-black group-hover:text-[#00D06C] transition-colors">
+            {value}
+          </div>
 
-      {/* Subtitle */}
-      {subValue && (
-        <div className="mt-2 pt-2 border-t border-zinc-800/80 flex items-center justify-between">
-          <span className="text-xs text-zinc-400 font-sans">{subValue}</span>
+          <div className="flex flex-col items-end gap-1">
+            {badgeText && (
+              <span className={cn('text-[10px] font-mono font-black uppercase px-1.5 py-0.5 border-2', badgeColors[badgeVariant])}>
+                {badgeText}
+              </span>
+            )}
+            {onClick && <ArrowUpRight className="w-4 h-4 text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />}
+          </div>
         </div>
-      )}
+
+        {/* Subtitle / Context */}
+        {subValue && (
+          <div className="mt-2.5 pt-2 border-t-2 border-black/10 flex items-center justify-between">
+            <span className="text-xs font-mono font-bold text-zinc-700">{subValue}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

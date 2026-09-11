@@ -18,19 +18,12 @@ import { toast } from 'sonner';
 import {
   Search,
   Plus,
-  Filter,
   Download,
   LayoutGrid,
   List,
   Eye,
   Archive,
-  UserCheck,
-  Mail,
-  Phone,
-  Building,
   User,
-  MapPin,
-  Sparkles,
 } from 'lucide-react';
 
 function PeopleDirectoryContent() {
@@ -196,66 +189,68 @@ function PeopleDirectoryContent() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#121218] border-2 border-[#262636] p-4 sm:p-5 shadow-neo">
+      {/* Top Header Window Banner */}
+      <div className="bg-white border-3 border-black p-5 sm:p-6 shadow-neo flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#CCFF00]" />
-            <span className="font-mono text-xs font-bold uppercase text-[#CCFF00] tracking-wider">
-              CORE HR RECORD ENGINE
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="sticker-tag bg-[#FF6B9D] text-black">
+              CORE TALENT INDEX
+            </span>
+            <span className="sticker-tag bg-[#00D06C] text-black">
+              {filteredPersons.length} PEOPLE
             </span>
           </div>
-          <h1 className="font-mono text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
-            PEOPLE DIRECTORY ({filteredPersons.length})
+          <h1 className="font-mono text-2xl sm:text-3xl font-black text-black tracking-tight mt-1 uppercase">
+            PEOPLE DIRECTORY
           </h1>
-          <p className="text-xs text-zinc-400 font-sans">
-            Employees, interns, contractors, and consultants with connected records.
+          <p className="text-xs sm:text-sm text-zinc-700 font-sans font-medium">
+            Employees, interns, contractors, and leadership master records.
           </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
           {canManagePeople && (
-            <Button variant="primary" size="sm" onClick={() => setIsAddModalOpen(true)}>
+            <Button variant="green" size="sm" onClick={() => setIsAddModalOpen(true)}>
               <Plus className="w-4 h-4 mr-1" /> Add Person
             </Button>
           )}
 
-          <div className="flex items-center border-2 border-[#262636] bg-[#0A0A0E]">
-            <Button
-              variant={viewMode === 'table' ? 'secondary' : 'ghost'}
-              size="sm"
+          <div className="flex items-center border-2 border-black bg-white shadow-neo-sm">
+            <button
               onClick={() => setViewMode('table')}
-              className="h-8 px-2.5"
+              className={`h-8 px-2.5 flex items-center justify-center font-mono font-bold text-xs cursor-pointer ${
+                viewMode === 'table' ? 'bg-[#FFDE59] text-black border-r-2 border-black' : 'text-black hover:bg-[#FAF7EE] border-r-2 border-black'
+              }`}
             >
               <List className="w-4 h-4" />
-            </Button>
-            <Button
-              variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
-              size="sm"
+            </button>
+            <button
               onClick={() => setViewMode('grid')}
-              className="h-8 px-2.5"
+              className={`h-8 px-2.5 flex items-center justify-center font-mono font-bold text-xs cursor-pointer ${
+                viewMode === 'grid' ? 'bg-[#FFDE59] text-black' : 'text-black hover:bg-[#FAF7EE]'
+              }`}
             >
               <LayoutGrid className="w-4 h-4" />
-            </Button>
+            </button>
           </div>
 
-          <Button variant="outline" size="sm" onClick={() => handleExportPeople('xlsx')}>
+          <Button variant="white" size="sm" onClick={() => handleExportPeople('xlsx')}>
             <Download className="w-4 h-4 mr-1" /> Export XLSX
           </Button>
         </div>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-[#121218] border-2 border-[#262636] p-4 shadow-neo flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+      <div className="bg-white border-3 border-black p-4 shadow-neo flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-black absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by name, ID, email, role, or team..."
-            className="w-full bg-[#0A0A0E] border-2 border-[#262636] focus:border-[#CCFF00] text-white pl-9 pr-3.5 py-1.5 font-mono text-xs focus:outline-hidden"
+            className="w-full bg-[#FCFAF5] border-2 border-black text-black pl-9 pr-3.5 py-1.5 font-mono text-xs focus:outline-hidden focus:bg-white shadow-[2px_2px_0px_#000]"
           />
         </div>
 
@@ -264,7 +259,7 @@ function PeopleDirectoryContent() {
           <select
             value={selectedWorkerType}
             onChange={(e) => setSelectedWorkerType(e.target.value)}
-            className="bg-[#0A0A0E] border-2 border-[#262636] text-white px-2.5 py-1.5 font-mono text-xs cursor-pointer focus:border-[#CCFF00] focus:outline-hidden"
+            className="bg-white border-2 border-black text-black px-2.5 py-1.5 font-mono text-xs font-bold cursor-pointer focus:outline-hidden shadow-[2px_2px_0px_#000]"
           >
             <option value="all">ALL WORKER TYPES</option>
             <option value="employee">EMPLOYEES (FT)</option>
@@ -276,7 +271,7 @@ function PeopleDirectoryContent() {
           <select
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="bg-[#0A0A0E] border-2 border-[#262636] text-white px-2.5 py-1.5 font-mono text-xs cursor-pointer focus:border-[#CCFF00] focus:outline-hidden"
+            className="bg-white border-2 border-black text-black px-2.5 py-1.5 font-mono text-xs font-bold cursor-pointer focus:outline-hidden shadow-[2px_2px_0px_#000]"
           >
             <option value="all">ALL DEPARTMENTS</option>
             {departments.map((d) => (
@@ -289,7 +284,7 @@ function PeopleDirectoryContent() {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="bg-[#0A0A0E] border-2 border-[#262636] text-white px-2.5 py-1.5 font-mono text-xs cursor-pointer focus:border-[#CCFF00] focus:outline-hidden"
+            className="bg-white border-2 border-black text-black px-2.5 py-1.5 font-mono text-xs font-bold cursor-pointer focus:outline-hidden shadow-[2px_2px_0px_#000]"
           >
             <option value="all">ALL STATUSES</option>
             <option value="active">ACTIVE</option>
@@ -303,9 +298,9 @@ function PeopleDirectoryContent() {
 
       {/* Main List: Data Table or Cards View */}
       {filteredPersons.length === 0 ? (
-        <div className="bg-[#121218] border-2 border-dashed border-[#262636] p-12 text-center">
-          <div className="font-mono text-base font-bold text-white uppercase">No records match your criteria</div>
-          <p className="text-xs text-zinc-400 mt-1">Try clearing filters or search queries.</p>
+        <div className="bg-white border-3 border-dashed border-black p-12 text-center shadow-neo">
+          <div className="font-mono text-base font-black text-black uppercase">No records match your criteria</div>
+          <p className="text-xs text-zinc-600 mt-1 font-sans font-medium">Try clearing filters or search queries.</p>
           <Button
             variant="outline"
             size="sm"
@@ -321,96 +316,108 @@ function PeopleDirectoryContent() {
           </Button>
         </div>
       ) : viewMode === 'table' ? (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo overflow-x-auto">
-          <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-[#171722] border-b-2 border-[#262636] text-zinc-400 uppercase tracking-wider">
-              <tr>
-                <th className="py-3 px-4">PERSON / CODE</th>
-                <th className="py-3 px-4">ROLE & DEPARTMENT</th>
-                <th className="py-3 px-4">WORKER TYPE</th>
-                <th className="py-3 px-4">MANAGER</th>
-                <th className="py-3 px-4">LOCATION</th>
-                <th className="py-3 px-4">STATUS</th>
-                <th className="py-3 px-4 text-right">ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#22222E]">
-              {filteredPersons.map((p) => {
-                const workerBadge = getWorkerTypeBadge(p.worker_type);
-                const statusBadge = getStatusBadge(p.current_status);
-                return (
-                  <tr key={p.id} className="hover:bg-[#1A1A26] transition-colors group">
-                    <td className="py-3 px-4">
-                      <Link href={`/people/${p.id}`} className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-zinc-800 border border-zinc-700 flex items-center justify-center font-bold text-xs text-[#CCFF00]">
-                          {p.full_name.slice(0, 2).toUpperCase()}
-                        </div>
-                        <div>
-                          <span className="font-bold text-white group-hover:text-[#CCFF00] transition-colors block">
-                            {p.full_name}
-                          </span>
-                          <span className="text-[10px] text-zinc-500 font-normal">
-                            {p.person_code} • {p.work_email}
-                          </span>
-                        </div>
-                      </Link>
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="text-white font-medium">{p.designation?.name || 'Staff'}</div>
-                      <div className="text-zinc-400 text-[11px] font-sans">{p.department?.name || 'General'}</div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className={`text-[10px] px-1.5 py-0.5 border ${workerBadge.color}`}>
-                        {workerBadge.label}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-zinc-300">
-                      {p.manager ? (
-                        <span className="flex items-center gap-1">
-                          <User className="w-3 h-3 text-zinc-500" />
-                          {p.manager.full_name}
-                        </span>
-                      ) : (
-                        <span className="text-zinc-600">—</span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">
-                      <div className="text-zinc-300">{p.work_location}</div>
-                      <div className="text-[10px] text-zinc-500 uppercase">{p.remote_status}</div>
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className={`text-[10px] px-2 py-0.5 border ${statusBadge.color}`}>
-                        {statusBadge.label}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <div className="flex items-center justify-end gap-1.5">
-                        <Link href={`/people/${p.id}`}>
-                          <Button variant="ghost" size="sm" className="h-7 px-2">
-                            <Eye className="w-3.5 h-3.5 mr-1" /> Profile
-                          </Button>
+        <div className="bg-white border-3 border-black shadow-neo overflow-hidden">
+          {/* Table Window Header */}
+          <div className="bg-[#00D06C] border-b-3 border-black px-4 py-2 flex items-center justify-between font-mono text-xs font-black uppercase text-black">
+            <span>EMPLOYEE RECORDS DATABASE</span>
+            <div className="flex items-center gap-1">
+              <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">_</span>
+              <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">□</span>
+              <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">✕</span>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs font-mono">
+              <thead className="bg-[#FAF7EE] border-b-2 border-black text-black uppercase tracking-wider font-black">
+                <tr>
+                  <th className="py-3 px-4">PERSON / CODE</th>
+                  <th className="py-3 px-4">ROLE & DEPARTMENT</th>
+                  <th className="py-3 px-4">WORKER TYPE</th>
+                  <th className="py-3 px-4">MANAGER</th>
+                  <th className="py-3 px-4">LOCATION</th>
+                  <th className="py-3 px-4">STATUS</th>
+                  <th className="py-3 px-4 text-right">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y-2 divide-black/10">
+                {filteredPersons.map((p) => {
+                  const workerBadge = getWorkerTypeBadge(p.worker_type);
+                  const statusBadge = getStatusBadge(p.current_status);
+                  return (
+                    <tr key={p.id} className="hover:bg-[#FFFDF5] transition-colors group">
+                      <td className="py-3.5 px-4">
+                        <Link href={`/people/${p.id}`} className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-[#FFDE59] border-2 border-black flex items-center justify-center font-black text-xs text-black shadow-neo-sm">
+                            {p.full_name.slice(0, 2).toUpperCase()}
+                          </div>
+                          <div>
+                            <span className="font-black text-black group-hover:text-[#00D06C] transition-colors block">
+                              {p.full_name}
+                            </span>
+                            <span className="text-[10px] text-zinc-600 font-bold">
+                              {p.person_code} • {p.work_email}
+                            </span>
+                          </div>
                         </Link>
-                        {canManagePeople && p.is_active && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedPersonForArchive(p);
-                              setIsArchiveModalOpen(true);
-                            }}
-                            className="h-7 px-2 text-zinc-500 hover:text-[#F43F5E]"
-                            title="Deactivate / Soft Archive"
-                          >
-                            <Archive className="w-3.5 h-3.5" />
-                          </Button>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="text-black font-black">{p.designation?.name || 'Staff'}</div>
+                        <div className="text-zinc-600 text-[11px] font-sans font-medium">{p.department?.name || 'General'}</div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className={`text-[10px] px-1.5 py-0.5 border-2 border-black font-black uppercase ${workerBadge.color}`}>
+                          {workerBadge.label}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 text-black font-bold">
+                        {p.manager ? (
+                          <span className="flex items-center gap-1">
+                            <User className="w-3 h-3 text-zinc-600" />
+                            {p.manager.full_name}
+                          </span>
+                        ) : (
+                          <span className="text-zinc-500">—</span>
                         )}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <div className="text-black font-bold">{p.work_location}</div>
+                        <div className="text-[10px] text-zinc-600 uppercase font-black">{p.remote_status}</div>
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className={`text-[10px] px-2 py-0.5 border-2 border-black font-black uppercase ${statusBadge.color}`}>
+                          {statusBadge.label}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <Link href={`/people/${p.id}`}>
+                            <Button variant="white" size="sm" className="h-7 px-2">
+                              <Eye className="w-3.5 h-3.5 mr-1" /> Profile
+                            </Button>
+                          </Link>
+                          {canManagePeople && p.is_active && (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => {
+                                setSelectedPersonForArchive(p);
+                                setIsArchiveModalOpen(true);
+                              }}
+                              className="h-7 px-2 text-zinc-600 hover:text-[#FF4365]"
+                              title="Deactivate / Soft Archive"
+                            >
+                              <Archive className="w-3.5 h-3.5" />
+                            </Button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       ) : (
         /* Grid Card View */
@@ -421,53 +428,53 @@ function PeopleDirectoryContent() {
             return (
               <div
                 key={p.id}
-                className="bg-[#121218] border-2 border-[#262636] hover:border-[#CCFF00] p-4 shadow-neo flex flex-col justify-between transition-all group"
+                className="bg-white border-3 border-black hover:shadow-neo-lg p-4 shadow-neo flex flex-col justify-between transition-all group"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-10 h-10 bg-zinc-800 border-2 border-black flex items-center justify-center font-mono font-black text-sm text-[#CCFF00] shadow-neo-sm">
+                      <div className="w-10 h-10 bg-[#FFDE59] border-2 border-black flex items-center justify-center font-mono font-black text-sm text-black shadow-neo-sm">
                         {p.full_name.slice(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <h3 className="font-mono text-sm font-bold text-white group-hover:text-[#CCFF00] transition-colors">
+                        <h3 className="font-mono text-sm font-black text-black group-hover:text-[#00D06C] transition-colors">
                           {p.full_name}
                         </h3>
-                        <span className="text-[11px] font-mono text-zinc-500">{p.person_code}</span>
+                        <span className="text-[11px] font-mono font-bold text-zinc-600">{p.person_code}</span>
                       </div>
                     </div>
-                    <span className={`text-[9px] px-1.5 py-0.5 border ${workerBadge.color}`}>
+                    <span className={`text-[9px] px-1.5 py-0.5 border-2 border-black font-black uppercase ${workerBadge.color}`}>
                       {workerBadge.label}
                     </span>
                   </div>
 
-                  <div className="mt-3.5 space-y-1.5 text-xs font-mono text-zinc-400 border-t border-zinc-800/80 pt-3">
+                  <div className="mt-3.5 space-y-1.5 text-xs font-mono text-zinc-700 border-t-2 border-black/10 pt-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-zinc-500">ROLE:</span>
-                      <span className="text-white font-bold">{p.designation?.name || 'Staff'}</span>
+                      <span className="text-zinc-500 font-bold">ROLE:</span>
+                      <span className="text-black font-black">{p.designation?.name || 'Staff'}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-zinc-500">DEPT:</span>
-                      <span>{p.department?.name || 'General'}</span>
+                      <span className="text-zinc-500 font-bold">DEPT:</span>
+                      <span className="font-bold">{p.department?.name || 'General'}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-zinc-500">MANAGER:</span>
-                      <span>{p.manager?.full_name || '—'}</span>
+                      <span className="text-zinc-500 font-bold">MANAGER:</span>
+                      <span className="font-bold">{p.manager?.full_name || '—'}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-zinc-500">JOINED:</span>
-                      <span>{formatDate(p.joining_date)}</span>
+                      <span className="text-zinc-500 font-bold">JOINED:</span>
+                      <span className="font-bold">{formatDate(p.joining_date)}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between">
-                  <span className={`text-[10px] px-2 py-0.5 border ${statusBadge.color}`}>
+                <div className="mt-4 pt-3 border-t-2 border-black/10 flex items-center justify-between">
+                  <span className={`text-[10px] px-2 py-0.5 border-2 border-black font-black uppercase ${statusBadge.color}`}>
                     {statusBadge.label}
                   </span>
                   <Link href={`/people/${p.id}`}>
                     <Button variant="outline" size="sm" className="h-7 text-xs">
-                      OPEN MASTER RECORD →
+                      OPEN PROFILE →
                     </Button>
                   </Link>
                 </div>
@@ -483,13 +490,14 @@ function PeopleDirectoryContent() {
         onClose={() => setIsAddModalOpen(false)}
         title="CREATE PERSON MASTER RECORD"
         subtitle="Registers full profile, assigns ID, provisions leave balances & onboarding checklist"
+        headerColor="green"
         maxWidth="3xl"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsAddModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsAddModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleAddPersonSubmit}>
+            <Button variant="green" size="sm" onClick={handleAddPersonSubmit}>
               CREATE & INITIALIZE RECORD
             </Button>
           </>
@@ -528,7 +536,7 @@ function PeopleDirectoryContent() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 border-t border-zinc-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 border-t-2 border-black/10">
             <Select
               label="Worker Type"
               value={formData.worker_type}
@@ -555,7 +563,7 @@ function PeopleDirectoryContent() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 border-t border-zinc-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 border-t-2 border-black/10">
             <Select
               label="Reporting Manager"
               value={formData.manager_person_id}
@@ -584,7 +592,7 @@ function PeopleDirectoryContent() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 border-t border-zinc-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 border-t-2 border-black/10">
             <Input
               label="Emergency Contact Name"
               placeholder="e.g. David Lin"
@@ -613,10 +621,11 @@ function PeopleDirectoryContent() {
         onClose={() => setIsArchiveModalOpen(false)}
         title="DEACTIVATE & ARCHIVE PERSON RECORD"
         subtitle="Preserves complete historical attendance, leave, documents, and audit history"
+        headerColor="pink"
         maxWidth="md"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsArchiveModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsArchiveModalOpen(false)}>
               CANCEL
             </Button>
             <Button variant="danger" size="sm" onClick={handleArchiveConfirm}>
@@ -626,7 +635,7 @@ function PeopleDirectoryContent() {
         }
       >
         <div className="space-y-3">
-          <div className="p-3 bg-rose-500/10 border border-rose-500/40 text-rose-300 font-mono text-xs">
+          <div className="p-3 bg-red-100 border-2 border-black text-black font-mono text-xs font-bold">
             WARNING: Archiving will mark <strong>{selectedPersonForArchive?.full_name}</strong> as inactive and
             revoke portal credentials. No past data will be erased.
           </div>
@@ -654,7 +663,7 @@ function PeopleDirectoryContent() {
 
 export default function PeopleDirectoryPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-zinc-500 font-mono text-sm">Loading People Directory...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-black font-mono text-sm font-bold">Loading People Directory...</div>}>
       <PeopleDirectoryContent />
     </Suspense>
   );

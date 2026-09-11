@@ -13,7 +13,6 @@ import {
   LeaveType,
   Holiday,
   Person,
-  LeaveRequestStatusType,
 } from '@/types/database';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
@@ -29,12 +28,9 @@ import {
   CheckCircle,
   XCircle,
   HelpCircle,
-  Clock,
   Sparkles,
   Download,
   Calendar as CalendarIcon,
-  AlertCircle,
-  User,
 } from 'lucide-react';
 
 function LeaveContent() {
@@ -245,27 +241,29 @@ function LeaveContent() {
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner */}
-      <div className="bg-[#121218] border-2 border-[#262636] p-4 sm:p-5 shadow-neo flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-3 border-black p-5 sm:p-6 shadow-neo flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#CCFF00]" />
-            <span className="font-mono text-xs font-bold uppercase text-[#CCFF00] tracking-wider">
-              TIME-OFF & APPROVAL ENGINE
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="sticker-tag bg-[#FF6B9D] text-black">
+              TIME-OFF & RADAR
+            </span>
+            <span className="sticker-tag bg-[#00D06C] text-black">
+              SYNCED WITH ATTENDANCE
             </span>
           </div>
-          <h1 className="font-mono text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+          <h1 className="font-mono text-2xl sm:text-3xl font-black text-black tracking-tight mt-1 uppercase">
             LEAVE MANAGEMENT & HOLIDAYS
           </h1>
-          <p className="text-xs text-zinc-400 font-sans">
+          <p className="text-xs sm:text-sm text-zinc-700 font-sans font-medium">
             Balance deductions, multi-state manager approvals, and automatic attendance synchronization.
           </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <Button variant="primary" size="sm" onClick={() => setIsRequestModalOpen(true)}>
+          <Button variant="green" size="sm" onClick={() => setIsRequestModalOpen(true)}>
             <Plus className="w-4 h-4 mr-1" /> Request Leave / WFH
           </Button>
-          <Button variant="outline" size="sm" onClick={() => handleExportLeave('xlsx')}>
+          <Button variant="white" size="sm" onClick={() => handleExportLeave('xlsx')}>
             <Download className="w-4 h-4 mr-1" /> Export XLSX
           </Button>
         </div>
@@ -278,12 +276,12 @@ function LeaveContent() {
       {activeTab === 'requests' && (
         <div className="space-y-4">
           {/* Filter Bar */}
-          <div className="bg-[#121218] border-2 border-[#262636] p-4 shadow-neo flex flex-wrap items-center justify-between gap-3">
+          <div className="bg-white border-3 border-black p-4 shadow-neo flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2 flex-wrap">
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-[#0A0A0E] border-2 border-[#262636] text-white px-2.5 py-1.5 font-mono text-xs cursor-pointer focus:border-[#CCFF00] focus:outline-hidden"
+                className="bg-white border-2 border-black text-black px-2.5 py-1.5 font-mono text-xs font-bold cursor-pointer focus:outline-hidden shadow-[2px_2px_0px_#000]"
               >
                 <option value="all">ALL APPROVAL STATUSES</option>
                 <option value="pending">PENDING APPROVAL</option>
@@ -295,7 +293,7 @@ function LeaveContent() {
               <select
                 value={leaveTypeFilter}
                 onChange={(e) => setLeaveTypeFilter(e.target.value)}
-                className="bg-[#0A0A0E] border-2 border-[#262636] text-white px-2.5 py-1.5 font-mono text-xs cursor-pointer focus:border-[#CCFF00] focus:outline-hidden"
+                className="bg-white border-2 border-black text-black px-2.5 py-1.5 font-mono text-xs font-bold cursor-pointer focus:outline-hidden shadow-[2px_2px_0px_#000]"
               >
                 <option value="all">ALL LEAVE TYPES</option>
                 {leaveTypes.map((lt) => (
@@ -306,129 +304,140 @@ function LeaveContent() {
               </select>
             </div>
 
-            <span className="text-xs font-mono text-zinc-400">
+            <span className="text-xs font-mono font-bold text-zinc-700">
               Showing {filteredRequests.length} of {leaveRequests.length} requests
             </span>
           </div>
 
-          {/* Requests Table */}
-          <div className="bg-[#121218] border-2 border-[#262636] shadow-neo overflow-x-auto">
-            <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#171722] border-b-2 border-[#262636] text-zinc-400 uppercase tracking-wider">
-                <tr>
-                  <th className="py-3 px-4">EMPLOYEE</th>
-                  <th className="py-3 px-4">LEAVE TYPE</th>
-                  <th className="py-3 px-4">DATES / DURATION</th>
-                  <th className="py-3 px-4">REASON & SUBMITTED</th>
-                  <th className="py-3 px-4">STATUS</th>
-                  <th className="py-3 px-4 text-right">MANAGER ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#22222E]">
-                {filteredRequests.length === 0 ? (
+          {/* Requests Table with Retro Window Header */}
+          <div className="bg-white border-3 border-black shadow-neo overflow-hidden">
+            <div className="bg-[#38BDF8] border-b-3 border-black px-4 py-2 flex items-center justify-between font-mono text-xs font-black uppercase text-black">
+              <span>SUBMITTED LEAVE REQUESTS & DECISIONS</span>
+              <div className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">_</span>
+                <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">□</span>
+                <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">✕</span>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs font-mono">
+                <thead className="bg-[#FAF7EE] border-b-2 border-black text-black uppercase font-black">
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-zinc-500">
-                      No leave requests matching filter criteria.
-                    </td>
+                    <th className="py-3 px-4">EMPLOYEE</th>
+                    <th className="py-3 px-4">LEAVE TYPE</th>
+                    <th className="py-3 px-4">DATES / DURATION</th>
+                    <th className="py-3 px-4">REASON & SUBMITTED</th>
+                    <th className="py-3 px-4">STATUS</th>
+                    <th className="py-3 px-4 text-right">MANAGER ACTIONS</th>
                   </tr>
-                ) : (
-                  filteredRequests.map((req) => {
-                    const statusStyle = getLeaveStatusStyle(req.status);
-                    return (
-                      <tr key={req.id} className="hover:bg-[#1A1A26] transition-colors">
-                        <td className="py-3 px-4">
-                          <div className="font-bold text-white">{req.person?.full_name}</div>
-                          <div className="text-[10px] text-zinc-500 font-normal">
-                            {req.person?.person_code} • {req.person?.department?.name}
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 font-bold text-white">
-                          {req.leave_type?.name}
-                        </td>
-                        <td className="py-3 px-4">
-                          <div className="text-white font-medium">
-                            {formatDate(req.start_date)} {req.start_date !== req.end_date && `to ${formatDate(req.end_date)}`}
-                          </div>
-                          <div className="text-[10px] text-[#CCFF00] font-bold">
-                            {req.duration_days} WORKING DAY(S)
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 max-w-xs">
-                          <div className="text-zinc-200 truncate">{req.reason}</div>
-                          <div className="text-[10px] text-zinc-500">
-                            Requested {formatDate(req.requested_at)}
-                          </div>
-                        </td>
-                        <td className="py-3 px-4">
-                          <span className={`text-[10px] px-2 py-0.5 border ${statusStyle.color} font-bold`}>
-                            {statusStyle.label}
-                          </span>
-                          {req.manager_comment && (
-                            <div className="text-[10px] text-zinc-400 mt-1 italic">
-                              Note: {req.manager_comment}
+                </thead>
+                <tbody className="divide-y-2 divide-black/10">
+                  {filteredRequests.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-8 text-center text-zinc-600 font-bold">
+                        No leave requests matching filter criteria.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredRequests.map((req) => {
+                      const statusStyle = getLeaveStatusStyle(req.status);
+                      return (
+                        <tr key={req.id} className="hover:bg-[#FFFDF5] transition-colors">
+                          <td className="py-3.5 px-4">
+                            <div className="font-black text-black">{req.person?.full_name}</div>
+                            <div className="text-[10px] text-zinc-600 font-bold">
+                              {req.person?.person_code} • {req.person?.department?.name}
                             </div>
-                          )}
-                        </td>
-                        <td className="py-3 px-4 text-right">
-                          {req.status === 'pending' || req.status === 'clarification_required' ? (
-                            <div className="flex items-center justify-end gap-1.5">
-                              {canApproveLeave && (
-                                <>
-                                  <Button
-                                    variant="primary"
-                                    size="sm"
-                                    onClick={() => openDecisionModal(req, 'approved')}
-                                    className="h-7 px-2"
-                                    title="Approve & Sync Attendance"
-                                  >
-                                    <CheckCircle className="w-3.5 h-3.5 mr-1" /> Approve
-                                  </Button>
-                                  <Button
-                                    variant="danger"
-                                    size="sm"
-                                    onClick={() => openDecisionModal(req, 'rejected')}
-                                    className="h-7 px-2"
-                                    title="Reject Request"
-                                  >
-                                    <XCircle className="w-3.5 h-3.5 mr-1" /> Reject
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => openDecisionModal(req, 'clarification_required')}
-                                    className="h-7 px-2"
-                                    title="Request Clarification"
-                                  >
-                                    <HelpCircle className="w-3.5 h-3.5" />
-                                  </Button>
-                                </>
-                              )}
+                          </td>
+                          <td className="py-3.5 px-4 font-black text-black">
+                            {req.leave_type?.name}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <div className="text-black font-bold">
+                              {formatDate(req.start_date)} {req.start_date !== req.end_date && `to ${formatDate(req.end_date)}`}
                             </div>
-                          ) : (
-                            <span className="text-zinc-500 text-[10px]">
-                              {req.decided_at ? `Decided ${formatDate(req.decided_at)}` : 'Completed'}
+                            <div className="text-[10px] text-black font-black bg-[#FFDE59] px-1.5 py-0.2 border border-black inline-block mt-0.5">
+                              {req.duration_days} WORKING DAY(S)
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4 max-w-xs">
+                            <div className="text-black font-medium truncate">{req.reason}</div>
+                            <div className="text-[10px] text-zinc-600 font-bold">
+                              Requested {formatDate(req.requested_at)}
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span className={`text-[10px] px-2 py-0.5 border-2 border-black font-black uppercase ${statusStyle.color}`}>
+                              {statusStyle.label}
                             </span>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+                            {req.manager_comment && (
+                              <div className="text-[10px] text-zinc-700 mt-1 italic font-medium">
+                                Note: {req.manager_comment}
+                              </div>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-4 text-right">
+                            {req.status === 'pending' || req.status === 'clarification_required' ? (
+                              <div className="flex items-center justify-end gap-1.5">
+                                {canApproveLeave && (
+                                  <>
+                                    <Button
+                                      variant="green"
+                                      size="sm"
+                                      onClick={() => openDecisionModal(req, 'approved')}
+                                      className="h-7 px-2"
+                                      title="Approve & Sync Attendance"
+                                    >
+                                      <CheckCircle className="w-3.5 h-3.5 mr-1" /> Approve
+                                    </Button>
+                                    <Button
+                                      variant="danger"
+                                      size="sm"
+                                      onClick={() => openDecisionModal(req, 'rejected')}
+                                      className="h-7 px-2"
+                                      title="Reject Request"
+                                    >
+                                      <XCircle className="w-3.5 h-3.5 mr-1" /> Reject
+                                    </Button>
+                                    <Button
+                                      variant="white"
+                                      size="sm"
+                                      onClick={() => openDecisionModal(req, 'clarification_required')}
+                                      className="h-7 px-2"
+                                      title="Request Clarification"
+                                    >
+                                      <HelpCircle className="w-3.5 h-3.5" />
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-zinc-600 text-[10px] font-bold">
+                                {req.decided_at ? `Decided ${formatDate(req.decided_at)}` : 'Completed'}
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
 
       {/* TAB 2: ANNUAL BALANCES */}
       {activeTab === 'balances' && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 EMPLOYEE LEAVE BALANCES (2026)
               </h3>
-              <p className="text-xs text-zinc-400">Allocated, used, and remaining annual balances</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Allocated, used, and remaining annual balances</p>
             </div>
           </div>
 
@@ -436,22 +445,22 @@ function LeaveContent() {
             {persons.map((p) => {
               const personBalances = leaveBalances.filter((b) => b.person_id === p.id);
               return (
-                <div key={p.id} className="p-4 bg-[#0D0D12] border border-[#262636] space-y-3">
-                  <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+                <div key={p.id} className="p-4 bg-[#FAF7EE] border-2 border-black shadow-neo-sm space-y-3">
+                  <div className="flex items-center justify-between border-b-2 border-black/10 pb-2">
                     <div>
-                      <div className="font-mono text-xs font-bold text-white">{p.full_name}</div>
-                      <div className="text-[10px] font-mono text-zinc-500">{p.person_code} • {p.department?.name}</div>
+                      <div className="font-mono text-xs font-black text-black">{p.full_name}</div>
+                      <div className="text-[10px] font-mono text-zinc-600 font-bold">{p.person_code} • {p.department?.name}</div>
                     </div>
                   </div>
 
                   <div className="space-y-2 font-mono text-xs">
                     {personBalances.length === 0 ? (
-                      <div className="text-zinc-500 text-[11px]">Standard default allocation</div>
+                      <div className="text-zinc-500 text-[11px] font-bold">Standard default allocation</div>
                     ) : (
                       personBalances.map((b) => (
                         <div key={b.id} className="flex items-center justify-between">
-                          <span className="text-zinc-400">{b.leave_type?.name}:</span>
-                          <span className="font-bold text-[#CCFF00]">
+                          <span className="text-zinc-700 font-bold">{b.leave_type?.name}:</span>
+                          <span className="font-black text-black bg-[#00D06C] px-1.5 py-0.2 border border-black">
                             {b.allocated - b.used} / {b.allocated} Left
                           </span>
                         </div>
@@ -467,16 +476,16 @@ function LeaveContent() {
 
       {/* TAB 3: HOLIDAYS */}
       {activeTab === 'holidays' && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 COMPANY HOLIDAY CALENDAR (2026)
               </h3>
-              <p className="text-xs text-zinc-400">Official recognized non-working days (excluded from absence counts)</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Official recognized non-working days (excluded from absence counts)</p>
             </div>
             {!isEmployeeViewOnly && (
-              <Button variant="primary" size="sm" onClick={() => setIsAddHolidayModalOpen(true)}>
+              <Button variant="green" size="sm" onClick={() => setIsAddHolidayModalOpen(true)}>
                 <Plus className="w-3.5 h-3.5 mr-1" /> ADD HOLIDAY
               </Button>
             )}
@@ -484,15 +493,15 @@ function LeaveContent() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {holidays.map((h) => (
-              <div key={h.id} className="p-3.5 bg-[#0D0D12] border border-[#262636] flex items-center justify-between">
+              <div key={h.id} className="p-3.5 bg-[#FAF7EE] border-2 border-black shadow-neo-sm flex items-center justify-between">
                 <div>
-                  <div className="font-mono text-xs font-bold text-white">{h.name}</div>
-                  <div className="text-[11px] font-mono text-zinc-400 mt-0.5">{formatDate(h.holiday_date)}</div>
+                  <div className="font-mono text-xs font-black text-black">{h.name}</div>
+                  <div className="text-[11px] font-mono text-zinc-600 font-bold mt-0.5">{formatDate(h.holiday_date)}</div>
                 </div>
                 {h.is_optional ? (
                   <Badge variant="amber">OPTIONAL</Badge>
                 ) : (
-                  <Badge variant="lime">MANDATORY</Badge>
+                  <Badge variant="green">MANDATORY</Badge>
                 )}
               </div>
             ))}
@@ -506,13 +515,14 @@ function LeaveContent() {
         onClose={() => setIsRequestModalOpen(false)}
         title="SUBMIT LEAVE / WFH REQUEST"
         subtitle="Calculates working days automatically excluding weekends and holidays"
+        headerColor="green"
         maxWidth="lg"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsRequestModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsRequestModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleSubmitLeaveRequest}>
+            <Button variant="green" size="sm" onClick={handleSubmitLeaveRequest}>
               SUBMIT REQUEST ({calculatedDuration} DAYS)
             </Button>
           </>
@@ -550,17 +560,17 @@ function LeaveContent() {
             />
           </div>
 
-          <div className="p-3 bg-[#0D0D12] border border-[#262636] flex items-center justify-between">
+          <div className="p-3 bg-[#FAF7EE] border-2 border-black shadow-neo-sm flex items-center justify-between">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 checked={requestFormData.is_half_day}
                 onChange={(e) => setRequestFormData({ ...requestFormData, is_half_day: e.target.checked })}
-                className="w-4 h-4 accent-[#CCFF00]"
+                className="w-4 h-4 accent-black"
               />
-              <span className="text-white font-bold">Apply as Half Day (0.5 Days)</span>
+              <span className="text-black font-black">Apply as Half Day (0.5 Days)</span>
             </label>
-            <span className="text-[#CCFF00] font-bold text-sm">
+            <span className="text-black font-black bg-[#00D06C] px-2 py-0.5 border border-black text-xs">
               DURATION: {calculatedDuration} DAY(S)
             </span>
           </div>
@@ -575,7 +585,7 @@ function LeaveContent() {
         </form>
       </Modal>
 
-      {/* MODAL 2: DECISION MODAL (APPROVE / REJECT / CLARIFY) */}
+      {/* MODAL 2: DECISION MODAL */}
       <Modal
         isOpen={isDecisionModalOpen}
         onClose={() => setIsDecisionModalOpen(false)}
@@ -585,14 +595,15 @@ function LeaveContent() {
             ? 'Approving automatically synchronizes attendance records and deducts leave balance.'
             : 'Record decision notes sent to employee.'
         }
+        headerColor={decisionTarget?.decision === 'approved' ? 'green' : decisionTarget?.decision === 'rejected' ? 'pink' : 'purple'}
         maxWidth="md"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsDecisionModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsDecisionModalOpen(false)}>
               CANCEL
             </Button>
             <Button
-              variant={decisionTarget?.decision === 'approved' ? 'primary' : decisionTarget?.decision === 'rejected' ? 'danger' : 'outline'}
+              variant={decisionTarget?.decision === 'approved' ? 'green' : decisionTarget?.decision === 'rejected' ? 'danger' : 'white'}
               size="sm"
               onClick={handleDecisionSubmit}
             >
@@ -602,18 +613,18 @@ function LeaveContent() {
         }
       >
         <form onSubmit={handleDecisionSubmit} className="space-y-4 font-mono text-xs">
-          <div className="p-3 bg-[#0D0D12] border border-[#262636] space-y-1">
-            <div className="text-zinc-400">
-              EMPLOYEE: <span className="text-white font-bold">{decisionTarget?.request.person?.full_name}</span>
+          <div className="p-3 bg-[#FAF7EE] border-2 border-black space-y-1">
+            <div className="text-zinc-600 font-bold">
+              EMPLOYEE: <span className="text-black font-black">{decisionTarget?.request.person?.full_name}</span>
             </div>
-            <div className="text-zinc-400">
-              DATES: <span className="text-white font-bold">{decisionTarget?.request.start_date} to {decisionTarget?.request.end_date}</span>
+            <div className="text-zinc-600 font-bold">
+              DATES: <span className="text-black font-black">{decisionTarget?.request.start_date} to {decisionTarget?.request.end_date}</span>
             </div>
-            <div className="text-zinc-400">
-              DURATION: <span className="text-[#CCFF00] font-bold">{decisionTarget?.request.duration_days} Day(s)</span>
+            <div className="text-zinc-600 font-bold">
+              DURATION: <span className="text-black font-black bg-[#FFDE59] px-1 border border-black">{decisionTarget?.request.duration_days} Day(s)</span>
             </div>
-            <div className="text-zinc-400">
-              REASON: <span className="text-white">{decisionTarget?.request.reason}</span>
+            <div className="text-zinc-600 font-bold">
+              REASON: <span className="text-black font-medium">{decisionTarget?.request.reason}</span>
             </div>
           </div>
 
@@ -632,13 +643,14 @@ function LeaveContent() {
         onClose={() => setIsAddHolidayModalOpen(false)}
         title="ADD COMPANY HOLIDAY"
         subtitle="Registers official holiday on attendance calendars"
+        headerColor="yellow"
         maxWidth="md"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsAddHolidayModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsAddHolidayModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleAddHolidaySubmit}>
+            <Button variant="green" size="sm" onClick={handleAddHolidaySubmit}>
               SAVE HOLIDAY
             </Button>
           </>
@@ -664,9 +676,9 @@ function LeaveContent() {
               type="checkbox"
               checked={holidayFormData.is_optional}
               onChange={(e) => setHolidayFormData({ ...holidayFormData, is_optional: e.target.checked })}
-              className="w-4 h-4 accent-[#CCFF00]"
+              className="w-4 h-4 accent-black"
             />
-            <span className="text-white">Optional / Floating Holiday</span>
+            <span className="text-black font-bold">Optional / Floating Holiday</span>
           </label>
         </form>
       </Modal>
@@ -676,7 +688,7 @@ function LeaveContent() {
 
 export default function LeavePage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-zinc-500 font-mono text-sm">Loading Leave Management...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-black font-mono text-sm font-bold">Loading Leave Management...</div>}>
       <LeaveContent />
     </Suspense>
   );

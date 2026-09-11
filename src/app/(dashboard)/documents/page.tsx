@@ -23,11 +23,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   Lock,
-  Filter,
-  Eye,
-  FileCheck,
   Clock,
-  Sparkles,
 } from 'lucide-react';
 
 function DocumentVaultContent() {
@@ -154,24 +150,26 @@ function DocumentVaultContent() {
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner */}
-      <div className="bg-[#121218] border-2 border-[#262636] p-4 sm:p-5 shadow-neo flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-3 border-black p-5 sm:p-6 shadow-neo flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#CCFF00]" />
-            <span className="font-mono text-xs font-bold uppercase text-[#CCFF00] tracking-wider">
-              CONFIDENTIAL HR STORAGE & COMPLIANCE
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="sticker-tag bg-[#38BDF8] text-black">
+              ENCRYPTED HR VAULT
+            </span>
+            <span className="sticker-tag bg-[#00D06C] text-black">
+              COMPLIANCE VERIFIED
             </span>
           </div>
-          <h1 className="font-mono text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+          <h1 className="font-mono text-2xl sm:text-3xl font-black text-black tracking-tight mt-1 uppercase">
             DOCUMENT VAULT & COMPLIANCE
           </h1>
-          <p className="text-xs text-zinc-400 font-sans">
-            Encrypted private file storage, mandatory checklist verification, and expiry alerts.
+          <p className="text-xs sm:text-sm text-zinc-700 font-sans font-medium">
+            Confidential file storage, mandatory checklist verification, and proactive expiry radar.
           </p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <Button variant="primary" size="sm" onClick={() => setIsUploadModalOpen(true)}>
+          <Button variant="green" size="sm" onClick={() => setIsUploadModalOpen(true)}>
             <Plus className="w-4 h-4 mr-1" /> Upload Document
           </Button>
         </div>
@@ -184,15 +182,15 @@ function DocumentVaultContent() {
       {activeTab === 'vault' && (
         <div className="space-y-4">
           {/* Filters */}
-          <div className="bg-[#121218] border-2 border-[#262636] p-4 shadow-neo flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div className="bg-white border-3 border-black p-4 shadow-neo flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
             <div className="relative flex-1">
-              <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-black absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search documents by employee, title, filename..."
-                className="w-full bg-[#0A0A0E] border-2 border-[#262636] focus:border-[#CCFF00] text-white pl-9 pr-3.5 py-1.5 font-mono text-xs focus:outline-hidden"
+                className="w-full bg-[#FCFAF5] border-2 border-black text-black pl-9 pr-3.5 py-1.5 font-mono text-xs focus:outline-hidden shadow-[2px_2px_0px_#000]"
               />
             </div>
 
@@ -200,7 +198,7 @@ function DocumentVaultContent() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="bg-[#0A0A0E] border-2 border-[#262636] text-white px-2.5 py-1.5 font-mono text-xs cursor-pointer focus:border-[#CCFF00] focus:outline-hidden"
+                className="bg-white border-2 border-black text-black px-2.5 py-1.5 font-mono text-xs font-bold cursor-pointer focus:outline-hidden shadow-[2px_2px_0px_#000]"
               >
                 <option value="all">ALL CATEGORIES</option>
                 <option value="Joining">JOINING (ID, RESUME)</option>
@@ -214,7 +212,7 @@ function DocumentVaultContent() {
               <select
                 value={personFilter}
                 onChange={(e) => setPersonFilter(e.target.value)}
-                className="bg-[#0A0A0E] border-2 border-[#262636] text-white px-2.5 py-1.5 font-mono text-xs cursor-pointer focus:border-[#CCFF00] focus:outline-hidden"
+                className="bg-white border-2 border-black text-black px-2.5 py-1.5 font-mono text-xs font-bold cursor-pointer focus:outline-hidden shadow-[2px_2px_0px_#000]"
               >
                 <option value="all">ALL EMPLOYEES</option>
                 {persons.map((p) => (
@@ -229,54 +227,54 @@ function DocumentVaultContent() {
           {/* Grid of Documents */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredDocs.length === 0 ? (
-              <div className="col-span-full bg-[#121218] border-2 border-dashed border-[#262636] p-12 text-center">
-                <div className="font-mono text-base font-bold text-white uppercase">No documents found</div>
-                <p className="text-xs text-zinc-400 mt-1">Try broadening your search or upload a new file.</p>
+              <div className="col-span-full bg-white border-3 border-dashed border-black p-12 text-center shadow-neo">
+                <div className="font-mono text-base font-black text-black uppercase">No documents found</div>
+                <p className="text-xs text-zinc-600 mt-1 font-sans font-medium">Try broadening your search or upload a new file.</p>
               </div>
             ) : (
               filteredDocs.map((doc) => (
                 <div
                   key={doc.id}
-                  className="bg-[#121218] border-2 border-[#262636] hover:border-[#CCFF00] p-4 shadow-neo flex flex-col justify-between transition-all group"
+                  className="bg-white border-3 border-black hover:shadow-neo-lg p-4 shadow-neo flex flex-col justify-between transition-all group"
                 >
                   <div>
                     <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <div className="p-2 bg-[#0D0D12] border border-zinc-700 text-[#CCFF00]">
+                      <div className="flex items-center gap-2 truncate">
+                        <div className="p-2 bg-[#FFDE59] border-2 border-black text-black shadow-neo-sm">
                           <FileText className="w-5 h-5" />
                         </div>
                         <div className="truncate">
-                          <h4 className="font-mono text-xs font-bold text-white group-hover:text-[#CCFF00] transition-colors truncate">
+                          <h4 className="font-mono text-xs font-black text-black group-hover:text-[#00D06C] transition-colors truncate">
                             {doc.document_type}
                           </h4>
-                          <span className="text-[10px] font-mono text-zinc-400">{doc.person_name}</span>
+                          <span className="text-[10px] font-mono font-bold text-zinc-600">{doc.person_name}</span>
                         </div>
                       </div>
                       <Badge variant="cyan">{doc.category}</Badge>
                     </div>
 
-                    <div className="mt-3.5 space-y-1 text-xs font-mono text-zinc-400 border-t border-zinc-800 pt-2.5">
-                      <div className="truncate text-zinc-300">{doc.original_file_name}</div>
-                      <div className="flex items-center justify-between text-[10px] text-zinc-500">
+                    <div className="mt-3.5 space-y-1 text-xs font-mono text-zinc-700 border-t-2 border-black/10 pt-2.5 font-bold">
+                      <div className="truncate text-black">{doc.original_file_name}</div>
+                      <div className="flex items-center justify-between text-[10px] text-zinc-600">
                         <span>ISSUED: {doc.issue_date ? formatDate(doc.issue_date) : '—'}</span>
                         <span>EXPIRY: {doc.expiry_date ? formatDate(doc.expiry_date) : 'N/A'}</span>
                       </div>
-                      <div className="flex items-center justify-between text-[10px] text-zinc-500 pt-1">
+                      <div className="flex items-center justify-between text-[10px] text-zinc-600 pt-1">
                         <span className="flex items-center gap-1">
-                          <Lock className="w-3 h-3 text-zinc-600" /> {doc.visibility_level.toUpperCase()}
+                          <Lock className="w-3 h-3 text-black" /> {doc.visibility_level.toUpperCase()}
                         </span>
                         <span>BY: {doc.uploaded_by}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-zinc-800 flex items-center justify-between">
-                    <span className="text-[10px] font-mono text-zinc-500">VERSION {doc.version}</span>
+                  <div className="mt-4 pt-3 border-t-2 border-black/10 flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-black text-zinc-600">VERSION {doc.version}</span>
                     <a
                       href={documentService.generateSignedDownloadUrl(doc.id)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 font-mono text-xs font-bold text-[#CCFF00] hover:underline"
+                      className="inline-flex items-center gap-1 font-mono text-xs font-black text-black bg-[#00D06C] px-2 py-0.5 border border-black hover:bg-[#05DF72]"
                     >
                       <Download className="w-3.5 h-3.5" /> DOWNLOAD
                     </a>
@@ -290,13 +288,13 @@ function DocumentVaultContent() {
 
       {/* TAB 2: COMPLIANCE CHECKLIST */}
       {activeTab === 'compliance' && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 EMPLOYEE DOCUMENT COMPLIANCE MATRIX
               </h3>
-              <p className="text-xs text-zinc-400">Verifies required joining & employment documentation completeness</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Verifies required joining & employment documentation completeness</p>
             </div>
           </div>
 
@@ -304,49 +302,49 @@ function DocumentVaultContent() {
             {complianceList.map((comp) => (
               <div
                 key={comp.person.id}
-                className={`p-4 border-2 transition-all ${
+                className={`p-4 border-3 border-black transition-all ${
                   comp.isComplete
-                    ? 'bg-[#0D0D12] border-emerald-500/40'
-                    : 'bg-[#171722] border-rose-500/50 shadow-neo-sm'
+                    ? 'bg-[#E8FBF0]'
+                    : 'bg-[#FFF0F3] shadow-neo-sm'
                 }`}
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <div className="font-mono text-sm font-bold text-white flex items-center gap-2">
+                    <div className="font-mono text-sm font-black text-black flex items-center gap-2">
                       <span>{comp.person.full_name}</span>
-                      <span className="text-xs text-zinc-400">[{comp.person.person_code}]</span>
+                      <span className="text-xs text-zinc-600 font-bold">[{comp.person.person_code}]</span>
                     </div>
-                    <div className="text-xs font-mono text-zinc-400">
+                    <div className="text-xs font-mono text-zinc-600 font-bold">
                       {comp.person.designation?.name} • {comp.person.department?.name}
                     </div>
                   </div>
-                  <Badge variant={comp.isComplete ? 'lime' : 'rose'}>
+                  <Badge variant={comp.isComplete ? 'green' : 'rose'}>
                     {comp.completionPercentage}% COMPLETE
                   </Badge>
                 </div>
 
                 {/* Progress bar */}
-                <div className="mt-3 w-full bg-zinc-800 h-2 border border-zinc-700">
+                <div className="mt-3 w-full bg-white h-2.5 border-2 border-black">
                   <div
-                    className={`h-full ${comp.isComplete ? 'bg-[#CCFF00]' : 'bg-[#F43F5E]'}`}
+                    className={`h-full ${comp.isComplete ? 'bg-[#00D06C]' : 'bg-[#FF4365]'}`}
                     style={{ width: `${comp.completionPercentage}%` }}
                   />
                 </div>
 
                 {/* Missing checklist items */}
-                <div className="mt-3 pt-2 border-t border-zinc-800/80 space-y-1 font-mono text-xs">
+                <div className="mt-3 pt-2 border-t-2 border-black/10 space-y-1 font-mono text-xs">
                   {comp.missingRequirements.length === 0 ? (
-                    <div className="text-emerald-400 text-[11px] flex items-center gap-1">
-                      <CheckCircle2 className="w-3.5 h-3.5" /> All required documents verified and stored.
+                    <div className="text-black font-black text-[11px] flex items-center gap-1">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#00D06C]" /> All required documents verified and stored.
                     </div>
                   ) : (
                     <>
-                      <span className="text-[10px] text-rose-400 uppercase font-bold block">
+                      <span className="text-[10px] text-[#FF4365] uppercase font-black block">
                         MISSING REQUIRED DOCUMENTS ({comp.missingRequirements.length}):
                       </span>
                       {comp.missingRequirements.map((req) => (
-                        <div key={req.id} className="text-rose-300 text-[11px] flex items-center gap-1.5 pl-1">
-                          <AlertTriangle className="w-3 h-3 text-rose-400 shrink-0" />
+                        <div key={req.id} className="text-black font-bold text-[11px] flex items-center gap-1.5 pl-1">
+                          <AlertTriangle className="w-3 h-3 text-[#FF4365] shrink-0" />
                           <span>{req.document_type} ({req.category})</span>
                         </div>
                       ))}
@@ -361,47 +359,47 @@ function DocumentVaultContent() {
 
       {/* TAB 3: EXPIRING RADAR */}
       {activeTab === 'expiring' && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 EXPIRING DOCUMENTS RADAR (&le; 45 DAYS)
               </h3>
-              <p className="text-xs text-zinc-400">Identifies passports, visas, consultant agreements, or IDs needing renewal</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Identifies passports, visas, consultant agreements, or IDs needing renewal</p>
             </div>
           </div>
 
           <div className="space-y-3">
             {expiringQueue.length === 0 ? (
-              <div className="p-8 text-center text-zinc-500 font-mono text-xs">
+              <div className="p-8 text-center text-zinc-600 font-mono text-xs font-bold bg-[#FAF7EE] border-2 border-black">
                 All stored document expiry dates are current and valid.
               </div>
             ) : (
               expiringQueue.map(({ document: doc, daysRemaining }) => (
                 <div
                   key={doc.id}
-                  className="p-4 bg-[#0D0D12] border-2 border-[#F43F5E] shadow-neo-sm flex items-center justify-between gap-4"
+                  className="p-4 bg-[#FFF0F3] border-3 border-black shadow-neo-sm flex items-center justify-between gap-4"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-rose-500/20 border border-[#F43F5E] text-[#F43F5E]">
+                    <div className="p-2 bg-[#FF4365] border-2 border-black text-white">
                       <AlertTriangle className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="font-mono text-xs font-bold text-white flex items-center gap-2">
+                      <div className="font-mono text-xs font-black text-black flex items-center gap-2">
                         <span>{doc.document_type}</span>
-                        <span className="text-zinc-400">— {doc.person_name}</span>
+                        <span className="text-zinc-600">— {doc.person_name}</span>
                       </div>
-                      <div className="text-xs text-zinc-400 font-sans mt-0.5">
+                      <div className="text-xs text-zinc-700 font-sans font-medium mt-0.5">
                         File: {doc.original_file_name} • Category: {doc.category}
                       </div>
-                      <div className="text-xs font-mono text-[#F43F5E] font-bold mt-1">
+                      <div className="text-xs font-mono text-[#FF4365] font-black mt-1">
                         Expires on {formatDate(doc.expiry_date)} ({daysRemaining} days remaining!)
                       </div>
                     </div>
                   </div>
 
                   <Button
-                    variant="primary"
+                    variant="green"
                     size="sm"
                     onClick={() => {
                       setUploadFormData((prev) => ({
@@ -428,13 +426,14 @@ function DocumentVaultContent() {
         onClose={() => setIsUploadModalOpen(false)}
         title="UPLOAD DOCUMENT TO VAULT"
         subtitle="Role-based access controls who can view and download"
+        headerColor="purple"
         maxWidth="lg"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsUploadModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsUploadModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleUploadSubmit}>
+            <Button variant="purple" size="sm" onClick={handleUploadSubmit}>
               STORE IN VAULT
             </Button>
           </>
@@ -517,7 +516,7 @@ function DocumentVaultContent() {
 
 export default function DocumentVaultPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-zinc-500 font-mono text-sm">Loading Document Vault...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-black font-mono text-sm font-bold">Loading Document Vault...</div>}>
       <DocumentVaultContent />
     </Suspense>
   );

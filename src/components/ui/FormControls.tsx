@@ -10,25 +10,25 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, helperText, id, ...props }, ref) => {
     return (
-      <div className="w-full space-y-1.5">
+      <div className="w-full space-y-1">
         {label && (
-          <label htmlFor={id} className="block font-mono text-xs font-bold uppercase tracking-wider text-zinc-300">
+          <label htmlFor={id} className="block font-mono text-xs font-black uppercase tracking-wider text-black">
             {label}
-            {props.required && <span className="text-[#F43F5E] ml-1">*</span>}
+            {props.required && <span className="text-[#FF4365] ml-1">*</span>}
           </label>
         )}
         <input
           ref={ref}
           id={id}
           className={cn(
-            'w-full bg-[#0A0A0E] border-2 border-[#262636] text-white px-3.5 py-2 font-mono text-sm placeholder:text-zinc-600 focus:outline-hidden focus:border-[#CCFF00] focus:shadow-neo-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed',
-            error ? 'border-[#F43F5E] focus:border-[#F43F5E]' : '',
+            'w-full bg-white border-2 border-black text-black px-3.5 py-2 font-mono text-sm placeholder:text-zinc-500 focus:outline-hidden focus:bg-[#FFFDF5] focus:shadow-neo-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[2px_2px_0px_#000]',
+            error ? 'border-[#FF4365] bg-red-50 focus:border-[#FF4365]' : '',
             className
           )}
           {...props}
         />
-        {error && <p className="text-xs text-[#F43F5E] font-mono">{error}</p>}
-        {helperText && !error && <p className="text-xs text-zinc-500 font-sans">{helperText}</p>}
+        {error && <p className="text-xs text-[#FF4365] font-mono font-bold">{error}</p>}
+        {helperText && !error && <p className="text-xs text-zinc-600 font-sans font-medium">{helperText}</p>}
       </div>
     );
   }
@@ -44,11 +44,11 @@ export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, helperText, id, rows = 3, ...props }, ref) => {
     return (
-      <div className="w-full space-y-1.5">
+      <div className="w-full space-y-1">
         {label && (
-          <label htmlFor={id} className="block font-mono text-xs font-bold uppercase tracking-wider text-zinc-300">
+          <label htmlFor={id} className="block font-mono text-xs font-black uppercase tracking-wider text-black">
             {label}
-            {props.required && <span className="text-[#F43F5E] ml-1">*</span>}
+            {props.required && <span className="text-[#FF4365] ml-1">*</span>}
           </label>
         )}
         <textarea
@@ -56,14 +56,14 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           id={id}
           rows={rows}
           className={cn(
-            'w-full bg-[#0A0A0E] border-2 border-[#262636] text-white p-3 font-mono text-sm placeholder:text-zinc-600 focus:outline-hidden focus:border-[#CCFF00] focus:shadow-neo-sm transition-all disabled:opacity-50',
-            error ? 'border-[#F43F5E] focus:border-[#F43F5E]' : '',
+            'w-full bg-white border-2 border-black text-black p-3 font-mono text-sm placeholder:text-zinc-500 focus:outline-hidden focus:bg-[#FFFDF5] focus:shadow-neo-sm transition-all disabled:opacity-50 shadow-[2px_2px_0px_#000]',
+            error ? 'border-[#FF4365] bg-red-50 focus:border-[#FF4365]' : '',
             className
           )}
           {...props}
         />
-        {error && <p className="text-xs text-[#F43F5E] font-mono">{error}</p>}
-        {helperText && !error && <p className="text-xs text-zinc-500 font-sans">{helperText}</p>}
+        {error && <p className="text-xs text-[#FF4365] font-mono font-bold">{error}</p>}
+        {helperText && !error && <p className="text-xs text-zinc-600 font-sans font-medium">{helperText}</p>}
       </div>
     );
   }
@@ -80,31 +80,31 @@ export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElemen
 export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, label, error, helperText, id, options, ...props }, ref) => {
     return (
-      <div className="w-full space-y-1.5">
+      <div className="w-full space-y-1">
         {label && (
-          <label htmlFor={id} className="block font-mono text-xs font-bold uppercase tracking-wider text-zinc-300">
+          <label htmlFor={id} className="block font-mono text-xs font-black uppercase tracking-wider text-black">
             {label}
-            {props.required && <span className="text-[#F43F5E] ml-1">*</span>}
+            {props.required && <span className="text-[#FF4365] ml-1">*</span>}
           </label>
         )}
         <select
           ref={ref}
           id={id}
           className={cn(
-            'w-full bg-[#0A0A0E] border-2 border-[#262636] text-white px-3.5 py-2 font-mono text-sm focus:outline-hidden focus:border-[#CCFF00] focus:shadow-neo-sm transition-all cursor-pointer',
-            error ? 'border-[#F43F5E] focus:border-[#F43F5E]' : '',
+            'w-full bg-white border-2 border-black text-black px-3.5 py-2 font-mono text-sm focus:outline-hidden focus:bg-[#FFFDF5] focus:shadow-neo-sm transition-all cursor-pointer shadow-[2px_2px_0px_#000]',
+            error ? 'border-[#FF4365] bg-red-50 focus:border-[#FF4365]' : '',
             className
           )}
           {...props}
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-[#121218] text-white">
+            <option key={opt.value} value={opt.value} className="bg-white text-black">
               {opt.label}
             </option>
           ))}
         </select>
-        {error && <p className="text-xs text-[#F43F5E] font-mono">{error}</p>}
-        {helperText && !error && <p className="text-xs text-zinc-500 font-sans">{helperText}</p>}
+        {error && <p className="text-xs text-[#FF4365] font-mono font-bold">{error}</p>}
+        {helperText && !error && <p className="text-xs text-zinc-600 font-sans font-medium">{helperText}</p>}
       </div>
     );
   }

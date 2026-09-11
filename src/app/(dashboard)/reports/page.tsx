@@ -1,25 +1,20 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { reportService } from '@/lib/services/reportService';
 import { peopleService } from '@/lib/services/peopleService';
-import { attendanceService } from '@/lib/services/attendanceService';
-import { leaveService } from '@/lib/services/leaveService';
 import { documentService } from '@/lib/services/documentService';
 import { onboardingService } from '@/lib/services/onboardingService';
 import { exportService, ExportDataPayload } from '@/lib/services/exportService';
 import { settingsService } from '@/lib/services/settingsService';
 import { hrmsStore } from '@/lib/services/store';
-import { Department, Person, LeaveRequest } from '@/types/database';
+import { Department, Person } from '@/types/database';
 import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { Tabs } from '@/components/ui/Tabs';
-import { formatDate } from '@/lib/utils';
 import { useAuth } from '@/lib/context/AuthContext';
 import { toast } from 'sonner';
 import {
-  BarChart3,
   FileSpreadsheet,
   Download,
   FileText,
@@ -28,7 +23,6 @@ import {
   CalendarDays,
   ShieldCheck,
   Clock,
-  Sparkles,
 } from 'lucide-react';
 
 function ReportsContent() {
@@ -215,80 +209,82 @@ function ReportsContent() {
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner */}
-      <div className="bg-[#121218] border-2 border-[#262636] p-4 sm:p-5 shadow-neo flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-3 border-black p-5 sm:p-6 shadow-neo flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#CCFF00]" />
-            <span className="font-mono text-xs font-bold uppercase text-[#CCFF00] tracking-wider">
-              ENTERPRISE REPORTING & EXPORT ENGINE
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="sticker-tag bg-[#FFDE59] text-black">
+              REAL DATA EXPORTS
+            </span>
+            <span className="sticker-tag bg-[#00D06C] text-black">
+              AUDIT COMPLIANT
             </span>
           </div>
-          <h1 className="font-mono text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+          <h1 className="font-mono text-2xl sm:text-3xl font-black text-black tracking-tight mt-1 uppercase">
             REPORTS & DATA EXPORTS
           </h1>
-          <p className="text-xs text-zinc-400 font-sans">
-            Real CSV, styled XLSX Excel spreadsheets, and high-contrast PDF audit reports.
+          <p className="text-xs sm:text-sm text-zinc-700 font-sans font-medium">
+            Real CSV files, styled XLSX Excel spreadsheets, and high-contrast PDF audit reports.
           </p>
         </div>
 
         {/* Global Export Triggers */}
         <div className="flex items-center gap-2 flex-wrap">
-          <Button variant="primary" size="sm" onClick={() => handleExport('xlsx')}>
+          <Button variant="green" size="sm" onClick={() => handleExport('xlsx')}>
             <FileSpreadsheet className="w-4 h-4 mr-1" /> EXCEL (.XLSX)
           </Button>
-          <Button variant="secondary" size="sm" onClick={() => handleExport('csv')}>
+          <Button variant="purple" size="sm" onClick={() => handleExport('csv')}>
             <Download className="w-4 h-4 mr-1" /> CSV
           </Button>
-          <Button variant="cyan" size="sm" onClick={() => handleExport('pdf')}>
+          <Button variant="pink" size="sm" onClick={() => handleExport('pdf')}>
             <FileText className="w-4 h-4 mr-1" /> PDF REPORT
           </Button>
         </div>
       </div>
 
-      {/* Report Selection Tabs */}
+      {/* Report Selection Folder Tabs */}
       <Tabs
         tabs={reportTabs}
         activeTab={selectedReport}
         onChange={(id) => setSelectedReport(id as any)}
       />
 
-      {/* Preview Table Container */}
-      <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-        <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+      {/* Preview Table Container with Retro Window Chrome */}
+      <div className="bg-white border-3 border-black shadow-neo overflow-hidden">
+        <div className="bg-[#00D06C] border-b-3 border-black px-4 py-2.5 flex items-center justify-between font-mono text-xs font-black uppercase text-black">
           <div>
-            <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
-              {currentPayload.title}
-            </h3>
-            <p className="text-xs text-zinc-400">Live preview of dataset ({currentPayload.rows.length} rows)</p>
+            <span>{currentPayload.title}</span>
+            <span className="text-[10px] text-zinc-800 ml-2 font-bold">({currentPayload.rows.length} rows)</span>
           </div>
-          <span className="text-[10px] font-mono text-[#CCFF00] font-bold">
-            PERMISSION AUDIT VERIFIED
-          </span>
+          <div className="flex items-center gap-1">
+            <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">_</span>
+            <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">□</span>
+            <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">✕</span>
+          </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs font-mono">
-            <thead className="bg-[#171722] border-b-2 border-[#262636] text-zinc-400 uppercase">
+        <div className="overflow-x-auto p-4 bg-[#FCFAF5]">
+          <table className="w-full text-left text-xs font-mono border-2 border-black bg-white shadow-neo-sm">
+            <thead className="bg-[#FAF7EE] border-b-2 border-black text-black uppercase font-black">
               <tr>
                 {currentPayload.headers.map((h, i) => (
-                  <th key={i} className="py-2.5 px-3 whitespace-nowrap">
+                  <th key={i} className="py-2.5 px-3 whitespace-nowrap border-r border-black/20">
                     {h}
                   </th>
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#22222E]">
+            <tbody className="divide-y-2 divide-black/10">
               {currentPayload.rows.length === 0 ? (
                 <tr>
-                  <td colSpan={currentPayload.headers.length} className="py-8 text-center text-zinc-500">
+                  <td colSpan={currentPayload.headers.length} className="py-8 text-center text-zinc-600 font-bold">
                     No data records matching criteria.
                   </td>
                 </tr>
               ) : (
                 currentPayload.rows.map((row, rowIdx) => (
-                  <tr key={rowIdx} className="hover:bg-[#1A1A26]">
+                  <tr key={rowIdx} className="hover:bg-[#FFFDF5]">
                     {row.map((cell, cellIdx) => (
-                      <td key={cellIdx} className="py-2.5 px-3 text-zinc-300 whitespace-nowrap">
+                      <td key={cellIdx} className="py-2.5 px-3 text-black font-bold whitespace-nowrap border-r border-black/10">
                         {String(cell)}
                       </td>
                     ))}
@@ -305,7 +301,7 @@ function ReportsContent() {
 
 export default function ReportsPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center text-zinc-500 font-mono text-sm">Loading Reports & Analytics...</div>}>
+    <Suspense fallback={<div className="p-8 text-center text-black font-mono text-sm font-bold">Loading Reports & Analytics...</div>}>
       <ReportsContent />
     </Suspense>
   );

@@ -16,8 +16,6 @@ import {
   UploadCloud,
   History,
   Settings,
-  Sparkles,
-  ShieldAlert,
   Layers,
 } from 'lucide-react';
 
@@ -31,19 +29,19 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { canViewAuditLogs, canManageSettings, isEmployeeViewOnly } = useAuth();
 
   const primaryNavItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
-    { href: '/people', label: 'People Directory', icon: <Users className="w-4 h-4" /> },
-    { href: '/attendance', label: 'Attendance', icon: <CalendarCheck className="w-4 h-4" /> },
-    { href: '/leave', label: 'Leave & Holidays', icon: <CalendarDays className="w-4 h-4" /> },
-    { href: '/documents', label: 'Document Vault', icon: <FileText className="w-4 h-4" /> },
-    { href: '/onboarding', label: 'Onboarding & Radar', icon: <UserPlus className="w-4 h-4" /> },
-    { href: '/reports', label: 'Reports & Exports', icon: <BarChart3 className="w-4 h-4" /> },
-    { href: '/import', label: 'Spreadsheet Import', icon: <UploadCloud className="w-4 h-4" />, hideForEmployee: true },
+    { href: '/dashboard', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" />, color: 'hover:bg-[#00D06C]' },
+    { href: '/people', label: 'People Directory', icon: <Users className="w-4 h-4" />, color: 'hover:bg-[#FF6B9D]' },
+    { href: '/attendance', label: 'Attendance', icon: <CalendarCheck className="w-4 h-4" />, color: 'hover:bg-[#FFDE59]' },
+    { href: '/leave', label: 'Leave & Holidays', icon: <CalendarDays className="w-4 h-4" />, color: 'hover:bg-[#38BDF8]' },
+    { href: '/documents', label: 'Document Vault', icon: <FileText className="w-4 h-4" />, color: 'hover:bg-[#8B5CF6] hover:text-white' },
+    { href: '/onboarding', label: 'Onboarding & Radar', icon: <UserPlus className="w-4 h-4" />, color: 'hover:bg-[#00D06C]' },
+    { href: '/reports', label: 'Reports & Exports', icon: <BarChart3 className="w-4 h-4" />, color: 'hover:bg-[#FFDE59]' },
+    { href: '/import', label: 'Spreadsheet Import', icon: <UploadCloud className="w-4 h-4" />, hideForEmployee: true, color: 'hover:bg-[#FF6B9D]' },
   ];
 
   const adminNavItems = [
-    { href: '/audit', label: 'Audit Trail', icon: <History className="w-4 h-4" />, required: canViewAuditLogs },
-    { href: '/settings', label: 'Settings & Policies', icon: <Settings className="w-4 h-4" />, required: canManageSettings },
+    { href: '/audit', label: 'Audit Trail', icon: <History className="w-4 h-4" />, required: canViewAuditLogs, color: 'hover:bg-[#8B5CF6] hover:text-white' },
+    { href: '/settings', label: 'Settings & Policies', icon: <Settings className="w-4 h-4" />, required: canManageSettings, color: 'hover:bg-[#38BDF8]' },
   ];
 
   const futureNavItems = [
@@ -55,7 +53,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Mobile Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/80 lg:hidden backdrop-blur-xs"
+          className="fixed inset-0 z-40 bg-black/60 lg:hidden backdrop-blur-xs"
           onClick={onClose}
         />
       )}
@@ -63,30 +61,32 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Sidebar Container */}
       <aside
         className={cn(
-          'fixed lg:sticky top-0 lg:top-[57px] left-0 z-40 h-screen lg:h-[calc(100vh-57px)] w-64 bg-[#0D0D12] border-r-2 border-[#262636] flex flex-col justify-between p-3 select-none transition-transform duration-200 ease-in-out overflow-y-auto',
+          'fixed lg:sticky top-0 lg:top-[57px] left-0 z-40 h-screen lg:h-[calc(100vh-57px)] w-64 bg-[#FAF7EE] border-r-3 border-black flex flex-col justify-between p-3.5 select-none transition-transform duration-200 ease-in-out overflow-y-auto shadow-[3px_0px_0px_#000]',
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         <div className="space-y-5">
           {/* Mobile brand header inside sidebar */}
-          <div className="lg:hidden flex items-center justify-between pb-3 border-b border-[#262636]">
+          <div className="lg:hidden flex items-center justify-between pb-3 border-b-2 border-black">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-[#CCFF00] border border-black flex items-center justify-center font-mono font-black text-black text-xs">
+              <div className="w-7 h-7 bg-[#00D06C] border-2 border-black flex items-center justify-center font-mono font-black text-black text-xs shadow-neo-sm">
                 Q
               </div>
-              <span className="font-mono font-bold text-white text-xs">QEVN // HRMS</span>
+              <span className="font-mono font-black text-black text-xs">QEVN // HRMS</span>
             </div>
-            <button onClick={onClose} className="text-zinc-400 p-1 text-xs font-mono">
+            <button onClick={onClose} className="text-black bg-white border border-black p-1 text-xs font-mono font-bold">
               [CLOSE]
             </button>
           </div>
 
           {/* Section: Operational Modules */}
           <div>
-            <div className="px-3 pb-2 text-[10px] font-mono font-black uppercase text-zinc-500 tracking-wider">
-              PHASE 1 // OPERATIONS
+            <div className="px-2 pb-1.5 flex items-center justify-between">
+              <span className="text-[10px] font-mono font-black uppercase text-black tracking-wider bg-[#FFDE59] px-1.5 py-0.5 border border-black">
+                PHASE 1 // OPS
+              </span>
             </div>
-            <nav className="space-y-1">
+            <nav className="space-y-1.5 mt-2">
               {primaryNavItems.map((item) => {
                 if (item.hideForEmployee && isEmployeeViewOnly) return null;
                 const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -96,13 +96,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     href={item.href}
                     onClick={onClose}
                     className={cn(
-                      'flex items-center gap-3 px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider transition-all border group',
+                      'flex items-center gap-2.5 px-3 py-2 font-mono text-xs font-black uppercase tracking-wider transition-all border-2 group cursor-pointer',
                       isActive
-                        ? 'bg-[#CCFF00] text-black border-black shadow-neo-sm font-black'
-                        : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/60 hover:border-zinc-700'
+                        ? 'bg-[#00D06C] text-black border-black shadow-neo-sm translate-x-1'
+                        : `bg-white text-black border-black/30 hover:border-black ${item.color}`
                     )}
                   >
-                    <span className={cn(isActive ? 'text-black' : 'text-zinc-500 group-hover:text-[#CCFF00]')}>
+                    <span className={cn(isActive ? 'text-black' : 'text-zinc-700 group-hover:text-black')}>
                       {item.icon}
                     </span>
                     <span>{item.label}</span>
@@ -115,10 +115,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           {/* Section: Governance & Audit */}
           {(!isEmployeeViewOnly || canViewAuditLogs) && (
             <div>
-              <div className="px-3 pb-2 text-[10px] font-mono font-black uppercase text-zinc-500 tracking-wider">
-                GOVERNANCE & AUDIT
+              <div className="px-2 pb-1.5 flex items-center justify-between">
+                <span className="text-[10px] font-mono font-black uppercase text-white bg-[#8B5CF6] px-1.5 py-0.5 border border-black tracking-wider">
+                  GOVERNANCE & AUDIT
+                </span>
               </div>
-              <nav className="space-y-1">
+              <nav className="space-y-1.5 mt-2">
                 {adminNavItems.map((item) => {
                   const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`);
                   return (
@@ -127,13 +129,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                       href={item.href}
                       onClick={onClose}
                       className={cn(
-                        'flex items-center gap-3 px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider transition-all border group',
+                        'flex items-center gap-2.5 px-3 py-2 font-mono text-xs font-black uppercase tracking-wider transition-all border-2 group cursor-pointer',
                         isActive
-                          ? 'bg-[#8B5CF6] text-white border-black shadow-neo-sm font-black'
-                          : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/60 hover:border-zinc-700'
+                          ? 'bg-[#8B5CF6] text-white border-black shadow-neo-sm translate-x-1'
+                          : `bg-white text-black border-black/30 hover:border-black ${item.color}`
                       )}
                     >
-                      <span className={cn(isActive ? 'text-white' : 'text-zinc-500 group-hover:text-[#8B5CF6]')}>
+                      <span className={cn(isActive ? 'text-white' : 'text-zinc-700 group-hover:text-black')}>
                         {item.icon}
                       </span>
                       <span>{item.label}</span>
@@ -146,10 +148,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
           {/* Section: Future Roadmap */}
           <div>
-            <div className="px-3 pb-2 text-[10px] font-mono font-black uppercase text-zinc-500 tracking-wider">
-              ROADMAP PREVIEWS
+            <div className="px-2 pb-1.5 flex items-center justify-between">
+              <span className="text-[10px] font-mono font-black uppercase text-black bg-[#38BDF8] px-1.5 py-0.5 border border-black tracking-wider">
+                ROADMAP PREVIEWS
+              </span>
             </div>
-            <nav className="space-y-1">
+            <nav className="space-y-1.5 mt-2">
               {futureNavItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -158,20 +162,20 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     href={item.href}
                     onClick={onClose}
                     className={cn(
-                      'flex items-center justify-between px-3 py-2 font-mono text-xs font-bold uppercase tracking-wider transition-all border group',
+                      'flex items-center justify-between px-3 py-2 font-mono text-xs font-black uppercase tracking-wider transition-all border-2 group cursor-pointer',
                       isActive
-                        ? 'bg-[#06B6D4] text-black border-black shadow-neo-sm font-black'
-                        : 'text-zinc-400 border-transparent hover:text-white hover:bg-zinc-800/60 hover:border-zinc-700'
+                        ? 'bg-[#38BDF8] text-black border-black shadow-neo-sm translate-x-1'
+                        : 'bg-white text-black border-black/30 hover:border-black hover:bg-[#38BDF8]'
                     )}
                   >
-                    <div className="flex items-center gap-3">
-                      <span className={cn(isActive ? 'text-black' : 'text-zinc-500 group-hover:text-[#06B6D4]')}>
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-zinc-700 group-hover:text-black">
                         {item.icon}
                       </span>
                       <span>{item.label}</span>
                     </div>
                     {item.badge && (
-                      <span className="text-[9px] font-mono font-black px-1.5 py-0.2 bg-[#06B6D4]/20 text-[#06B6D4] border border-[#06B6D4]/40">
+                      <span className="text-[9px] font-mono font-black px-1.5 py-0.2 bg-black text-[#38BDF8] border border-black">
                         {item.badge}
                       </span>
                     )}
@@ -182,19 +186,19 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
         </div>
 
-        {/* Footer System Health Tag */}
-        <div className="mt-4 pt-3 border-t border-[#262636] space-y-2">
-          <div className="p-2.5 bg-[#121218] border border-[#262636] space-y-1">
+        {/* Retro Live Engine Sticker Card */}
+        <div className="mt-4 pt-3 border-t-2 border-black space-y-2">
+          <div className="p-3 bg-white border-2 border-black shadow-neo-sm space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-mono text-zinc-400">DATA ENGINE</span>
-              <span className="inline-flex items-center gap-1 text-[10px] font-mono font-bold text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+              <span className="text-[10px] font-mono font-bold text-black uppercase">DATA ENGINE</span>
+              <span className="inline-flex items-center gap-1 text-[10px] font-mono font-black text-black bg-[#00D06C] px-1.5 py-0.2 border border-black">
+                <span className="w-1.5 h-1.5 rounded-full bg-black animate-ping" />
                 ONLINE
               </span>
             </div>
-            <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500">
+            <div className="flex items-center justify-between text-[10px] font-mono font-bold text-zinc-700">
               <span>RLS & AUDIT</span>
-              <span className="text-[#CCFF00] font-bold">ACTIVE</span>
+              <span className="text-[#8B5CF6] font-black">ACTIVE</span>
             </div>
           </div>
         </div>

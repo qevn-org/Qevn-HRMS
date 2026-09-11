@@ -36,7 +36,6 @@ import {
   getAttendanceStatusStyle,
   getLeaveStatusStyle,
   formatDate,
-  formatDateTime,
 } from '@/lib/utils';
 import { useAuth } from '@/lib/context/AuthContext';
 import { toast } from 'sonner';
@@ -53,7 +52,6 @@ import {
   Mail,
   Phone,
   MapPin,
-  Clock,
   ShieldCheck,
   Plus,
   Edit,
@@ -168,9 +166,9 @@ export default function PersonProfilePage() {
 
   if (!person) {
     return (
-      <div className="bg-[#121218] border-2 border-[#262636] p-12 text-center">
-        <div className="font-mono text-base font-bold text-white uppercase">Person Record Not Found</div>
-        <p className="text-xs text-zinc-400 mt-1">The requested profile ID does not exist or has been permanently purged.</p>
+      <div className="bg-white border-3 border-black p-12 text-center shadow-neo">
+        <div className="font-mono text-base font-black text-black uppercase">Person Record Not Found</div>
+        <p className="text-xs text-zinc-600 mt-1 font-sans">The requested profile ID does not exist or has been archived.</p>
         <Link href="/people" className="inline-block mt-4">
           <Button variant="primary" size="sm">
             BACK TO DIRECTORY
@@ -272,52 +270,52 @@ export default function PersonProfilePage() {
 
   return (
     <div className="space-y-6 pb-12">
-      {/* Back Button & Master Header */}
+      {/* Back Button */}
       <div className="flex items-center gap-2">
         <Link href="/people">
-          <Button variant="ghost" size="sm">
+          <Button variant="white" size="sm">
             <ArrowLeft className="w-4 h-4 mr-1" /> BACK TO DIRECTORY
           </Button>
         </Link>
       </div>
 
-      {/* Main Profile Header Banner */}
-      <div className="bg-[#121218] border-2 border-[#262636] p-5 sm:p-6 shadow-neo">
+      {/* Main Profile Header Window Banner */}
+      <div className="bg-white border-3 border-black p-5 sm:p-6 shadow-neo-lg">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
           <div className="flex items-start gap-4">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-zinc-800 border-2 border-black flex items-center justify-center font-mono font-black text-2xl text-[#CCFF00] shadow-neo-sm shrink-0">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#FFDE59] border-3 border-black flex items-center justify-center font-mono font-black text-2xl sm:text-3xl text-black shadow-neo shrink-0">
               {person.full_name.slice(0, 2).toUpperCase()}
             </div>
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="font-mono text-xl sm:text-2xl font-black text-white tracking-tight">
+                <h1 className="font-mono text-xl sm:text-2xl font-black text-black tracking-tight uppercase">
                   {person.full_name}
                 </h1>
-                <span className={`text-[10px] px-2 py-0.5 border ${workerBadge.color}`}>
+                <span className={`text-[10px] px-2 py-0.5 border-2 border-black font-black uppercase ${workerBadge.color}`}>
                   {workerBadge.label}
                 </span>
-                <span className={`text-[10px] px-2 py-0.5 border ${statusBadge.color}`}>
+                <span className={`text-[10px] px-2 py-0.5 border-2 border-black font-black uppercase ${statusBadge.color}`}>
                   {statusBadge.label}
                 </span>
               </div>
 
-              <div className="mt-1 flex items-center gap-3 text-xs font-mono text-zinc-400 flex-wrap">
-                <span className="text-white font-bold">{person.person_code}</span>
+              <div className="mt-1 flex items-center gap-3 text-xs font-mono text-zinc-700 flex-wrap font-bold">
+                <span className="text-black bg-[#FAF7EE] px-1.5 py-0.5 border border-black">{person.person_code}</span>
                 <span>•</span>
                 <span>{person.designation?.name || 'Staff'}</span>
                 <span>•</span>
-                <span className="text-[#CCFF00]">{person.department?.name || 'General'}</span>
+                <span className="text-[#8B5CF6] font-black">{person.department?.name || 'General'}</span>
               </div>
 
-              <div className="mt-2 flex items-center gap-4 text-xs text-zinc-400 font-sans flex-wrap">
+              <div className="mt-2 flex items-center gap-4 text-xs text-zinc-600 font-sans font-medium flex-wrap">
                 <span className="flex items-center gap-1">
-                  <Mail className="w-3.5 h-3.5 text-zinc-500" /> {person.work_email}
+                  <Mail className="w-3.5 h-3.5 text-black" /> {person.work_email}
                 </span>
                 <span className="flex items-center gap-1">
-                  <Phone className="w-3.5 h-3.5 text-zinc-500" /> {person.phone}
+                  <Phone className="w-3.5 h-3.5 text-black" /> {person.phone}
                 </span>
                 <span className="flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-zinc-500" /> {person.work_location} ({person.remote_status.toUpperCase()})
+                  <MapPin className="w-3.5 h-3.5 text-black" /> {person.work_location} ({person.remote_status.toUpperCase()})
                 </span>
               </div>
             </div>
@@ -325,21 +323,21 @@ export default function PersonProfilePage() {
 
           <div className="flex items-center gap-2 shrink-0 flex-wrap">
             {canManagePeople && (
-              <Button variant="primary" size="sm" onClick={() => setIsEditModalOpen(true)}>
+              <Button variant="green" size="sm" onClick={() => setIsEditModalOpen(true)}>
                 <Edit className="w-3.5 h-3.5 mr-1" /> Edit Profile
               </Button>
             )}
-            <Button variant="secondary" size="sm" onClick={() => setIsUploadDocModalOpen(true)}>
+            <Button variant="purple" size="sm" onClick={() => setIsUploadDocModalOpen(true)}>
               <Plus className="w-3.5 h-3.5 mr-1" /> Document
             </Button>
-            <Button variant="cyan" size="sm" onClick={() => setIsAddHRActionModalOpen(true)}>
+            <Button variant="pink" size="sm" onClick={() => setIsAddHRActionModalOpen(true)}>
               <Plus className="w-3.5 h-3.5 mr-1" /> HR Action
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Navigation Folder Tabs */}
       <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
 
       {/* TAB 1: OVERVIEW */}
@@ -347,91 +345,110 @@ export default function PersonProfilePage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* Work & Personal Details */}
           <div className="md:col-span-8 space-y-6">
-            <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo">
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white border-b border-[#262636] pb-2.5 flex items-center gap-2">
-                <Briefcase className="w-4 h-4 text-[#CCFF00]" />
-                EMPLOYMENT & WORK ASSIGNMENT
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 font-mono text-xs">
+            <div className="bg-white border-3 border-black shadow-neo overflow-hidden">
+              <div className="bg-[#00D06C] border-b-3 border-black px-4 py-2 flex items-center justify-between font-mono text-xs font-black uppercase text-black">
+                <span className="flex items-center gap-2">
+                  <Briefcase className="w-4 h-4 text-black" />
+                  EMPLOYMENT & WORK ASSIGNMENT
+                </span>
+                <div className="flex items-center gap-1">
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">_</span>
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">□</span>
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">✕</span>
+                </div>
+              </div>
+              <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs bg-[#FCFAF5]">
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">DEPARTMENT</span>
-                  <span className="text-white font-bold text-sm">{person.department?.name || 'General'}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">DEPARTMENT</span>
+                  <span className="text-black font-black text-sm">{person.department?.name || 'General'}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">JOB TITLE / DESIGNATION</span>
-                  <span className="text-white font-bold text-sm">{person.designation?.name || 'Staff'}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">JOB TITLE / DESIGNATION</span>
+                  <span className="text-black font-black text-sm">{person.designation?.name || 'Staff'}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">REPORTING MANAGER</span>
-                  <span className="text-white font-bold">{person.manager?.full_name || 'Direct / Leadership'}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">REPORTING MANAGER</span>
+                  <span className="text-black font-bold">{person.manager?.full_name || 'Direct / Leadership'}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">JOINING DATE</span>
-                  <span className="text-white font-bold">{formatDate(person.joining_date)}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">JOINING DATE</span>
+                  <span className="text-black font-bold">{formatDate(person.joining_date)}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">EMPLOYMENT TYPE</span>
-                  <span className="text-white">{person.employment_type_name}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">EMPLOYMENT TYPE</span>
+                  <span className="text-black font-bold">{person.employment_type_name}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">WORK LOCATION & REMOTE STATUS</span>
-                  <span className="text-white">{person.work_location} • {person.remote_status.toUpperCase()}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">WORK LOCATION & REMOTE STATUS</span>
+                  <span className="text-black font-bold">{person.work_location} • {person.remote_status.toUpperCase()}</span>
                 </div>
               </div>
             </div>
 
             {/* Emergency Contact */}
-            <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo">
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white border-b border-[#262636] pb-2.5 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-[#F59E0B]" />
-                EMERGENCY CONTACT INFORMATION
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 font-mono text-xs">
+            <div className="bg-white border-3 border-black shadow-neo overflow-hidden">
+              <div className="bg-[#FFDE59] border-b-3 border-black px-4 py-2 flex items-center justify-between font-mono text-xs font-black uppercase text-black">
+                <span className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-black" />
+                  EMERGENCY CONTACT INFORMATION
+                </span>
+                <div className="flex items-center gap-1">
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">_</span>
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">□</span>
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">✕</span>
+                </div>
+              </div>
+              <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs bg-[#FCFAF5]">
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">CONTACT NAME</span>
-                  <span className="text-white font-bold">{person.emergency_contact_name || '—'}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">CONTACT NAME</span>
+                  <span className="text-black font-black">{person.emergency_contact_name || '—'}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">RELATIONSHIP</span>
-                  <span className="text-white font-bold">{person.emergency_contact_relation || '—'}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">RELATIONSHIP</span>
+                  <span className="text-black font-black">{person.emergency_contact_relation || '—'}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block text-[10px]">EMERGENCY PHONE</span>
-                  <span className="text-white font-bold text-[#CCFF00]">{person.emergency_contact_phone || '—'}</span>
+                  <span className="text-zinc-500 font-bold block text-[10px]">EMERGENCY PHONE</span>
+                  <span className="text-black font-black bg-[#00D06C] px-1.5 py-0.5 border border-black inline-block">{person.emergency_contact_phone || '—'}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Quick Metrics & Compliance Snapshot */}
+          {/* Operational Snapshot */}
           <div className="md:col-span-4 space-y-6">
-            <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo space-y-4">
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white border-b border-[#262636] pb-2">
-                OPERATIONAL SNAPSHOT
-              </h3>
-              <div className="space-y-3">
-                <div className="p-3 bg-[#0D0D12] border border-[#262636] flex items-center justify-between">
+            <div className="bg-white border-3 border-black shadow-neo overflow-hidden">
+              <div className="bg-[#38BDF8] border-b-3 border-black px-4 py-2 flex items-center justify-between font-mono text-xs font-black uppercase text-black">
+                <span>OPERATIONAL METRICS</span>
+                <div className="flex items-center gap-1">
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">_</span>
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">□</span>
+                  <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold">✕</span>
+                </div>
+              </div>
+              <div className="p-4 space-y-3 bg-[#FCFAF5]">
+                <div className="p-3 bg-white border-2 border-black shadow-neo-sm flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] font-mono text-zinc-500 block">TOTAL RECORDED ATTENDANCE</span>
-                    <span className="font-mono text-lg font-black text-[#CCFF00]">{attendanceRecords.length} DAYS</span>
+                    <span className="text-[10px] font-mono text-zinc-600 font-bold block">TOTAL ATTENDANCE LOGGED</span>
+                    <span className="font-mono text-xl font-black text-black">{attendanceRecords.length} DAYS</span>
                   </div>
-                  <CalendarCheck className="w-6 h-6 text-[#CCFF00]/40" />
+                  <CalendarCheck className="w-6 h-6 text-[#00D06C]" />
                 </div>
 
-                <div className="p-3 bg-[#0D0D12] border border-[#262636] flex items-center justify-between">
+                <div className="p-3 bg-white border-2 border-black shadow-neo-sm flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] font-mono text-zinc-500 block">DOCUMENTS STORED</span>
-                    <span className="font-mono text-lg font-black text-[#8B5CF6]">{documents.length} FILES</span>
+                    <span className="text-[10px] font-mono text-zinc-600 font-bold block">DOCUMENTS STORED</span>
+                    <span className="font-mono text-xl font-black text-black">{documents.length} FILES</span>
                   </div>
-                  <FileText className="w-6 h-6 text-[#8B5CF6]/40" />
+                  <FileText className="w-6 h-6 text-[#8B5CF6]" />
                 </div>
 
-                <div className="p-3 bg-[#0D0D12] border border-[#262636] flex items-center justify-between">
+                <div className="p-3 bg-white border-2 border-black shadow-neo-sm flex items-center justify-between">
                   <div>
-                    <span className="text-[10px] font-mono text-zinc-500 block">ACTIVE LEAVE REQUESTS</span>
-                    <span className="font-mono text-lg font-black text-[#06B6D4]">{leaveRequests.length} REQUESTS</span>
+                    <span className="text-[10px] font-mono text-zinc-600 font-bold block">ACTIVE LEAVE REQUESTS</span>
+                    <span className="font-mono text-xl font-black text-black">{leaveRequests.length} REQUESTS</span>
                   </div>
-                  <CalendarDays className="w-6 h-6 text-[#06B6D4]/40" />
+                  <CalendarDays className="w-6 h-6 text-[#FF6B9D]" />
                 </div>
               </div>
             </div>
@@ -441,35 +458,35 @@ export default function PersonProfilePage() {
 
       {/* TAB 2: EMPLOYMENT HISTORY */}
       {activeTab === 'employment' && (
-        <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
-            <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
-                HISTORICAL EMPLOYMENT ASSIGNMENTS
-              </h3>
-              <p className="text-xs text-zinc-400">Append-only log of department, role, and manager changes</p>
+        <div className="bg-white border-3 border-black shadow-neo overflow-hidden">
+          <div className="bg-[#8B5CF6] border-b-3 border-black px-4 py-2.5 flex items-center justify-between font-mono text-xs font-black uppercase text-white">
+            <span>HISTORICAL EMPLOYMENT ASSIGNMENTS</span>
+            <div className="flex items-center gap-1">
+              <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold text-black">_</span>
+              <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold text-black">□</span>
+              <span className="w-2.5 h-2.5 bg-white border border-black inline-block text-[7px] leading-none text-center font-bold text-black">✕</span>
             </div>
           </div>
 
-          <div className="mt-4 divide-y divide-[#22222E]">
+          <div className="p-5 divide-y-2 divide-black/10 bg-[#FCFAF5]">
             {employmentRecords.length === 0 ? (
-              <div className="p-8 text-center text-zinc-500 font-mono text-xs">No historical changes logged.</div>
+              <div className="p-8 text-center text-zinc-600 font-mono text-xs font-bold">No historical changes logged.</div>
             ) : (
               employmentRecords.map((rec) => (
                 <div key={rec.id} className="py-3.5 flex items-start justify-between gap-4 font-mono text-xs">
                   <div>
-                    <div className="text-white font-bold text-sm">
+                    <div className="text-black font-black text-sm">
                       {rec.designation_name || 'Designation'} • {rec.department_name || 'Department'}
                     </div>
-                    <div className="text-zinc-400 mt-0.5">
+                    <div className="text-zinc-600 font-bold mt-0.5">
                       Effective: {formatDate(rec.effective_from)} {rec.effective_to ? `to ${formatDate(rec.effective_to)}` : '(Current)'}
                     </div>
-                    {rec.manager_name && <div className="text-zinc-500 text-[11px]">Manager: {rec.manager_name}</div>}
+                    {rec.manager_name && <div className="text-zinc-500 text-[11px] font-bold">Manager: {rec.manager_name}</div>}
                     {rec.reason_for_change && (
-                      <div className="text-[#CCFF00] text-[11px] mt-1">Reason: {rec.reason_for_change}</div>
+                      <div className="text-[#8B5CF6] font-black text-[11px] mt-1">Reason: {rec.reason_for_change}</div>
                     )}
                   </div>
-                  <Badge variant={rec.status === 'active' ? 'lime' : 'amber'}>{rec.status.toUpperCase()}</Badge>
+                  <Badge variant={rec.status === 'active' ? 'green' : 'amber'}>{rec.status.toUpperCase()}</Badge>
                 </div>
               ))
             )}
@@ -480,21 +497,21 @@ export default function PersonProfilePage() {
       {/* TAB 3: ATTENDANCE */}
       {activeTab === 'attendance' && (
         <div className="space-y-4">
-          <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo flex items-center justify-between">
+          <div className="bg-white border-3 border-black p-4 shadow-neo flex items-center justify-between">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 ATTENDANCE RECORD MATRIX
               </h3>
-              <p className="text-xs text-zinc-400">Logged daily attendance and status entries</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Logged daily attendance entries</p>
             </div>
-            <Button variant="secondary" size="sm" onClick={() => router.push('/attendance')}>
+            <Button variant="purple" size="sm" onClick={() => router.push('/attendance')}>
               FULL MATRIX VIEW →
             </Button>
           </div>
 
-          <div className="bg-[#121218] border-2 border-[#262636] shadow-neo overflow-x-auto">
+          <div className="bg-white border-3 border-black shadow-neo overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#171722] border-b-2 border-[#262636] text-zinc-400 uppercase tracking-wider">
+              <thead className="bg-[#FAF7EE] border-b-2 border-black text-black uppercase tracking-wider font-black">
                 <tr>
                   <th className="py-3 px-4">DATE</th>
                   <th className="py-3 px-4">STATUS</th>
@@ -503,10 +520,10 @@ export default function PersonProfilePage() {
                   <th className="py-3 px-4">NOTES / CORRECTIONS</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#22222E]">
+              <tbody className="divide-y-2 divide-black/10">
                 {attendanceRecords.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="py-6 text-center text-zinc-500">
+                    <td colSpan={5} className="py-6 text-center text-zinc-600 font-bold">
                       No attendance records logged yet.
                     </td>
                   </tr>
@@ -514,24 +531,24 @@ export default function PersonProfilePage() {
                   attendanceRecords.map((att) => {
                     const style = getAttendanceStatusStyle(att.status);
                     return (
-                      <tr key={att.id} className="hover:bg-[#1A1A26]">
-                        <td className="py-3 px-4 text-white font-bold">{formatDate(att.attendance_date)}</td>
+                      <tr key={att.id} className="hover:bg-[#FFFDF5]">
+                        <td className="py-3 px-4 text-black font-black">{formatDate(att.attendance_date)}</td>
                         <td className="py-3 px-4">
-                          <span className={`text-[10px] px-2 py-0.5 border ${style.bg} ${style.text} ${style.border}`}>
+                          <span className={`text-[10px] px-2 py-0.5 border-2 border-black font-black ${style.bg} ${style.text}`}>
                             {style.label}
                           </span>
                         </td>
-                        <td className="py-3 px-4 text-zinc-300">
+                        <td className="py-3 px-4 text-black font-bold">
                           {att.check_in_at ? `${att.check_in_at} - ${att.check_out_at || '—'}` : '—'}
                         </td>
-                        <td className="py-3 px-4 text-zinc-400 uppercase text-[10px]">{att.source}</td>
+                        <td className="py-3 px-4 text-zinc-600 uppercase text-[10px] font-bold">{att.source}</td>
                         <td className="py-3 px-4">
                           {att.corrected && (
-                            <span className="text-amber-400 block text-[10px]">
+                            <span className="text-[#FF4365] font-black block text-[10px]">
                               CORRECTED: {att.correction_reason}
                             </span>
                           )}
-                          <span className="text-zinc-400">{att.notes || '—'}</span>
+                          <span className="text-zinc-600 font-bold">{att.notes || '—'}</span>
                         </td>
                       </tr>
                     );
@@ -547,21 +564,21 @@ export default function PersonProfilePage() {
       {activeTab === 'leave' && (
         <div className="space-y-6">
           {/* Leave Balances Grid */}
-          <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo">
-            <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white border-b border-[#262636] pb-3">
+          <div className="bg-white border-3 border-black p-5 shadow-neo">
+            <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black border-b-2 border-black pb-3">
               ANNUAL LEAVE BALANCES (2026)
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mt-4">
               {leaveBalances.map((bal) => (
-                <div key={bal.id} className="p-3 bg-[#0D0D12] border border-[#262636] space-y-1">
-                  <div className="text-[11px] font-mono font-bold text-zinc-400 truncate">
+                <div key={bal.id} className="p-3 bg-[#FAF7EE] border-2 border-black shadow-neo-sm space-y-1">
+                  <div className="text-[11px] font-mono font-black text-black truncate">
                     {bal.leave_type?.name || 'Leave Type'}
                   </div>
                   <div className="flex items-baseline justify-between pt-1">
-                    <span className="font-mono text-2xl font-black text-[#CCFF00]">
+                    <span className="font-mono text-2xl font-black text-black">
                       {bal.allocated - bal.used}
                     </span>
-                    <span className="text-[10px] font-mono text-zinc-500">
+                    <span className="text-[10px] font-mono font-bold text-zinc-600">
                       USED: {bal.used} / {bal.allocated}
                     </span>
                   </div>
@@ -571,55 +588,57 @@ export default function PersonProfilePage() {
           </div>
 
           {/* Leave Requests Table */}
-          <div className="bg-[#121218] border-2 border-[#262636] shadow-neo overflow-x-auto">
-            <div className="p-4 border-b border-[#262636] flex items-center justify-between">
-              <h4 className="font-mono text-xs font-bold uppercase text-white">SUBMITTED LEAVE REQUESTS</h4>
-              <Button variant="primary" size="sm" onClick={() => router.push('/leave?action=new')}>
+          <div className="bg-white border-3 border-black shadow-neo overflow-hidden">
+            <div className="p-4 bg-[#FFDE59] border-b-3 border-black flex items-center justify-between">
+              <h4 className="font-mono text-xs font-black uppercase text-black">SUBMITTED LEAVE REQUESTS</h4>
+              <Button variant="black" size="sm" onClick={() => router.push('/leave?action=new')}>
                 <Plus className="w-3.5 h-3.5 mr-1" /> REQUEST LEAVE
               </Button>
             </div>
 
-            <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#171722] border-b border-[#262636] text-zinc-400 uppercase">
-                <tr>
-                  <th className="py-2.5 px-4">TYPE</th>
-                  <th className="py-2.5 px-4">DATES</th>
-                  <th className="py-2.5 px-4">DURATION</th>
-                  <th className="py-2.5 px-4">REASON</th>
-                  <th className="py-2.5 px-4">STATUS</th>
-                  <th className="py-2.5 px-4">DECISION NOTES</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#22222E]">
-                {leaveRequests.length === 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs font-mono">
+                <thead className="bg-[#FAF7EE] border-b-2 border-black text-black uppercase font-black">
                   <tr>
-                    <td colSpan={6} className="py-6 text-center text-zinc-500">
-                      No leave requests submitted.
-                    </td>
+                    <th className="py-2.5 px-4">TYPE</th>
+                    <th className="py-2.5 px-4">DATES</th>
+                    <th className="py-2.5 px-4">DURATION</th>
+                    <th className="py-2.5 px-4">REASON</th>
+                    <th className="py-2.5 px-4">STATUS</th>
+                    <th className="py-2.5 px-4">DECISION NOTES</th>
                   </tr>
-                ) : (
-                  leaveRequests.map((lr) => {
-                    const style = getLeaveStatusStyle(lr.status);
-                    return (
-                      <tr key={lr.id} className="hover:bg-[#1A1A26]">
-                        <td className="py-3 px-4 font-bold text-white">{lr.leave_type?.name}</td>
-                        <td className="py-3 px-4 text-zinc-300">
-                          {formatDate(lr.start_date)} to {formatDate(lr.end_date)}
-                        </td>
-                        <td className="py-3 px-4 text-white font-bold">{lr.duration_days} Day(s)</td>
-                        <td className="py-3 px-4 text-zinc-400">{lr.reason}</td>
-                        <td className="py-3 px-4">
-                          <span className={`text-[10px] px-2 py-0.5 border ${style.color}`}>
-                            {style.label}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 text-zinc-400">{lr.manager_comment || '—'}</td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y-2 divide-black/10">
+                  {leaveRequests.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="py-6 text-center text-zinc-600 font-bold">
+                        No leave requests submitted.
+                      </td>
+                    </tr>
+                  ) : (
+                    leaveRequests.map((lr) => {
+                      const style = getLeaveStatusStyle(lr.status);
+                      return (
+                        <tr key={lr.id} className="hover:bg-[#FFFDF5]">
+                          <td className="py-3 px-4 font-black text-black">{lr.leave_type?.name}</td>
+                          <td className="py-3 px-4 text-black font-bold">
+                            {formatDate(lr.start_date)} to {formatDate(lr.end_date)}
+                          </td>
+                          <td className="py-3 px-4 text-black font-black">{lr.duration_days} Day(s)</td>
+                          <td className="py-3 px-4 text-zinc-700">{lr.reason}</td>
+                          <td className="py-3 px-4">
+                            <span className={`text-[10px] px-2 py-0.5 border-2 border-black font-black uppercase ${style.color}`}>
+                              {style.label}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-zinc-600 font-bold">{lr.manager_comment || '—'}</td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
@@ -627,10 +646,10 @@ export default function PersonProfilePage() {
       {/* TAB 5: DOCUMENTS */}
       {activeTab === 'documents' && (
         <div className="space-y-6">
-          {/* Required Checklist Matrix */}
-          <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo">
-            <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white border-b border-[#262636] pb-3">
-              MANDATORY ONBOARDING & COMPLIANCE CHECKLIST
+          {/* Checklist */}
+          <div className="bg-white border-3 border-black p-5 shadow-neo">
+            <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black border-b-2 border-black pb-3">
+              MANDATORY COMPLIANCE CHECKLIST
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
               {documentRequirements.map((req) => {
@@ -638,17 +657,17 @@ export default function PersonProfilePage() {
                 return (
                   <div
                     key={req.id}
-                    className={`p-3 border flex items-center justify-between font-mono text-xs ${
+                    className={`p-3 border-2 border-black flex items-center justify-between font-mono text-xs shadow-neo-sm ${
                       uploaded
-                        ? 'bg-emerald-950/20 border-emerald-500/40 text-emerald-300'
-                        : 'bg-rose-950/20 border-rose-500/40 text-rose-300'
+                        ? 'bg-[#E8FBF0] text-black'
+                        : 'bg-[#FFF0F3] text-black'
                     }`}
                   >
                     <div className="flex items-center gap-2">
-                      {uploaded ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <AlertCircle className="w-4 h-4 text-rose-400" />}
-                      <span className="font-bold">{req.document_type}</span>
+                      {uploaded ? <CheckCircle2 className="w-4 h-4 text-[#00D06C]" /> : <AlertCircle className="w-4 h-4 text-[#FF4365]" />}
+                      <span className="font-black">{req.document_type}</span>
                     </div>
-                    <span className="text-[10px] uppercase font-bold">
+                    <span className="text-[10px] uppercase font-black bg-black text-white px-1.5 py-0.2">
                       {uploaded ? 'UPLOADED & VALID' : 'MISSING'}
                     </span>
                   </div>
@@ -657,30 +676,30 @@ export default function PersonProfilePage() {
             </div>
           </div>
 
-          {/* Stored Documents Vault */}
-          <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
-              <h4 className="font-mono text-xs font-bold uppercase text-white">STORED FILES & CONTRACTS</h4>
-              <Button variant="primary" size="sm" onClick={() => setIsUploadDocModalOpen(true)}>
+          {/* Stored Files */}
+          <div className="bg-white border-3 border-black shadow-neo p-5">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-black">
+              <h4 className="font-mono text-xs font-black uppercase text-black">STORED FILES & CONTRACTS</h4>
+              <Button variant="green" size="sm" onClick={() => setIsUploadDocModalOpen(true)}>
                 <Plus className="w-3.5 h-3.5 mr-1" /> UPLOAD DOCUMENT
               </Button>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 mt-4">
               {documents.map((doc) => (
-                <div key={doc.id} className="p-3.5 bg-[#0D0D12] border border-[#262636] space-y-2">
+                <div key={doc.id} className="p-3.5 bg-[#FAF7EE] border-2 border-black shadow-neo-sm space-y-2">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="font-mono text-xs font-bold text-white truncate">{doc.document_type}</div>
+                    <div className="font-mono text-xs font-black text-black truncate">{doc.document_type}</div>
                     <Badge variant="cyan">{doc.category}</Badge>
                   </div>
-                  <div className="text-[11px] font-mono text-zinc-400 truncate">{doc.original_file_name}</div>
-                  <div className="text-[10px] font-mono text-zinc-500 flex items-center justify-between pt-2 border-t border-zinc-800">
+                  <div className="text-[11px] font-mono text-zinc-700 truncate font-bold">{doc.original_file_name}</div>
+                  <div className="text-[10px] font-mono text-zinc-600 flex items-center justify-between pt-2 border-t border-black/10 font-bold">
                     <span>Uploaded: {formatDate(doc.uploaded_at)}</span>
                     <a
                       href={documentService.generateSignedDownloadUrl(doc.id)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#CCFF00] hover:underline flex items-center gap-1 font-bold"
+                      className="text-black bg-[#00D06C] px-2 py-0.5 border border-black hover:bg-[#05DF72] flex items-center gap-1 font-black"
                     >
                       <Download className="w-3 h-3" /> DOWNLOAD
                     </a>
@@ -694,27 +713,27 @@ export default function PersonProfilePage() {
 
       {/* TAB 6: ONBOARDING TASKS */}
       {activeTab === 'onboarding' && (
-        <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black p-5 shadow-neo space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 ONBOARDING CHECKLIST & MILESTONES
               </h3>
-              <p className="text-xs text-zinc-400">Owner-assigned tasks with due dates</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Owner-assigned tasks with due dates</p>
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {onboardingTasks.length === 0 ? (
-              <div className="p-8 text-center text-zinc-500 font-mono text-xs">No onboarding tasks assigned.</div>
+              <div className="p-8 text-center text-zinc-600 font-mono text-xs font-bold">No onboarding tasks assigned.</div>
             ) : (
               onboardingTasks.map((task) => (
                 <div
                   key={task.id}
-                  className={`p-3.5 border flex items-center justify-between gap-4 transition-all ${
+                  className={`p-3.5 border-2 border-black flex items-center justify-between gap-4 transition-all shadow-neo-sm ${
                     task.status === 'completed'
-                      ? 'bg-[#0D0D12] border-emerald-500/30 text-zinc-400'
-                      : 'bg-[#171722] border-[#262636] text-white'
+                      ? 'bg-[#E8FBF0] text-zinc-600'
+                      : 'bg-white text-black'
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -724,26 +743,26 @@ export default function PersonProfilePage() {
                         onboardingService.updateTaskStatus(task.id, newStatus, user.display_name);
                         toast.success(`Marked task as ${newStatus}`);
                       }}
-                      className={`w-5 h-5 mt-0.5 border-2 flex items-center justify-center cursor-pointer ${
+                      className={`w-5 h-5 mt-0.5 border-2 border-black flex items-center justify-center cursor-pointer ${
                         task.status === 'completed'
-                          ? 'bg-[#CCFF00] border-black text-black'
-                          : 'border-zinc-500 hover:border-[#CCFF00]'
+                          ? 'bg-[#00D06C] text-black'
+                          : 'bg-white hover:bg-[#FFDE59]'
                       }`}
                     >
                       {task.status === 'completed' && <CheckSquare className="w-3.5 h-3.5" />}
                     </button>
                     <div>
-                      <div className={`font-mono text-xs font-bold ${task.status === 'completed' ? 'line-through text-zinc-500' : 'text-white'}`}>
+                      <div className={`font-mono text-xs font-black ${task.status === 'completed' ? 'line-through text-zinc-500' : 'text-black'}`}>
                         {task.title}
                       </div>
-                      <div className="text-[11px] text-zinc-400 font-sans mt-0.5">{task.description}</div>
-                      <div className="text-[10px] font-mono text-zinc-500 mt-1">
+                      <div className="text-[11px] text-zinc-700 font-sans mt-0.5 font-medium">{task.description}</div>
+                      <div className="text-[10px] font-mono text-zinc-600 mt-1 font-bold">
                         Category: {task.category} • Due: {formatDate(task.due_date)} • Assignee: {task.owner_name}
                       </div>
                     </div>
                   </div>
 
-                  <Badge variant={task.status === 'completed' ? 'lime' : 'neutral'}>
+                  <Badge variant={task.status === 'completed' ? 'green' : 'neutral'}>
                     {task.status.toUpperCase()}
                   </Badge>
                 </div>
@@ -756,37 +775,36 @@ export default function PersonProfilePage() {
       {/* TAB 7: TIMELINE & HR ACTIONS */}
       {activeTab === 'timeline' && (
         <div className="space-y-6">
-          <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo">
-            <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+          <div className="bg-white border-3 border-black p-5 shadow-neo">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-black">
               <div>
-                <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+                <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                   IMMUTABLE LIFECYCLE & HR ACTION STREAM
                 </h3>
-                <p className="text-xs text-zinc-400">Formal decisions, spot awards, transfers, and milestones</p>
+                <p className="text-xs text-zinc-600 font-sans font-medium">Formal decisions, spot awards, transfers, and milestones</p>
               </div>
-              <Button variant="cyan" size="sm" onClick={() => setIsAddHRActionModalOpen(true)}>
+              <Button variant="purple" size="sm" onClick={() => setIsAddHRActionModalOpen(true)}>
                 <Plus className="w-3.5 h-3.5 mr-1" /> LOG HR ACTION
               </Button>
             </div>
 
-            <div className="mt-5 space-y-4 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-[#262636]">
-              {/* Combine Lifecycle Events and HR Actions */}
+            <div className="mt-5 space-y-4 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-black">
               {[...lifecycleEvents, ...hrActions]
                 .sort((a, b) => new Date(b.created_at || (b as any).action_date).getTime() - new Date(a.created_at || (a as any).action_date).getTime())
                 .map((ev, idx) => (
                   <div key={idx} className="relative flex items-start gap-4 pl-8">
-                    <div className="absolute left-2 w-3.5 h-3.5 bg-[#CCFF00] border-2 border-black rounded-full mt-1 -translate-x-1/2 shadow-neo-sm" />
-                    <div className="p-3.5 bg-[#0D0D12] border border-[#262636] flex-1 space-y-1">
+                    <div className="absolute left-2 w-3.5 h-3.5 bg-[#00D06C] border-2 border-black rounded-full mt-1 -translate-x-1/2 shadow-neo-sm" />
+                    <div className="p-3.5 bg-[#FAF7EE] border-2 border-black shadow-neo-sm flex-1 space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="font-mono text-xs font-bold text-white">
+                        <span className="font-mono text-xs font-black text-black">
                           {ev.title}
                         </span>
-                        <span className="text-[10px] font-mono text-zinc-500">
+                        <span className="text-[10px] font-mono font-bold text-zinc-600">
                           {formatDate((ev as any).event_date || (ev as any).action_date)}
                         </span>
                       </div>
-                      <p className="text-xs text-zinc-300 font-sans">{ev.description}</p>
-                      <div className="text-[10px] font-mono text-zinc-500 pt-1 border-t border-zinc-800/60">
+                      <p className="text-xs text-zinc-700 font-sans font-medium">{ev.description}</p>
+                      <div className="text-[10px] font-mono font-bold text-zinc-600 pt-1 border-t border-black/10">
                         Actor: {(ev as any).actor_name || (ev as any).created_by || 'HR System'}
                       </div>
                     </div>
@@ -799,49 +817,49 @@ export default function PersonProfilePage() {
 
       {/* TAB 8: PERFORMANCE SNAPSHOTS */}
       {activeTab === 'performance' && (
-        <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black p-5 shadow-neo space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 PERFORMANCE REVIEWS & SNAPSHOTS
               </h3>
-              <p className="text-xs text-zinc-400">Quarterly ratings, achievements, and future goals</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Quarterly ratings, achievements, and future goals</p>
             </div>
-            <Button variant="primary" size="sm" onClick={() => setIsAddPerformanceModalOpen(true)}>
+            <Button variant="green" size="sm" onClick={() => setIsAddPerformanceModalOpen(true)}>
               <Plus className="w-3.5 h-3.5 mr-1" /> NEW SNAPSHOT
             </Button>
           </div>
 
           <div className="space-y-4">
             {performanceSnapshots.length === 0 ? (
-              <div className="p-8 text-center text-zinc-500 font-mono text-xs">No performance snapshots logged.</div>
+              <div className="p-8 text-center text-zinc-600 font-mono text-xs font-bold">No performance snapshots logged.</div>
             ) : (
               performanceSnapshots.map((snap) => (
-                <div key={snap.id} className="p-4 bg-[#0D0D12] border border-[#262636] space-y-3">
+                <div key={snap.id} className="p-4 bg-[#FAF7EE] border-2 border-black shadow-neo-sm space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-mono text-xs font-bold text-[#CCFF00] uppercase">
+                      <span className="font-mono text-xs font-black text-black uppercase bg-[#FFDE59] px-2 py-0.5 border border-black">
                         PERIOD: {snap.review_period}
                       </span>
-                      <div className="text-[11px] font-mono text-zinc-400">Reviewed on {formatDate(snap.review_date)}</div>
+                      <div className="text-[11px] font-mono text-zinc-600 font-bold mt-1">Reviewed on {formatDate(snap.review_date)}</div>
                     </div>
-                    <div className="flex items-center gap-1.5 font-mono text-sm font-bold bg-zinc-800 px-3 py-1 border border-zinc-700">
-                      RATING: <span className="text-[#CCFF00] text-base font-black">{snap.rating}/5</span>
+                    <div className="flex items-center gap-1.5 font-mono text-sm font-black bg-white px-3 py-1 border-2 border-black shadow-neo-sm">
+                      RATING: <span className="text-black bg-[#00D06C] px-1.5 py-0.2 border border-black">{snap.rating}/5</span>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-zinc-800 text-xs font-sans">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t-2 border-black/10 text-xs font-sans font-medium">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-zinc-400 block">KEY STRENGTHS</span>
-                      <p className="text-zinc-200 mt-0.5">{snap.strengths}</p>
+                      <span className="text-[10px] font-mono font-black text-black block">KEY STRENGTHS</span>
+                      <p className="text-zinc-700 mt-0.5">{snap.strengths}</p>
                     </div>
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-zinc-400 block">AREAS FOR GROWTH</span>
-                      <p className="text-zinc-200 mt-0.5">{snap.improvement_areas}</p>
+                      <span className="text-[10px] font-mono font-black text-black block">AREAS FOR GROWTH</span>
+                      <p className="text-zinc-700 mt-0.5">{snap.improvement_areas}</p>
                     </div>
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-zinc-400 block">NEXT PERIOD GOALS</span>
-                      <p className="text-zinc-200 mt-0.5">{snap.next_period_goals}</p>
+                      <span className="text-[10px] font-mono font-black text-black block">NEXT PERIOD GOALS</span>
+                      <p className="text-zinc-700 mt-0.5">{snap.next_period_goals}</p>
                     </div>
                   </div>
                 </div>
@@ -857,13 +875,14 @@ export default function PersonProfilePage() {
         onClose={() => setIsEditModalOpen(false)}
         title={`EDIT PROFILE // ${person.person_code}`}
         subtitle="Updating core employment records creates an immutable assignment audit"
+        headerColor="green"
         maxWidth="2xl"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsEditModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsEditModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleEditProfileSubmit}>
+            <Button variant="green" size="sm" onClick={handleEditProfileSubmit}>
               SAVE CHANGES
             </Button>
           </>
@@ -894,7 +913,7 @@ export default function PersonProfilePage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 border-t border-zinc-800">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 border-t-2 border-black/10">
             <Select
               label="Department"
               value={editFormData.department_id || ''}
@@ -928,13 +947,14 @@ export default function PersonProfilePage() {
         onClose={() => setIsUploadDocModalOpen(false)}
         title="STORE DOCUMENT IN PRIVATE VAULT"
         subtitle="Role-based visibility guards confidential contracts and records"
+        headerColor="purple"
         maxWidth="lg"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsUploadDocModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsUploadDocModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleUploadDocSubmit}>
+            <Button variant="purple" size="sm" onClick={handleUploadDocSubmit}>
               UPLOAD & COMMIT
             </Button>
           </>
@@ -1000,13 +1020,14 @@ export default function PersonProfilePage() {
         onClose={() => setIsAddHRActionModalOpen(false)}
         title="RECORD FORMAL HR ACTION"
         subtitle="Appends official recognition, advisory notes, or lifecycle decisions"
+        headerColor="pink"
         maxWidth="lg"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsAddHRActionModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsAddHRActionModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="cyan" size="sm" onClick={handleAddHRActionSubmit}>
+            <Button variant="pink" size="sm" onClick={handleAddHRActionSubmit}>
               LOG ACTION
             </Button>
           </>
@@ -1048,13 +1069,14 @@ export default function PersonProfilePage() {
         onClose={() => setIsAddPerformanceModalOpen(false)}
         title="RECORD PERFORMANCE REVIEW SNAPSHOT"
         subtitle="Captures quarterly rating and forward-looking goals"
+        headerColor="yellow"
         maxWidth="lg"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsAddPerformanceModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsAddPerformanceModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleAddPerformanceSubmit}>
+            <Button variant="yellow" size="sm" onClick={handleAddPerformanceSubmit}>
               SAVE SNAPSHOT
             </Button>
           </>

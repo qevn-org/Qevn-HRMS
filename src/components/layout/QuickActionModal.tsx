@@ -25,7 +25,7 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
       title: 'Add New Person',
       subtitle: 'Create employee, intern, or contractor master record',
       icon: <UserPlus className="w-5 h-5 text-black" />,
-      color: 'bg-[#CCFF00]',
+      color: 'bg-[#00D06C]',
       href: '/people?action=new',
       disabled: isEmployeeViewOnly,
     },
@@ -40,21 +40,21 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
       title: 'Request Leave / WFH',
       subtitle: 'Submit paid, casual, sick, or remote work request',
       icon: <CalendarDays className="w-5 h-5 text-black" />,
-      color: 'bg-[#06B6D4]',
+      color: 'bg-[#FF6B9D]',
       href: '/leave?action=new',
     },
     {
       title: 'Upload HR Document',
       subtitle: 'Store contracts, agreements, IDs, or certificates',
-      icon: <FileUp className="w-5 h-5 text-white" />,
-      color: 'bg-emerald-600',
+      icon: <FileUp className="w-5 h-5 text-black" />,
+      color: 'bg-[#38BDF8]',
       href: '/documents?action=upload',
     },
     {
       title: 'Batch Import Spreadsheet',
       subtitle: 'Migrate CSV/XLSX sheet of team records into HRMS',
       icon: <UploadCloud className="w-5 h-5 text-black" />,
-      color: 'bg-amber-400',
+      color: 'bg-[#FFDE59]',
       href: '/import',
       disabled: isEmployeeViewOnly,
     },
@@ -62,7 +62,7 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
       title: 'Generate Headcount Report',
       subtitle: 'Download real CSV, formatted Excel, or PDF audit report',
       icon: <BarChart3 className="w-5 h-5 text-white" />,
-      color: 'bg-[#F43F5E]',
+      color: 'bg-black',
       href: '/reports',
     },
   ];
@@ -73,15 +73,16 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
       onClose={onClose}
       title="OPERATIONAL QUICK ACTIONS"
       subtitle="Trigger high-frequency HR workflows across modules"
+      headerColor="pink"
       maxWidth="2xl"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
         {actions.map((act) => (
           <button
             key={act.title}
             disabled={act.disabled}
             onClick={() => handleAction(act.href)}
-            className={`flex items-start gap-3 p-3.5 bg-[#0D0D12] border-2 border-[#262636] hover:border-[#CCFF00] hover:shadow-neo-lime transition-all text-left group cursor-pointer ${
+            className={`flex items-start gap-3 p-3.5 bg-white border-2 border-black hover:bg-[#FFFDF5] hover:shadow-neo hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all text-left group cursor-pointer ${
               act.disabled ? 'opacity-40 cursor-not-allowed pointer-events-none' : ''
             }`}
           >
@@ -89,10 +90,10 @@ export function QuickActionModal({ isOpen, onClose }: QuickActionModalProps) {
               {act.icon}
             </div>
             <div>
-              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-white group-hover:text-[#CCFF00]">
+              <h4 className="font-mono text-xs font-black uppercase tracking-wider text-black group-hover:text-[#00D06C]">
                 {act.title}
               </h4>
-              <p className="text-[11px] text-zinc-400 font-sans mt-0.5 leading-snug">
+              <p className="text-[11px] text-zinc-600 font-sans font-medium mt-0.5 leading-snug">
                 {act.subtitle}
               </p>
             </div>

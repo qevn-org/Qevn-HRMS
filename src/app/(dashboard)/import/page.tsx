@@ -13,11 +13,9 @@ import {
   UploadCloud,
   FileSpreadsheet,
   CheckCircle2,
-  AlertTriangle,
   ArrowRight,
   ArrowLeft,
   Sparkles,
-  FileText,
   Users,
 } from 'lucide-react';
 
@@ -80,7 +78,6 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
 
   // Step 2 -> Step 3: Run Validation
   const handleProceedToValidation = () => {
-    // Check if required fields are mapped
     const missingRequired = mappings.filter((m) => m.required && !m.csvHeader);
     if (missingRequired.length > 0) {
       toast.error(`Please map required fields: ${missingRequired.map((m) => m.targetField).join(', ')}`);
@@ -120,22 +117,24 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
   return (
     <div className="space-y-6 pb-12 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="bg-[#121218] border-2 border-[#262636] p-5 shadow-neo">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 bg-[#CCFF00]" />
-          <span className="font-mono text-xs font-bold uppercase text-[#CCFF00] tracking-wider">
-            DATA MIGRATION WIZARD
+      <div className="bg-white border-3 border-black p-5 sm:p-6 shadow-neo">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="sticker-tag bg-[#FFDE59] text-black">
+            MIGRATION ENGINE
+          </span>
+          <span className="sticker-tag bg-[#00D06C] text-black">
+            CSV & XLSX
           </span>
         </div>
-        <h1 className="font-mono text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+        <h1 className="font-mono text-2xl sm:text-3xl font-black text-black tracking-tight mt-1 uppercase">
           SPREADSHEET EMPLOYEE IMPORT WIZARD
         </h1>
-        <p className="text-xs text-zinc-400 font-sans">
-          Migrate existing employee spreadsheets into QEVN HRMS with column mapping and strict row validation.
+        <p className="text-xs sm:text-sm text-zinc-700 font-sans font-medium">
+          Migrate existing employee spreadsheets into QEVN HRMS with column mapping and strict validation.
         </p>
 
         {/* Wizard Steps Tracker */}
-        <div className="mt-5 grid grid-cols-4 gap-2 font-mono text-xs">
+        <div className="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-xs">
           {[
             { num: 1, label: 'Upload Sheet' },
             { num: 2, label: 'Map Columns' },
@@ -144,16 +143,16 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
           ].map((s) => (
             <div
               key={s.num}
-              className={`p-2.5 border-2 flex items-center justify-between ${
+              className={`p-2.5 border-2 border-black flex items-center justify-between ${
                 step === s.num
-                  ? 'bg-[#CCFF00] text-black border-black font-black shadow-neo-sm'
+                  ? 'bg-[#00D06C] text-black font-black shadow-neo-sm'
                   : step > s.num
-                  ? 'bg-[#0D0D12] text-[#CCFF00] border-[#CCFF00]/40 font-bold'
-                  : 'bg-[#0D0D12] text-zinc-500 border-[#262636]'
+                  ? 'bg-[#FAF7EE] text-black font-bold'
+                  : 'bg-white text-zinc-500'
               }`}
             >
               <span>{s.num}. {s.label}</span>
-              {step > s.num && <CheckCircle2 className="w-4 h-4 text-[#CCFF00]" />}
+              {step > s.num && <CheckCircle2 className="w-4 h-4 text-black font-black" />}
             </div>
           ))}
         </div>
@@ -161,15 +160,15 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
 
       {/* STEP 1: UPLOAD FILE */}
       {step === 1 && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-8 text-center space-y-6">
-          <div className="border-2 border-dashed border-[#3B3B4F] hover:border-[#CCFF00] p-10 transition-colors bg-[#0D0D12] flex flex-col items-center justify-center">
-            <div className="w-16 h-16 bg-zinc-900 border-2 border-black flex items-center justify-center text-[#CCFF00] mb-4 shadow-neo-sm">
+        <div className="bg-white border-3 border-black shadow-neo p-8 text-center space-y-6">
+          <div className="border-3 border-dashed border-black hover:bg-[#FFFDF5] p-10 transition-colors bg-[#FAF7EE] flex flex-col items-center justify-center">
+            <div className="w-16 h-16 bg-[#FFDE59] border-3 border-black flex items-center justify-center text-black mb-4 shadow-neo-sm">
               <UploadCloud className="w-8 h-8" />
             </div>
-            <h3 className="font-mono text-base font-bold text-white uppercase">
+            <h3 className="font-mono text-base font-black text-black uppercase">
               SELECT CSV OR EXCEL (.XLSX) EMPLOYEE SHEET
             </h3>
-            <p className="text-xs text-zinc-400 max-w-md mt-1 font-sans">
+            <p className="text-xs text-zinc-700 max-w-md mt-1 font-sans font-medium">
               Upload your legacy employee master sheet to begin column mapping and automatic ID allocation.
             </p>
 
@@ -180,22 +179,22 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
                 onChange={handleFileUpload}
                 className="hidden"
               />
-              <Button variant="primary" size="md" className="pointer-events-none">
+              <Button variant="green" size="md" className="pointer-events-none">
                 <FileSpreadsheet className="w-4 h-4 mr-1.5" /> BROWSE FILE TO UPLOAD
               </Button>
             </label>
           </div>
 
-          <div className="p-4 bg-[#0A0A0E] border border-[#262636] flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+          <div className="p-4 bg-[#FAF7EE] border-2 border-black flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
             <div>
-              <div className="font-mono text-xs font-bold text-white uppercase">
+              <div className="font-mono text-xs font-black text-black uppercase">
                 NEED A TEST FILE?
               </div>
-              <div className="text-[11px] text-zinc-400 font-sans">
+              <div className="text-[11px] text-zinc-600 font-sans font-medium">
                 Load our verified 4-person multi-department sample dataset immediately.
               </div>
             </div>
-            <Button variant="secondary" size="sm" onClick={handleLoadSampleSheet}>
+            <Button variant="purple" size="sm" onClick={handleLoadSampleSheet}>
               <Sparkles className="w-3.5 h-3.5 mr-1" /> LOAD DEMO SPREADSHEET
             </Button>
           </div>
@@ -204,13 +203,13 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
 
       {/* STEP 2: COLUMN MAPPING */}
       {step === 2 && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-6 space-y-5">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-6 space-y-5">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 MAP SPREADSHEET HEADERS TO QEVN HRMS FIELDS
               </h3>
-              <p className="text-xs text-zinc-400">File: {file?.name} ({rawRows.length} rows detected)</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">File: {file?.name} ({rawRows.length} rows detected)</p>
             </div>
           </div>
 
@@ -218,17 +217,17 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
             {mappings.map((mapping, idx) => (
               <div
                 key={mapping.targetField}
-                className="p-3.5 bg-[#0D0D12] border border-[#262636] flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs"
+                className="p-3.5 bg-[#FAF7EE] border-2 border-black shadow-neo-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono text-xs"
               >
                 <div className="flex-1">
-                  <div className="text-white font-bold uppercase flex items-center gap-1.5">
+                  <div className="text-black font-black uppercase flex items-center gap-1.5">
                     <span>{mapping.targetField.replace(/_/g, ' ')}</span>
-                    {mapping.required && <span className="text-[#F43F5E]">*</span>}
+                    {mapping.required && <span className="text-[#FF4365]">*</span>}
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2 flex-1">
-                  <span className="text-zinc-500 text-[11px] hidden sm:inline">MAPS TO &rarr;</span>
+                  <span className="text-zinc-600 font-bold text-[11px] hidden sm:inline">MAPS TO &rarr;</span>
                   <select
                     value={mapping.csvHeader}
                     onChange={(e) => {
@@ -236,7 +235,7 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
                       updated[idx].csvHeader = e.target.value;
                       setMappings(updated);
                     }}
-                    className="w-full bg-[#121218] border-2 border-[#262636] text-white p-2 font-mono text-xs focus:border-[#CCFF00] focus:outline-hidden"
+                    className="w-full bg-white border-2 border-black text-black p-2 font-mono text-xs font-bold focus:outline-hidden"
                   >
                     <option value="">-- Ignore / Not Mapped --</option>
                     {headers.map((h) => (
@@ -250,11 +249,11 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
             ))}
           </div>
 
-          <div className="pt-4 border-t border-[#262636] flex items-center justify-between">
-            <Button variant="ghost" size="sm" onClick={() => setStep(1)}>
+          <div className="pt-4 border-t-2 border-black flex items-center justify-between">
+            <Button variant="white" size="sm" onClick={() => setStep(1)}>
               <ArrowLeft className="w-4 h-4 mr-1" /> Back
             </Button>
-            <Button variant="primary" size="sm" onClick={handleProceedToValidation}>
+            <Button variant="green" size="sm" onClick={handleProceedToValidation}>
               VALIDATE {rawRows.length} ROWS & PREVIEW <ArrowRight className="w-4 h-4 ml-1" />
             </Button>
           </div>
@@ -263,57 +262,57 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
 
       {/* STEP 3: VALIDATION & PREVIEW */}
       {step === 3 && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-6 space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-6 space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase tracking-wider text-white">
+              <h3 className="font-mono text-sm font-black uppercase tracking-wider text-black">
                 ROW VALIDATION PREVIEW & CONFLICT DETECTION
               </h3>
-              <p className="text-xs text-zinc-400">Review validation rules before writing to master database</p>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Review validation rules before writing to master database</p>
             </div>
             <div className="flex items-center gap-2 font-mono text-xs">
-              <Badge variant="lime">{validRowCount} VALID ROWS</Badge>
+              <Badge variant="green">{validRowCount} VALID ROWS</Badge>
               {errorRowCount > 0 && <Badge variant="rose">{errorRowCount} ERRORS</Badge>}
             </div>
           </div>
 
-          <div className="overflow-x-auto max-h-96 border border-[#262636]">
+          <div className="overflow-x-auto max-h-96 border-2 border-black bg-[#FCFAF5]">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-[#171722] border-b border-[#262636] text-zinc-400 sticky top-0 z-10">
+              <thead className="bg-[#FAF7EE] border-b-2 border-black text-black uppercase font-black sticky top-0 z-10">
                 <tr>
-                  <th className="py-2.5 px-3">ROW</th>
-                  <th className="py-2.5 px-3">FULL NAME</th>
-                  <th className="py-2.5 px-3">WORK EMAIL</th>
-                  <th className="py-2.5 px-3">WORKER TYPE</th>
-                  <th className="py-2.5 px-3">DEPARTMENT</th>
-                  <th className="py-2.5 px-3">STATUS</th>
+                  <th className="py-2.5 px-3 border-r border-black/20">ROW</th>
+                  <th className="py-2.5 px-3 border-r border-black/20">FULL NAME</th>
+                  <th className="py-2.5 px-3 border-r border-black/20">WORK EMAIL</th>
+                  <th className="py-2.5 px-3 border-r border-black/20">WORKER TYPE</th>
+                  <th className="py-2.5 px-3 border-r border-black/20">DEPARTMENT</th>
+                  <th className="py-2.5 px-3 border-r border-black/20">STATUS</th>
                   <th className="py-2.5 px-3">VALIDATION ISSUES</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#22222E]">
+              <tbody className="divide-y-2 divide-black/10">
                 {validationRows.map((vr) => (
                   <tr
                     key={vr.rowIndex}
-                    className={vr.isValid ? 'hover:bg-[#1A1A26]' : 'bg-rose-950/20 text-rose-300'}
+                    className={vr.isValid ? 'hover:bg-[#FFFDF5]' : 'bg-[#FFF0F3] text-black'}
                   >
-                    <td className="py-2.5 px-3 font-bold">{vr.rowIndex}</td>
-                    <td className="py-2.5 px-3 font-bold text-white">{vr.mappedData.full_name || '—'}</td>
-                    <td className="py-2.5 px-3 text-zinc-300">{vr.mappedData.work_email || '—'}</td>
-                    <td className="py-2.5 px-3 uppercase">{vr.mappedData.worker_type || '—'}</td>
-                    <td className="py-2.5 px-3">{vr.mappedData.department_name || '—'}</td>
-                    <td className="py-2.5 px-3">
-                      <Badge variant={vr.isValid ? 'lime' : 'rose'}>
+                    <td className="py-2.5 px-3 font-black border-r border-black/10">{vr.rowIndex}</td>
+                    <td className="py-2.5 px-3 font-black text-black border-r border-black/10">{vr.mappedData.full_name || '—'}</td>
+                    <td className="py-2.5 px-3 text-zinc-700 font-bold border-r border-black/10">{vr.mappedData.work_email || '—'}</td>
+                    <td className="py-2.5 px-3 uppercase font-bold border-r border-black/10">{vr.mappedData.worker_type || '—'}</td>
+                    <td className="py-2.5 px-3 border-r border-black/10">{vr.mappedData.department_name || '—'}</td>
+                    <td className="py-2.5 px-3 border-r border-black/10">
+                      <Badge variant={vr.isValid ? 'green' : 'rose'}>
                         {vr.isValid ? 'READY' : 'ERROR'}
                       </Badge>
                     </td>
-                    <td className="py-2.5 px-3 text-[11px]">
+                    <td className="py-2.5 px-3 text-[11px] font-bold">
                       {vr.errors.length > 0 && (
-                        <div className="text-rose-400 font-bold">{vr.errors.join('; ')}</div>
+                        <div className="text-[#FF4365] font-black">{vr.errors.join('; ')}</div>
                       )}
                       {vr.warnings.length > 0 && (
-                        <div className="text-amber-400">{vr.warnings.join('; ')}</div>
+                        <div className="text-[#8B5CF6] font-bold">{vr.warnings.join('; ')}</div>
                       )}
-                      {vr.isValid && <span className="text-emerald-400">All checks passed</span>}
+                      {vr.isValid && <span className="text-[#00D06C] font-black">All checks passed</span>}
                     </td>
                   </tr>
                 ))}
@@ -321,12 +320,12 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
             </table>
           </div>
 
-          <div className="pt-4 border-t border-[#262636] flex items-center justify-between">
-            <Button variant="ghost" size="sm" onClick={() => setStep(2)}>
+          <div className="pt-4 border-t-2 border-black flex items-center justify-between">
+            <Button variant="white" size="sm" onClick={() => setStep(2)}>
               <ArrowLeft className="w-4 h-4 mr-1" /> Re-map Columns
             </Button>
             <Button
-              variant="primary"
+              variant="green"
               size="sm"
               disabled={validRowCount === 0}
               onClick={handleCommitImport}
@@ -339,38 +338,38 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
 
       {/* STEP 4: IMPORT COMPLETED */}
       {step === 4 && importResult && (
-        <div className="bg-[#121218] border-2 border-[#CCFF00] shadow-neo-lime p-8 text-center space-y-6">
-          <div className="w-16 h-16 bg-[#CCFF00] border-2 border-black mx-auto flex items-center justify-center text-black shadow-neo-sm">
+        <div className="bg-white border-3 border-black shadow-neo-lg p-8 text-center space-y-6">
+          <div className="w-16 h-16 bg-[#00D06C] border-3 border-black mx-auto flex items-center justify-center text-black shadow-neo-sm">
             <CheckCircle2 className="w-10 h-10" />
           </div>
 
           <div>
-            <h2 className="font-mono text-2xl font-black text-white uppercase tracking-tight">
+            <h2 className="font-mono text-2xl font-black text-black uppercase tracking-tight">
               IMPORT COMPLETED SUCCESSFULLY
             </h2>
-            <p className="text-xs text-zinc-400 font-sans mt-1">
+            <p className="text-xs text-zinc-700 font-sans mt-1 font-medium">
               Created {importResult.successCount} master records with initial employment logs and leave allocations.
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 max-w-md mx-auto font-mono text-xs">
-            <div className="p-3 bg-[#0D0D12] border border-emerald-500/40">
-              <span className="text-zinc-500 block text-[10px]">IMPORTED RECORDS</span>
-              <span className="font-mono text-2xl font-black text-[#CCFF00]">
+            <div className="p-3 bg-[#E8FBF0] border-2 border-black shadow-neo-sm">
+              <span className="text-zinc-600 font-bold block text-[10px]">IMPORTED RECORDS</span>
+              <span className="font-mono text-2xl font-black text-black">
                 {importResult.successCount}
               </span>
             </div>
-            <div className="p-3 bg-[#0D0D12] border border-[#262636]">
-              <span className="text-zinc-500 block text-[10px]">AUDIT TRAIL</span>
-              <span className="font-mono text-sm font-bold text-white">COMMITTED</span>
+            <div className="p-3 bg-[#FAF7EE] border-2 border-black shadow-neo-sm">
+              <span className="text-zinc-600 font-bold block text-[10px]">AUDIT TRAIL</span>
+              <span className="font-mono text-sm font-black text-black">COMMITTED</span>
             </div>
           </div>
 
           <div className="pt-4 flex items-center justify-center gap-3">
-            <Button variant="primary" size="md" onClick={() => router.push('/people')}>
+            <Button variant="green" size="md" onClick={() => router.push('/people')}>
               <Users className="w-4 h-4 mr-1.5" /> VIEW PEOPLE DIRECTORY
             </Button>
-            <Button variant="outline" size="md" onClick={() => setStep(1)}>
+            <Button variant="white" size="md" onClick={() => setStep(1)}>
               IMPORT ANOTHER SHEET
             </Button>
           </div>

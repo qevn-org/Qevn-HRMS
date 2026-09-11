@@ -9,20 +9,15 @@ import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
 import { Tabs } from '@/components/ui/Tabs';
 import { Input, Select, Textarea } from '@/components/ui/FormControls';
-import { formatDate } from '@/lib/utils';
 import { useAuth } from '@/lib/context/AuthContext';
 import { toast } from 'sonner';
 import {
-  Settings,
   Building,
   Briefcase,
   CalendarDays,
   FileCheck,
   RotateCcw,
   Plus,
-  ShieldAlert,
-  Sparkles,
-  Calendar,
 } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -159,19 +154,21 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6 pb-12">
       {/* Top Banner */}
-      <div className="bg-[#121218] border-2 border-[#262636] p-4 sm:p-5 shadow-neo flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white border-3 border-black p-5 sm:p-6 shadow-neo flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 bg-[#CCFF00]" />
-            <span className="font-mono text-xs font-bold uppercase text-[#CCFF00] tracking-wider">
-              ORGANIZATION POLICIES & CONFIGURATION
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="sticker-tag bg-[#38BDF8] text-black">
+              CONFIGURATION
+            </span>
+            <span className="sticker-tag bg-[#00D06C] text-black">
+              ORGANIZATION POLICIES
             </span>
           </div>
-          <h1 className="font-mono text-xl sm:text-2xl font-black text-white tracking-tight mt-0.5">
+          <h1 className="font-mono text-2xl sm:text-3xl font-black text-black tracking-tight mt-1 uppercase">
             SETTINGS & BUSINESS POLICIES
           </h1>
-          <p className="text-xs text-zinc-400 font-sans">
-            Configurable departments, designations, leave types, and required document policies.
+          <p className="text-xs sm:text-sm text-zinc-700 font-sans font-medium">
+            Configurable departments, designations, leave policies, and required document rules.
           </p>
         </div>
 
@@ -189,14 +186,14 @@ export default function SettingsPage() {
 
       {/* TAB 1: DEPARTMENTS */}
       {activeTab === 'departments' && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase text-white">DEPARTMENTS ({departments.length})</h3>
-              <p className="text-xs text-zinc-400">Organizational units across QEVN</p>
+              <h3 className="font-mono text-sm font-black uppercase text-black">DEPARTMENTS ({departments.length})</h3>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Organizational units across QEVN</p>
             </div>
             {canManageSettings && (
-              <Button variant="primary" size="sm" onClick={() => setIsDeptModalOpen(true)}>
+              <Button variant="green" size="sm" onClick={() => setIsDeptModalOpen(true)}>
                 <Plus className="w-3.5 h-3.5 mr-1" /> ADD DEPARTMENT
               </Button>
             )}
@@ -204,12 +201,12 @@ export default function SettingsPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {departments.map((d) => (
-              <div key={d.id} className="p-4 bg-[#0D0D12] border border-[#262636] flex items-center justify-between">
+              <div key={d.id} className="p-4 bg-[#FAF7EE] border-2 border-black shadow-neo-sm flex items-center justify-between">
                 <div>
-                  <div className="font-mono text-xs font-bold text-white">{d.name}</div>
-                  <div className="text-[10px] font-mono text-[#CCFF00] mt-0.5">CODE: {d.code}</div>
+                  <div className="font-mono text-xs font-black text-black">{d.name}</div>
+                  <div className="text-[10px] font-mono text-black font-black bg-[#FFDE59] px-1.5 py-0.2 border border-black mt-1 inline-block">CODE: {d.code}</div>
                 </div>
-                <Badge variant={d.is_active ? 'lime' : 'neutral'}>ACTIVE</Badge>
+                <Badge variant={d.is_active ? 'green' : 'neutral'}>ACTIVE</Badge>
               </div>
             ))}
           </div>
@@ -218,14 +215,14 @@ export default function SettingsPage() {
 
       {/* TAB 2: DESIGNATIONS */}
       {activeTab === 'designations' && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase text-white">JOB DESIGNATIONS ({designations.length})</h3>
-              <p className="text-xs text-zinc-400">Standardized role titles mapped to departments</p>
+              <h3 className="font-mono text-sm font-black uppercase text-black">JOB DESIGNATIONS ({designations.length})</h3>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Standardized role titles mapped to departments</p>
             </div>
             {canManageSettings && (
-              <Button variant="primary" size="sm" onClick={() => setIsDesigModalOpen(true)}>
+              <Button variant="green" size="sm" onClick={() => setIsDesigModalOpen(true)}>
                 <Plus className="w-3.5 h-3.5 mr-1" /> ADD DESIGNATION
               </Button>
             )}
@@ -235,10 +232,10 @@ export default function SettingsPage() {
             {designations.map((desig) => {
               const dept = departments.find((d) => d.id === desig.department_id);
               return (
-                <div key={desig.id} className="p-4 bg-[#0D0D12] border border-[#262636] flex items-center justify-between">
+                <div key={desig.id} className="p-4 bg-[#FAF7EE] border-2 border-black shadow-neo-sm flex items-center justify-between">
                   <div>
-                    <div className="font-mono text-xs font-bold text-white">{desig.name}</div>
-                    <div className="text-[10px] font-mono text-zinc-400 mt-0.5">{dept?.name || 'General Team'}</div>
+                    <div className="font-mono text-xs font-black text-black">{desig.name}</div>
+                    <div className="text-[10px] font-mono text-zinc-600 font-bold mt-0.5">{dept?.name || 'General Team'}</div>
                   </div>
                   <Badge variant="cyan">ROLE</Badge>
                 </div>
@@ -250,14 +247,14 @@ export default function SettingsPage() {
 
       {/* TAB 3: LEAVE POLICIES */}
       {activeTab === 'leave_policies' && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase text-white">LEAVE POLICIES & TYPES ({leaveTypes.length})</h3>
-              <p className="text-xs text-zinc-400">Configurable annual quota and approval rules</p>
+              <h3 className="font-mono text-sm font-black uppercase text-black">LEAVE POLICIES & TYPES ({leaveTypes.length})</h3>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Configurable annual quota and approval rules</p>
             </div>
             {canManageSettings && (
-              <Button variant="primary" size="sm" onClick={() => setIsLeaveTypeModalOpen(true)}>
+              <Button variant="green" size="sm" onClick={() => setIsLeaveTypeModalOpen(true)}>
                 <Plus className="w-3.5 h-3.5 mr-1" /> ADD LEAVE TYPE
               </Button>
             )}
@@ -265,18 +262,18 @@ export default function SettingsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {leaveTypes.map((lt) => (
-              <div key={lt.id} className="p-4 bg-[#0D0D12] border border-[#262636] space-y-2">
+              <div key={lt.id} className="p-4 bg-[#FAF7EE] border-2 border-black shadow-neo-sm space-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="font-mono text-xs font-bold text-white flex items-center gap-2">
+                  <div className="font-mono text-xs font-black text-black flex items-center gap-2">
                     <span>{lt.name}</span>
-                    <span className="text-[10px] text-zinc-500">[{lt.code}]</span>
+                    <span className="text-[10px] text-zinc-600 font-bold">[{lt.code}]</span>
                   </div>
-                  <Badge variant={lt.is_paid ? 'lime' : 'neutral'}>
+                  <Badge variant={lt.is_paid ? 'green' : 'neutral'}>
                     {lt.is_paid ? 'PAID' : 'UNPAID'}
                   </Badge>
                 </div>
-                <p className="text-xs text-zinc-400 font-sans">{lt.description}</p>
-                <div className="pt-2 border-t border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-400">
+                <p className="text-xs text-zinc-700 font-sans font-medium">{lt.description}</p>
+                <div className="pt-2 border-t-2 border-black/10 flex items-center justify-between text-[10px] font-mono text-zinc-700 font-bold">
                   <span>ANNUAL QUOTA: {lt.default_days_per_year} DAYS</span>
                   <span>APPROVAL: {lt.requires_approval ? 'MANDATORY' : 'AUTO'}</span>
                 </div>
@@ -288,22 +285,22 @@ export default function SettingsPage() {
 
       {/* TAB 4: DOCUMENT REQUIREMENTS */}
       {activeTab === 'document_rules' && (
-        <div className="bg-[#121218] border-2 border-[#262636] shadow-neo p-5 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-[#262636]">
+        <div className="bg-white border-3 border-black shadow-neo p-5 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b-2 border-black">
             <div>
-              <h3 className="font-mono text-sm font-bold uppercase text-white">DOCUMENT COMPLIANCE POLICIES ({docReqs.length})</h3>
-              <p className="text-xs text-zinc-400">Mandatory document checklist rules per worker type</p>
+              <h3 className="font-mono text-sm font-black uppercase text-black">DOCUMENT COMPLIANCE POLICIES ({docReqs.length})</h3>
+              <p className="text-xs text-zinc-600 font-sans font-medium">Mandatory document checklist rules per worker type</p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             {docReqs.map((req) => (
-              <div key={req.id} className="p-3.5 bg-[#0D0D12] border border-[#262636] flex items-center justify-between">
+              <div key={req.id} className="p-3.5 bg-[#FAF7EE] border-2 border-black shadow-neo-sm flex items-center justify-between">
                 <div>
-                  <div className="font-mono text-xs font-bold text-white">{req.document_type}</div>
-                  <div className="text-[10px] font-mono text-zinc-400">Category: {req.category}</div>
+                  <div className="font-mono text-xs font-black text-black">{req.document_type}</div>
+                  <div className="text-[10px] font-mono text-zinc-600 font-bold">Category: {req.category}</div>
                 </div>
-                <Badge variant={req.worker_type === 'employee' ? 'lime' : req.worker_type === 'intern' ? 'violet' : 'amber'}>
+                <Badge variant={req.worker_type === 'employee' ? 'green' : req.worker_type === 'intern' ? 'purple' : 'amber'}>
                   {req.worker_type.toUpperCase()}
                 </Badge>
               </div>
@@ -318,13 +315,14 @@ export default function SettingsPage() {
         onClose={() => setIsDeptModalOpen(false)}
         title="ADD DEPARTMENT"
         subtitle="Registers new organizational department"
+        headerColor="green"
         maxWidth="md"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsDeptModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsDeptModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleAddDepartmentSubmit}>
+            <Button variant="green" size="sm" onClick={handleAddDepartmentSubmit}>
               CREATE DEPARTMENT
             </Button>
           </>
@@ -354,13 +352,14 @@ export default function SettingsPage() {
         onClose={() => setIsDesigModalOpen(false)}
         title="ADD DESIGNATION / JOB TITLE"
         subtitle="Defines job title role mapped to department"
+        headerColor="green"
         maxWidth="md"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsDesigModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsDesigModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleAddDesignationSubmit}>
+            <Button variant="green" size="sm" onClick={handleAddDesignationSubmit}>
               CREATE DESIGNATION
             </Button>
           </>
@@ -389,13 +388,14 @@ export default function SettingsPage() {
         onClose={() => setIsLeaveTypeModalOpen(false)}
         title="CREATE LEAVE POLICY TYPE"
         subtitle="Configures balance tracking and approval requirements"
+        headerColor="green"
         maxWidth="md"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsLeaveTypeModalOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsLeaveTypeModalOpen(false)}>
               CANCEL
             </Button>
-            <Button variant="primary" size="sm" onClick={handleAddLeaveTypeSubmit}>
+            <Button variant="green" size="sm" onClick={handleAddLeaveTypeSubmit}>
               CREATE POLICY
             </Button>
           </>
@@ -440,10 +440,11 @@ export default function SettingsPage() {
         onClose={() => setIsResetConfirmOpen(false)}
         title="CONFIRM SYSTEM SEED RESET"
         subtitle="Restores complete demo personas, historical attendance, and documents"
+        headerColor="pink"
         maxWidth="sm"
         footer={
           <>
-            <Button variant="ghost" size="sm" onClick={() => setIsResetConfirmOpen(false)}>
+            <Button variant="white" size="sm" onClick={() => setIsResetConfirmOpen(false)}>
               CANCEL
             </Button>
             <Button variant="danger" size="sm" onClick={handleResetDataConfirm}>
@@ -452,7 +453,7 @@ export default function SettingsPage() {
           </>
         }
       >
-        <div className="p-3 bg-rose-500/10 border border-rose-500/40 text-rose-300 font-mono text-xs">
+        <div className="p-3 bg-red-100 border-2 border-black text-black font-mono text-xs font-bold">
           This will reset local database storage to the authentic 20+ QEVN demo dataset.
         </div>
       </Modal>

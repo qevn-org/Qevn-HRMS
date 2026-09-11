@@ -15,19 +15,19 @@ export function MaximalistShell({ children }: { children: React.ReactNode }) {
   const [isQuickActionOpen, setIsQuickActionOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#09090D] text-white flex flex-col font-sans selection:bg-[#CCFF00] selection:text-black">
-      {/* Global Toaster with maximalist neo-brutalist styling */}
+    <div className="min-h-screen bg-[#FAF7EE] text-black flex flex-col font-sans selection:bg-[#00D06C] selection:text-black">
+      {/* Global Toaster with retro editorial neo-brutalist styling */}
       <Toaster
         position="top-right"
         toastOptions={{
           style: {
-            background: '#121218',
-            border: '2px solid #CCFF00',
-            color: '#FFFFFF',
+            background: '#FFFFFF',
+            border: '3px solid #000000',
+            color: '#000000',
             fontFamily: 'ui-monospace, monospace',
-            fontWeight: 'bold',
+            fontWeight: '900',
             borderRadius: '0px',
-            boxShadow: '4px 4px 0px 0px #000000',
+            boxShadow: '6px 6px 0px 0px #000000',
           },
         }}
       />
@@ -48,8 +48,8 @@ export function MaximalistShell({ children }: { children: React.ReactNode }) {
           onClose={() => setIsSidebarOpen(false)}
         />
 
-        {/* Content Viewport */}
-        <main className="flex-1 min-w-0 bg-[#09090D] bg-grid-pattern p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+        {/* Content Viewport on Graph Paper Notebook Grid Canvas */}
+        <main className="flex-1 min-w-0 bg-notebook-grid p-4 sm:p-6 lg:p-8 overflow-x-hidden">
           {children}
         </main>
       </div>
