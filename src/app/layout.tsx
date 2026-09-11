@@ -9,6 +9,14 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mon
 export const metadata: Metadata = {
   title: 'QEVN HRMS — People Operations Operating System',
   description: 'Production-ready Human Resource Management System for QEVN with Attendance, Leave, Documents, Lifecycle, and Analytics.',
+  icons: {
+    icon: [
+      { url: '/icon.png', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    shortcut: '/icon.png',
+    apple: '/apple-icon.png',
+  },
 };
 
 export default function RootLayout({
@@ -17,8 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
-      <body className="bg-[#09090D] text-white font-sans antialiased min-h-screen">
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
+      </head>
+      <body className="bg-[#FAF7EE] text-black font-sans antialiased min-h-screen selection:bg-[#00D06C] selection:text-black">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
