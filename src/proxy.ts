@@ -1,6 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
-import { getRoleFromUser, ROLE_PROTECTED_ROUTES } from '@/lib/auth/roles';
+import { getRoleFromUser, hasProvisionedRole, ROLE_PROTECTED_ROUTES } from '@/lib/auth/roles';
 
 const PUBLIC_PATHS = ['/login'];
 
@@ -35,6 +35,14 @@ export async function proxy(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Authenticated but never provisioned an HRMS role (e.g. self-registered): deny and end the session.
+  if (user && !hasProvisionedRole(user)) {
+    await supabase.auth.signOut();
+    const denied = NextResponse.redirect(new URL('/login', request.url));
+    response.cookies.getAll().forEach((c) => denied.cookies.set(c));
+    return denied;
+  }
 
   const isPublic = PUBLIC_PATHS.includes(pathname);
 

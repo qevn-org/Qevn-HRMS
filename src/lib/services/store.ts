@@ -73,6 +73,7 @@ class HRMSDataStore {
   private state: DataStoreState;
   private listeners: Set<() => void> = new Set();
   private initialized = false;
+  private storageKey: string | null = null;
 
   constructor() {
     this.state = {
@@ -100,27 +101,77 @@ class HRMSDataStore {
     };
   }
 
+  private seedState(): DataStoreState {
+    return {
+      persons: [...initialPersons],
+      departments: [...initialDepartments],
+      designations: [...initialDesignations],
+      employmentTypes: [...initialEmploymentTypes],
+      employmentRecords: [...initialEmploymentRecords],
+      attendance: [...initialAttendanceRecords],
+      leaveTypes: [...initialLeaveTypes],
+      leaveBalances: [...initialLeaveBalances],
+      leaveRequests: [...initialLeaveRequests],
+      holidays: [...initialHolidays],
+      documents: [...initialDocuments],
+      documentRequirements: [...initialDocumentRequirements],
+      onboardingTemplates: [...initialOnboardingTemplates],
+      onboardingTasks: [...initialOnboardingTasks],
+      lifecycleEvents: [...initialLifecycleEvents],
+      hrActions: [...initialHRActions],
+      performanceSnapshots: [],
+      auditLogs: [...initialAuditLogs],
+      notifications: [...initialNotifications],
+      userProfiles: [...initialUserProfiles],
+      currentRole: 'employee',
+    };
+  }
+
+  /** Kept for call-site compatibility; data is loaded per user by bindUser(). */
   public init() {
-    if (typeof window === 'undefined' || this.initialized) return;
+    this.initialized = true;
+  }
+
+  /**
+   * Binds the store to the signed-in user. Data is stored under a per-user key, so a
+   * different account on the same browser profile never sees it. Passing null (signed
+   * out) drops all in-memory data and disables persistence.
+   */
+  public bindUser(userId: string | null) {
+    if (typeof window === 'undefined') return;
+    const nextKey = userId ? `${STORAGE_KEY_PREFIX}state:${userId}` : null;
+    if (nextKey === this.storageKey && this.initialized) return;
+
+    const role = this.state.currentRole;
+    this.storageKey = nextKey;
+    this.state = this.seedState();
+    this.state.currentRole = role;
+    this.initialized = true;
 
     try {
-      const stored = localStorage.getItem(`${STORAGE_KEY_PREFIX}state`);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        this.state = { ...this.state, ...parsed };
-      } else {
-        this.persist();
+      // Legacy single shared key (data of unknown owner): remove it.
+      localStorage.removeItem(`${STORAGE_KEY_PREFIX}state`);
+      if (nextKey) {
+        const stored = localStorage.getItem(nextKey);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+            this.state = { ...this.state, ...parsed, currentRole: role };
+          }
+        }
       }
     } catch {
-      // fallback to memory
+      // fallback to empty in-memory state
     }
-    this.initialized = true;
+    this.notify();
   }
 
   private persist() {
     if (typeof window === 'undefined') return;
     try {
-      localStorage.setItem(`${STORAGE_KEY_PREFIX}state`, JSON.stringify(this.state));
+      if (this.storageKey) {
+        localStorage.setItem(this.storageKey, JSON.stringify(this.state));
+      }
       this.notify();
     } catch {
       // Storage quota or private mode

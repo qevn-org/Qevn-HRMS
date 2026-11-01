@@ -12,15 +12,21 @@ export interface ExportDataPayload {
   reportCategory: string;
 }
 
+/** Neutralise spreadsheet formula injection: cells starting with = + - @ tab or CR become inert text. */
+export function sanitizeCell(value: unknown): string {
+  const str = String(value ?? '');
+  return /^[=+\-@\t\r]/.test(str) ? `'${str}` : str;
+}
+
 export const exportService = {
   exportToCSV(payload: ExportDataPayload, actorName: string = 'HR Admin') {
     const csvContent = [
-      payload.headers.join(','),
+      payload.headers.map(sanitizeCell).join(','),
       ...payload.rows.map((row) =>
         row
           .map((cell) => {
-            const str = String(cell ?? '');
-            return str.includes(',') || str.includes('"') || str.includes('\n')
+            const str = typeof cell === 'number' ? String(cell) : sanitizeCell(cell);
+            return str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')
               ? `"${str.replace(/"/g, '""')}"`
               : str;
           })
@@ -51,8 +57,8 @@ export const exportService = {
       [`QEVN HRMS — ${payload.title.toUpperCase()}`],
       [`Generated: ${format(new Date(), 'dd MMM yyyy, HH:mm')}`],
       [], // blank row
-      payload.headers,
-      ...payload.rows,
+      payload.headers.map(sanitizeCell),
+      ...payload.rows.map((row) => row.map((cell) => (typeof cell === 'number' ? cell : sanitizeCell(cell)))),
     ];
 
     const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);

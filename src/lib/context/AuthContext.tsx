@@ -6,7 +6,7 @@ import { UserProfile, RoleName, NotificationItem } from '@/types/database';
 import { hrmsStore } from '@/lib/services/store';
 import { createClient } from '@/lib/supabase/client';
 import { Session, User as SupabaseUser } from '@supabase/supabase-js';
-import { getRoleFromUser } from '@/lib/auth/roles';
+import { getRoleFromUser, hasProvisionedRole } from '@/lib/auth/roles';
 
 interface AuthContextType {
   user: UserProfile;
@@ -55,9 +55,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSession(newSession);
     if (user) {
       const profile = toProfile(user);
+      hrmsStore.bindUser(profile.id);
       setCurrentProfile(profile);
       hrmsStore.setCurrentRole(profile.role);
     } else {
+      hrmsStore.bindUser(null);
       setCurrentProfile(null);
       hrmsStore.setCurrentRole('employee');
     }
@@ -71,7 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         // getUser() verifies the token with the Supabase Auth server.
         const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
+        if (user && hasProvisionedRole(user)) {
           const { data: { session: s } } = await supabase.auth.getSession();
           applyUser(user, s);
         } else {
@@ -86,7 +88,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      applyUser(newSession?.user ?? null, newSession);
+      const u = newSession?.user ?? null;
+      applyUser(u && hasProvisionedRole(u) ? u : null, u && hasProvisionedRole(u) ? newSession : null);
     });
 
     const unsubscribeStore = hrmsStore.subscribe(() => {
@@ -113,6 +116,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
     if (error || !data.user) {
       // Deliberately generic: do not reveal whether the account exists.
+      return { success: false, error: 'Invalid email or password.' };
+    }
+    if (!hasProvisionedRole(data.user)) {
+      await supabase.auth.signOut();
       return { success: false, error: 'Invalid email or password.' };
     }
     applyUser(data.user, data.session);
