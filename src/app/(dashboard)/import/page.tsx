@@ -48,32 +48,10 @@ export default function SpreadsheetImportPage() {
       setStep(2);
       toast.success(`Parsed ${parsed.rows.length} rows and ${parsed.headers.length} columns`);
     } catch {
-      toast.error('Failed to parse spreadsheet. Please ensure CSV or XLSX format.');
+      toast.error('Failed to parse spreadsheet. Please upload a valid .csv file (max 5 MB).');
     } finally {
       setIsProcessing(false);
     }
-  };
-
-  // Load Built-in Demo Spreadsheet
-  const handleLoadSampleSheet = () => {
-    const sampleCsv = `Full Name,Work Email,Phone,Worker Type,Department,Designation,Joining Date,Person Code,Work Location,Remote Status
-Kenji Sato,kenji.sato@qevn.io,+81 90 5555 1111,employee,Engineering & Tech,Full Stack Engineer,2026-09-01,QEVN-021,Tokyo Hub,hybrid
-Ananya Roy,ananya.roy@qevn.io,+91 98765 11223,intern,Product & Design,UX Research Intern,2026-09-01,QEVN-022,Bangalore Tech Center,office
-Liam Gallagher,liam.gallagher@qevn.io,+44 7700 112233,contractor,Engineering & Tech,DevOps Contractor,2026-08-15,QEVN-023,London Hub,remote
-Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Account Executive,2026-09-10,QEVN-024,Dubai Tech Hub,hybrid`;
-
-    const blob = new Blob([sampleCsv], { type: 'text/csv' });
-    const sampleFile = new File([blob], 'sample_qevn_employees.csv', { type: 'text/csv' });
-
-    importService.parseFile(sampleFile).then((parsed) => {
-      setFile(sampleFile);
-      setHeaders(parsed.headers);
-      setRawRows(parsed.rows);
-      const smartMappings = importService.getSmartInitialMappings(parsed.headers);
-      setMappings(smartMappings);
-      setStep(2);
-      toast.success('Loaded sample migration spreadsheet with 4 employee rows');
-    });
   };
 
   // Step 2 -> Step 3: Run Validation
@@ -123,7 +101,7 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
             MIGRATION ENGINE
           </span>
           <span className="sticker-tag bg-[#00D06C] text-black">
-            CSV & XLSX
+            CSV
           </span>
         </div>
         <h1 className="font-mono text-2xl sm:text-3xl font-black text-black tracking-tight mt-1 uppercase">
@@ -166,7 +144,7 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
               <UploadCloud className="w-8 h-8" />
             </div>
             <h3 className="font-mono text-base font-black text-black uppercase">
-              SELECT CSV OR EXCEL (.XLSX) EMPLOYEE SHEET
+              SELECT CSV EMPLOYEE SHEET
             </h3>
             <p className="text-xs text-zinc-700 max-w-md mt-1 font-sans font-medium">
               Upload your legacy employee master sheet to begin column mapping and automatic ID allocation.
@@ -175,7 +153,7 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
             <label className="mt-5 inline-block cursor-pointer">
               <input
                 type="file"
-                accept=".csv, .xlsx, .xls"
+                accept=".csv"
                 onChange={handleFileUpload}
                 className="hidden"
               />
@@ -183,20 +161,6 @@ Soraya Haddad,soraya.haddad@qevn.io,+971 50 888 7777,employee,Sales & Growth,Acc
                 <FileSpreadsheet className="w-4 h-4 mr-1.5" /> BROWSE FILE TO UPLOAD
               </Button>
             </label>
-          </div>
-
-          <div className="p-4 bg-[#FAF7EE] border-2 border-black flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
-            <div>
-              <div className="font-mono text-xs font-black text-black uppercase">
-                NEED A TEST FILE?
-              </div>
-              <div className="text-[11px] text-zinc-600 font-sans font-medium">
-                Load our verified 4-person multi-department sample dataset immediately.
-              </div>
-            </div>
-            <Button variant="purple" size="sm" onClick={handleLoadSampleSheet}>
-              <Sparkles className="w-3.5 h-3.5 mr-1" /> LOAD DEMO SPREADSHEET
-            </Button>
           </div>
         </div>
       )}

@@ -116,7 +116,7 @@ export const documentService = {
   generateSignedDownloadUrl(documentId: string): string {
     const doc = hrmsStore.getDocuments().find((d) => d.id === documentId);
     if (!doc) return '#';
-    // For demo or Supabase storage, provide a clean download simulation or storage URL
-    return doc.file_url || `https://demo-storage.qevn.io/private/${doc.storage_path}?token=exp_${Date.now() + 3600}`;
+    // No fabricated URLs: only a real stored file URL is ever returned.
+    return doc.file_url || '#';
   }
 };

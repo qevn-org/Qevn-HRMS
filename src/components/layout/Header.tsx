@@ -35,8 +35,7 @@ export function Header({
   onToggleSidebar,
   onOpenNotifications,
 }: HeaderProps) {
-  const { user, activeRole, setActiveRole, unreadNotificationCount, logout } = useAuth();
-  const [isRoleMenuOpen, setIsRoleMenuOpen] = useState(false);
+  const { user, activeRole, unreadNotificationCount, logout } = useAuth();
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const roleOptions: { role: RoleName; label: string; icon: React.ReactNode; color: string }[] = [
@@ -126,55 +125,20 @@ export function Header({
           )}
         </button>
 
-        {/* Live Role Switcher */}
-        <div className="relative">
-          <button
-            onClick={() => {
-              setIsRoleMenuOpen(!isRoleMenuOpen);
-              setIsUserMenuOpen(false);
-            }}
-            className="flex items-center gap-2 bg-white border-2 border-black hover:bg-[#FAF7EE] p-1.5 pr-2.5 transition-all shadow-neo-sm cursor-pointer"
-            title="Switch Simulated Role"
-          >
-            <div className={`p-1 font-mono text-[10px] font-black border-2 border-black ${currentRoleConfig.color}`}>
-              {currentRoleConfig.icon}
-            </div>
-            <div className="text-left hidden xl:block">
-              <span className="text-[9px] text-neutral-500 font-mono font-bold block leading-none">ROLE</span>
-              <span className="text-xs font-mono font-black text-black tracking-wide leading-tight">
-                {currentRoleConfig.label}
-              </span>
-            </div>
-          </button>
-
-          {/* Role Dropdown */}
-          {isRoleMenuOpen && (
-            <div className="absolute right-0 mt-2 w-60 bg-white border-3 border-black shadow-neo-lg z-50 p-2 text-black">
-              <div className="px-2.5 py-1.5 bg-[#FAF7EE] border-2 border-black text-[10px] font-mono font-black text-black uppercase tracking-wider flex items-center justify-between mb-1.5">
-                <span>SWITCH ROLE VIEW</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#8B5CF6]" />
-              </div>
-              <div className="space-y-1">
-                {roleOptions.map((opt) => (
-                  <button
-                    key={opt.role}
-                    onClick={() => {
-                      setActiveRole(opt.role);
-                      setIsRoleMenuOpen(false);
-                    }}
-                    className={`w-full flex items-center gap-2 px-2.5 py-2 font-mono text-xs font-black text-left transition-colors cursor-pointer border-2 ${
-                      activeRole === opt.role
-                        ? 'bg-[#00D06C] text-black border-black shadow-neo-sm'
-                        : 'bg-white text-neutral-800 border-transparent hover:border-black hover:bg-[#FAF7EE]'
-                    }`}
-                  >
-                    <span className={`p-1 border border-black ${opt.color}`}>{opt.icon}</span>
-                    <span>{opt.label}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+        {/* Role badge (read-only; roles are assigned server-side) */}
+        <div
+          className="flex items-center gap-2 bg-white border-2 border-black p-1.5 pr-2.5 shadow-neo-sm"
+          title="Your access level"
+        >
+          <div className={`p-1 font-mono text-[10px] font-black border-2 border-black ${currentRoleConfig.color}`}>
+            {currentRoleConfig.icon}
+          </div>
+          <div className="text-left hidden xl:block">
+            <span className="text-[9px] text-neutral-500 font-mono font-bold block leading-none">ROLE</span>
+            <span className="text-xs font-mono font-black text-black tracking-wide leading-tight">
+              {currentRoleConfig.label}
+            </span>
+          </div>
         </div>
 
         {/* User Account Menu with Clear Logout */}
@@ -182,7 +146,7 @@ export function Header({
           <button
             onClick={() => {
               setIsUserMenuOpen(!isUserMenuOpen);
-              setIsRoleMenuOpen(false);
+              
             }}
             className="flex items-center gap-2 bg-[#FAF7EE] border-2 border-black hover:bg-white p-1.5 transition-all shadow-neo-sm cursor-pointer"
             title="Account & Session"

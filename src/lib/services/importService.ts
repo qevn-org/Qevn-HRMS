@@ -1,5 +1,4 @@
 import Papa from 'papaparse';
-import * as XLSX from 'xlsx';
 import { Person, WorkerType, EmploymentStatusType } from '@/types/database';
 import { ColumnMapping, ImportValidationRow, ImportResult } from '@/types/domain';
 import { hrmsStore } from './store';
@@ -7,45 +6,24 @@ import { parseISO, isValid } from 'date-fns';
 
 export const importService = {
   async parseFile(file: File): Promise<{ headers: string[]; rows: Record<string, string>[] }> {
-    const isCsv = file.name.endsWith('.csv');
-
-    if (isCsv) {
-      return new Promise((resolve, reject) => {
-        Papa.parse<Record<string, string>>(file, {
-          header: true,
-          skipEmptyLines: true,
-          complete: (results) => {
-            const headers = results.meta.fields || [];
-            resolve({ headers, rows: results.data });
-          },
-          error: (err) => reject(err),
-        });
-      });
-    } else {
-      // Excel parse
-      const arrayBuffer = await file.arrayBuffer();
-      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const data = XLSX.utils.sheet_to_json<Record<string, string>>(sheet, { header: 1 });
-
-      if (data.length === 0) return { headers: [], rows: [] };
-
-      const headers = (data[0] as unknown as string[]).map((h) => String(h || '').trim());
-      const rows: Record<string, string>[] = [];
-
-      for (let i = 1; i < data.length; i++) {
-        const rowData = data[i] as unknown as string[];
-        if (!rowData || rowData.length === 0) continue;
-        const rowObj: Record<string, string> = {};
-        headers.forEach((h, idx) => {
-          rowObj[h] = rowData[idx] !== undefined ? String(rowData[idx]).trim() : '';
-        });
-        rows.push(rowObj);
-      }
-
-      return { headers, rows };
+    // CSV only: spreadsheet (xlsx) parsers are a known attack surface for untrusted uploads.
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+      throw new Error('Only .csv files are supported');
     }
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error('File exceeds the 5 MB limit');
+    }
+    return new Promise((resolve, reject) => {
+      Papa.parse<Record<string, string>>(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const headers = results.meta.fields || [];
+          resolve({ headers, rows: results.data });
+        },
+        error: (err) => reject(err),
+      });
+    });
   },
 
   getSmartInitialMappings(headers: string[]): ColumnMapping[] {

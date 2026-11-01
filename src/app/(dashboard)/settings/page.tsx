@@ -140,7 +140,7 @@ export default function SettingsPage() {
 
   const handleResetDataConfirm = () => {
     settingsService.resetAllData();
-    toast.success('Reset system to default seed dataset');
+    toast.success('All local data cleared');
     setIsResetConfirmOpen(false);
   };
 
@@ -175,7 +175,7 @@ export default function SettingsPage() {
         <div className="flex items-center gap-2">
           {canManageSettings && (
             <Button variant="danger" size="sm" onClick={() => setIsResetConfirmOpen(true)}>
-              <RotateCcw className="w-4 h-4 mr-1" /> RESET SEED DATA
+              <RotateCcw className="w-4 h-4 mr-1" /> CLEAR ALL LOCAL DATA
             </Button>
           )}
         </div>
@@ -438,8 +438,8 @@ export default function SettingsPage() {
       <Modal
         isOpen={isResetConfirmOpen}
         onClose={() => setIsResetConfirmOpen(false)}
-        title="CONFIRM SYSTEM SEED RESET"
-        subtitle="Restores complete demo personas, historical attendance, and documents"
+        title="CONFIRM CLEAR ALL DATA"
+        subtitle="Permanently removes all people, attendance, leave, documents and audit records stored in this browser"
         headerColor="pink"
         maxWidth="sm"
         footer={
@@ -454,7 +454,7 @@ export default function SettingsPage() {
         }
       >
         <div className="p-3 bg-red-100 border-2 border-black text-black font-mono text-xs font-bold">
-          This will reset local database storage to the authentic 20+ QEVN demo dataset.
+          This permanently erases all locally stored HR records. This cannot be undone.
         </div>
       </Modal>
     </div>

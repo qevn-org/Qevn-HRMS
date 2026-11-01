@@ -1,0 +1,5 @@
+* @qevn-org
+/.github/ @qevn-org
+/supabase/ @qevn-org
+/src/proxy.ts @qevn-org
+/src/lib/auth/ @qevn-org

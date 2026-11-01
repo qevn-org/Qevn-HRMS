@@ -90,3 +90,21 @@ npm run build
 - Row Level Security (RLS) protects sensitive employee notes and audit records.
 - Soft deactivation preserves complete historical records without destructive loss.
 - Every state mutation generates an immutable audit record with actor, reason, and before/after diffs.
+
+## Security & access
+
+- **Authentication**: Supabase email + password only. All routes except `/login` are gated server-side in `src/proxy.ts`, which validates the session token with Supabase Auth (`getUser()`), and fails closed if env is missing.
+- **Roles** live in `app_metadata.hrms_role` (writable only with the service-role key; never trust `user_metadata`). Admin (`super_admin`) is limited to Dhruv, Naman and Arbaaz. Everyone else is `employee`.
+- **Provisioning / rotating credentials**: `node --env-file=.env.local scripts/provision-users.mjs` (writes a git-ignored, 0600 `hrms.credentials.local.txt`; move to a password manager and delete it). Edit the `ADMINS` set in that script to change who is admin.
+- **Secrets**: never commit `.env*` or credential files. `SUPABASE_SERVICE_ROLE_KEY` must only exist in your host's server env.
+- **Headers**: CSP, HSTS, X-Frame-Options, nosniff, Referrer-Policy, Permissions-Policy in `next.config.ts`.
+
+## CI/CD
+
+`.github/workflows/ci.yml` runs on every PR and push to `main`: lint, typecheck, build, `npm audit` (fails on critical), gitleaks secret scan, CodeQL. Dependabot opens weekly update PRs.
+
+Recommended deployment (Vercel Git integration): enable branch protection on `main` requiring the CI jobs + 1 review, set env vars in Vercel (Production only for the service-role key — or omit it from the app entirely), and let Vercel deploy `main` after CI passes.
+
+## Known limitation
+
+HR records (people, attendance, leave, documents) are currently stored in the browser's localStorage, not the database, so data is per-browser and RLS does not protect it. The SQL in `supabase/migrations` is not applied and collides with an existing `profiles` table in the shared Supabase project. Moving persistence server-side (dedicated project/schema + RLS) is the next required step before storing real employee data.

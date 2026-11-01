@@ -43,7 +43,7 @@ import {
   initialUserProfiles,
 } from '@/lib/data/initialSeedData';
 
-const STORAGE_KEY_PREFIX = 'qevn_hrms_v2_real_';
+const STORAGE_KEY_PREFIX = 'qevn_hrms_v3_clean_';
 
 interface DataStoreState {
   persons: Person[];
@@ -96,7 +96,7 @@ class HRMSDataStore {
       auditLogs: initialAuditLogs,
       notifications: initialNotifications,
       userProfiles: initialUserProfiles,
-      currentRole: 'super_admin',
+      currentRole: 'employee',
     };
   }
 
